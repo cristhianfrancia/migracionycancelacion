@@ -5,52 +5,56 @@
   <title>Migraciones y Cancelaciones</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #E9F7FB;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #f9fbfc;
       margin: 0;
       padding: 0;
       display: flex;
       justify-content: center;
       align-items: flex-start;
       min-height: 100vh;
+      color: #333;
     }
-    /* Header corporativo */
+    /* Header minimalista */
     header {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
-      background: #fbf32f;
-      padding: 15px 0;
+      background: #fff;
+      padding: 20px 0;
       text-align: center;
-      box-shadow: 0px 2px 6px rgba(0,0,0,0.1);
+      border-bottom: 4px solid #fbf32f;
+      box-shadow: 0px 2px 6px rgba(0,0,0,0.05);
       z-index: 1000;
     }
     header h1 {
       margin: 0;
       color: #01768b;
-      font-size: 26px;
+      font-size: 24px;
+      font-weight: 600;
     }
     .container {
       width: 95%;
-      max-width: 850px; /* un poco más pequeño */
+      max-width: 800px;
       background: #fff;
       padding: 40px 50px;
-      margin: 100px auto 40px; /* espacio debajo del header */
-      border-radius: 16px;
-      box-shadow: 0px 8px 20px rgba(0,0,0,0.1);
+      margin: 120px auto 40px;
+      border-radius: 14px;
+      box-shadow: 0px 8px 20px rgba(0,0,0,0.08);
       animation: fadeIn 0.6s ease-in-out;
     }
     .intro {
       text-align: center;
       color: #0c477e;
       margin-bottom: 35px;
-      font-size: 17px;
-      font-weight: bold;
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 1.5em;
     }
     .intro span {
       color: #01768b;
-      font-weight: bold;
+      font-weight: 600;
     }
     .form-group {
       display: flex;
@@ -65,22 +69,25 @@
       flex-wrap: wrap;
     }
     label {
-      font-weight: bold;
+      font-weight: 600;
       margin-bottom: 6px;
       color: #0c477e;
+      font-size: 14px;
     }
     input, select {
-      padding: 14px;
-      border: 1px solid #ccc;
+      padding: 12px;
+      border: 1px solid #dcdfe3;
       border-radius: 10px;
       width: 100%;
       font-size: 15px;
       transition: all 0.2s ease-in-out;
+      background: #fdfdfd;
     }
     input:focus, select:focus {
       border-color: #01768b;
-      box-shadow: 0px 0px 8px rgba(1,118,139,0.3);
+      box-shadow: 0px 0px 6px rgba(1,118,139,0.3);
       outline: none;
+      background: #fff;
     }
     .dni-group {
       display: flex;
@@ -91,9 +98,9 @@
       flex: 1;
     }
     .dni-group button {
-      background: #fbf32f;
-      color: #0c477e;
-      font-weight: bold;
+      background: #01768b;
+      color: #fff;
+      font-weight: 600;
       border: none;
       padding: 10px 16px;
       border-radius: 8px;
@@ -101,16 +108,16 @@
       transition: all 0.3s ease;
     }
     .dni-group button:hover {
-      background: #f0e600;
+      background: #0c477e;
       transform: scale(1.05);
     }
     .autofill, .plan-details {
       display: none;
       margin-top: 20px;
-      padding: 20px;
-      border: 2px solid #fbf32f;
-      border-radius: 12px;
-      background: #fffbea;
+      padding: 18px;
+      border-left: 4px solid #fbf32f;
+      border-radius: 8px;
+      background: #fafafa;
       animation: fadeIn 0.5s ease-in-out;
     }
     .actions {
@@ -118,20 +125,21 @@
       margin-top: 30px;
     }
     .actions button {
-      background: linear-gradient(135deg, #01768b, #0c477e);
+      background: #01768b;
       color: #fff;
       border: none;
-      padding: 14px 26px;
+      padding: 12px 22px;
       margin: 0 12px;
       border-radius: 10px;
       cursor: pointer;
-      font-size: 16px;
-      font-weight: bold;
+      font-size: 15px;
+      font-weight: 600;
       transition: all 0.3s ease;
     }
     .actions button:hover {
+      background: #0c477e;
       transform: translateY(-2px);
-      box-shadow: 0px 6px 12px rgba(0,0,0,0.2);
+      box-shadow: 0px 6px 12px rgba(0,0,0,0.15);
     }
     .plan-columns {
       display: flex;
@@ -140,14 +148,14 @@
     }
     .plan-columns div {
       flex: 1;
-      font-size: 15px;
-      color: #333;
+      font-size: 14px;
+      color: #444;
     }
     #mensaje {
       margin-top: 20px;
       text-align: center;
-      font-weight: bold;
-      font-size: 16px;
+      font-weight: 600;
+      font-size: 15px;
       color: #01768b;
       animation: fadeIn 0.5s ease-in-out;
     }
@@ -158,7 +166,7 @@
   </style>
 </head>
 <body>
-  <!-- Header corporativo -->
+  <!-- Header -->
   <header>
     <h1>Migraciones y Cancelaciones</h1>
   </header>
