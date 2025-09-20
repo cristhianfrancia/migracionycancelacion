@@ -92,7 +92,6 @@
     gap: 4px;
   }
   .input-with-mark span {
-    font-weight: bold;
     color: #000;
   }
 
@@ -259,6 +258,7 @@
         <span>_&&</span>
       </div>
     </div>
+
     <div class="input-group">
       <label for="idSaliente">ID de llamada saliente</label>
       <div class="input-with-mark">
@@ -286,6 +286,7 @@
       <label for="telefonoEntrante">Teléfono entrante</label>
       <input type="text" id="telefonoEntrante" maxlength="9" placeholder="9 dígitos">
     </div>
+
     <div class="input-group">
       <label for="telefonoSolicitud">Teléfono de solicitud</label>
       <input type="text" id="telefonoSolicitud" maxlength="9" placeholder="9 dígitos">
@@ -303,6 +304,7 @@
         <option value="Opción 3">Opción 3</option>
       </select>
     </div>
+
     <div class="input-group">
       <label for="plan">Plan deseado a migrar</label>
       <select id="plan" onchange="mostrarPlan()">
@@ -433,7 +435,7 @@ async function guardar(){
       const codigo=result.codigo||"Código no recibido";
       document.getElementById("mensaje").innerHTML=`✅ Datos guardados correctamente.<br><span class="codigo">🔐 Código de solicitud: ${codigo}</span>`;
       let planTexto=plan==="Bifri5"?"Prepago: Bifri5":"Control: Ilimitado 29.90";
-      document.getElementById("speech").innerHTML=`<h3>Speech final</h3>🗣️ <span class="blue">Agente:</span> “Se ha gestionado la migración de su línea <span class='green'>${telefonoSolicitud}</span> al plan ${planTexto}. El cambio se realizará en un máximo de 24 horas. Cuando pierda señal, reinicie su equipo y haga una llamada para activar el servicio. Recibirá el código de solicitud por SMS o email.<br><br> El código de solicitud es <span class='green'>${codigo}</span> y lo recibirá por SMS y/o email.<br><br> Eso sería todo de mi parte. Gracias por comunicarse. En breve recibirá una encuesta por SMS para calificar mi atención. Que tenga un excelente día.”`;
+      document.getElementById("speech").innerHTML=`<h3>Speech final</h3>🗣️ <span class="blue">Agente:</span> “Se ha gestionado la migración de su línea <span class='green'>${telefonoSolicitud}</span> al plan <span class='green'>${planTexto}</span>. El cambio se realizará en un máximo de 24 horas. Cuando pierda señal, reinicie su equipo y haga una llamada para activar el servicio. Recibirá el código de solicitud por SMS o email.<br><br> El código de solicitud es <span class='green'>${codigo}</span> y lo recibirá por SMS y/o email.<br><br> Eso sería todo de mi parte. Gracias por comunicarse. En breve recibirá una encuesta por SMS para calificar mi atención. Que tenga un excelente día.”`;
       document.getElementById("speech").style.display="block";
       limpiar(false);
     } else {
