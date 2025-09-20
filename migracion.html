@@ -52,12 +52,12 @@
     margin-top: 20px;
   }
 
-  /* === Inputs y labels alineados === */
+  /* Inputs y labels */
   .input-row {
     display: flex;
     gap: 15px;
     flex-wrap: wrap;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
   }
   .input-group {
     display: flex;
@@ -67,14 +67,14 @@
   }
   .input-group label {
     font-size: 13px;
-    margin-bottom: 4px;
+    margin-bottom: 6px;
     font-weight: 500;
     color: #333;
   }
   input, select {
     width: 100%;
     padding: 10px;
-    border: 1.5px solid #ccc; /* gris suave */
+    border: 1.5px solid #ccc;
     border-radius: 8px;
     font-size: 14px;
     outline: none;
@@ -85,6 +85,7 @@
     border-color: #01768b;
     background: #f8ffff;
   }
+
   .input-with-mark {
     display: flex;
     align-items: center;
@@ -92,10 +93,10 @@
   }
   .input-with-mark span {
     font-weight: bold;
-    color: #000; /* negro */
+    color: #000;
   }
 
-  /* DNI y botón */
+  /* DNI */
   .dni-container {
     display: flex;
     gap: 10px;
@@ -120,6 +121,7 @@
     background: #0c477e;
   }
 
+  /* Botones */
   .buttons {
     margin-top: 25px;
     display: flex;
@@ -140,12 +142,14 @@
   .buttons button:hover {
     background: #0c477e;
   }
+
   #mensaje {
     margin-top: 25px;
     text-align: center;
     font-size: 15px;
     font-weight: 500;
   }
+
   #speech {
     margin-top: 25px;
     padding: 15px;
@@ -154,69 +158,26 @@
     background: #fdfdfd;
     display: none;
   }
+  #speech h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #0c477e;
+    font-size: 20px;
+    font-weight: bold;
+  }
   #speech .green { color: #01768b; font-weight: bold; }
   .blue { color: #0c477e; }
 
-  /* Modal confirmación */
-  .modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.5);
-    justify-content: center;
-    align-items: center;
-  }
-  .modal.show { display: flex; }
-  .modal-content {
-    background: #fff;
-    padding: 25px;
-    border-radius: 12px;
-    text-align: center;
-    max-width: 400px;
-    box-shadow: 0 6px 14px rgba(0,0,0,0.2);
-  }
-  .modal-content h2 { color: #0c477e; margin-bottom: 15px; }
-  .modal-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-top: 20px;
-  }
-  .modal-buttons button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 500;
-    color: #fff;
-  }
-  .btn-yes { background: #01768b; }
-  .btn-yes:hover { background: #0c477e; }
-  .btn-no { background: #c62828; }
-  .btn-no:hover { background: #a61c1c; }
-
-  /* Plan details animación */
+  /* Plan details */
   .plan-details {
-    margin-top: 20px;
-    padding: 20px;
-    border: 1px solid #ddd;
+    margin-top: 15px;
+    padding: 15px;
+    border: 1px solid #ccc;
     border-radius: 8px;
     background: #fafafa;
-    opacity: 0;
-    transform: translateY(-10px);
-    max-height: 0;
-    overflow: hidden;
-    transition: all 0.4s ease;
+    display: none;
   }
-  .plan-details.show {
-    opacity: 1;
-    transform: translateY(0);
-    max-height: 600px;
-  }
+  .plan-details.show { display: block; }
   .plan-details .row {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -235,6 +196,35 @@
     border-bottom: 1px solid #eee;
     padding-bottom: 6px;
   }
+
+  /* Modal */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    justify-content: center;
+    align-items: center;
+  }
+  .modal.show { display: flex; }
+  .modal-content {
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    text-align: center;
+    max-width: 400px;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.2);
+  }
+  .modal-content h2 { color: #0c477e; margin-bottom: 15px; }
+  .modal-buttons { display: flex; justify-content: center; gap: 15px; margin-top: 20px; }
+  .modal-buttons button { padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; color: #fff; }
+  .btn-yes { background: #01768b; }
+  .btn-yes:hover { background: #0c477e; }
+  .btn-no { background: #c62828; }
+  .btn-no:hover { background: #a61c1c; }
 </style>
 </head>
 <body>
@@ -251,12 +241,16 @@
 
 <h2>Llenado de datos</h2>
 <form id="miFormulario" onsubmit="return false;">
-  <!-- Fila principal -->
+  <!-- Usuario de agente -->
   <div class="input-row">
     <div class="input-group">
       <label for="usuarioAgente">Usuario de agente</label>
       <input type="text" id="usuarioAgente" placeholder="cpc_xxxx_vtp" style="text-transform: lowercase;">
     </div>
+  </div>
+
+  <!-- ID de llamada -->
+  <div class="input-row">
     <div class="input-group">
       <label for="idEntrante">ID de llamada entrante</label>
       <div class="input-with-mark">
@@ -275,7 +269,7 @@
     </div>
   </div>
 
-  <!-- DNI -->
+  <!-- Número de documento -->
   <div class="input-row">
     <div class="input-group">
       <label for="dni">Número de documento</label>
@@ -319,6 +313,20 @@
     </div>
   </div>
 
+  <!-- Detalle del plan -->
+  <div class="plan-details" id="planDetails">
+    <div class="row">
+      <div class="col">
+        <h3>Detalle</h3>
+        <div id="detalle"></div>
+      </div>
+      <div class="col">
+        <h3>Consideraciones</h3>
+        <div id="consideraciones"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- Autofill DNI -->
   <div id="autofill" style="display:none;">
     <div class="input-row">
@@ -337,28 +345,19 @@
     </div>
   </div>
 
-  <!-- Plan details -->
-  <div class="plan-details" id="planDetails">
-    <div class="row">
-      <div class="col">
-        <h3>Detalle</h3>
-        <div id="detalle"></div>
-      </div>
-      <div class="col">
-        <h3>Consideraciones</h3>
-        <div id="consideraciones"></div>
-      </div>
-    </div>
-  </div>
-
   <!-- Botones -->
   <div class="buttons">
     <button type="button" onclick="abrirConfirmacion()">Guardar</button>
     <button type="button" onclick="limpiar()">Limpiar</button>
   </div>
 </form>
+
 <div id="mensaje"></div>
-<div id="speech"></div>
+
+<!-- Speech final -->
+<div id="speech">
+  <h3>Speech final</h3>
+</div>
 
 <!-- Modal -->
 <div id="confirmModal" class="modal">
@@ -398,13 +397,12 @@ function mostrarPlan(){
     detalle.innerHTML="<ul><li>Llamadas ilimitadas a todo operador</li><li>10GB de alta velocidad</li><li>WhatsApp ilimitado</li></ul>";
     consideraciones.innerHTML="<ul><li>Velocidad reducida después de 10GB</li><li>No incluye roaming</li><li>Costo fijo mensual S/29.90</li></ul>";
     planDetails.classList.add("show");
-  } else {
-    planDetails.classList.remove("show");
-  }
+  } else { planDetails.classList.remove("show"); }
 }
 
 function abrirConfirmacion(){document.getElementById("confirmModal").classList.add("show");}
 function cerrarModal(){document.getElementById("confirmModal").classList.remove("show");}
+
 async function guardar(){
   cerrarModal();
   const usuarioAgente=document.getElementById("usuarioAgente").value.trim();
@@ -435,7 +433,7 @@ async function guardar(){
       const codigo=result.codigo||"Código no recibido";
       document.getElementById("mensaje").innerHTML=`✅ Datos guardados correctamente.<br><span class="codigo">🔐 Código de solicitud: ${codigo}</span>`;
       let planTexto=plan==="Bifri5"?"Prepago: Bifri5":"Control: Ilimitado 29.90";
-      document.getElementById("speech").innerHTML=`🗣️ <span class="blue">Agente:</span> “Se ha gestionado la migración de su línea <span class='green'>${telefonoSolicitud}</span> al plan ${planTexto}. El cambio se realizará en un máximo de 24 horas. Cuando pierda señal, reinicie su equipo y haga una llamada para activar el servicio. Recibirá el código de solicitud por SMS o email.<br><br> El código de solicitud es <span class='green'>${codigo}</span> y lo recibirá por SMS y/o email.<br><br> Eso sería todo de mi parte. Gracias por comunicarse. En breve recibirá una encuesta por SMS para calificar mi atención. Que tenga un excelente día.”`;
+      document.getElementById("speech").innerHTML=`<h3>Speech final</h3>🗣️ <span class="blue">Agente:</span> “Se ha gestionado la migración de su línea <span class='green'>${telefonoSolicitud}</span> al plan ${planTexto}. El cambio se realizará en un máximo de 24 horas. Cuando pierda señal, reinicie su equipo y haga una llamada para activar el servicio. Recibirá el código de solicitud por SMS o email.<br><br> El código de solicitud es <span class='green'>${codigo}</span> y lo recibirá por SMS y/o email.<br><br> Eso sería todo de mi parte. Gracias por comunicarse. En breve recibirá una encuesta por SMS para calificar mi atención. Que tenga un excelente día.”`;
       document.getElementById("speech").style.display="block";
       limpiar(false);
     } else {
