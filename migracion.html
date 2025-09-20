@@ -2,355 +2,272 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Migraciones y Cancelaciones - Bitel Perú</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Migraciones y Cancelaciones</title>
   <style>
-    :root{
-      --bitel-green: #01768b;
-      --bitel-dark: #0c477e;
-      --bitel-yellow: #fbf32f;
-      --bg: #F4F9FB;
-    }
-
     body {
       font-family: Arial, sans-serif;
-      background: var(--bg);
+      background: #F4F9FB;
       margin: 0;
-      padding: 20px;
-      -webkit-font-smoothing:antialiased;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
     }
-
-    header {
-      text-align: center;
-      padding: 18px 10px 6px;
-    }
-
-    header h1 {
-      font-size: 28px;
-      margin: 6px 0;
-      color: var(--bitel-green); /* verdecito */
-      font-weight: 700;
-    }
-
-    header p {
-      margin: 6px 0 0;
-      color: var(--bitel-dark); /* azulito */
-      font-size: 15px;
-      line-height: 1.3;
-    }
-
     .container {
-      max-width: 900px; /* más ancho que antes */
-      margin: 22px auto;
+      max-width: 900px;
       background: #fff;
-      padding: 26px 30px;
-      border-radius: 12px;
-      box-shadow: 0 6px 20px rgba(2,24,30,0.06);
-      border-top: 6px solid var(--bitel-yellow); /* línea amarilla */
+      padding: 30px;
+      margin: 40px auto;
+      border-radius: 10px;
+      box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
     }
-
-    .row {
+    h1 {
+      text-align: center;
+      color: #01768b;
+      margin-bottom: 10px;
+    }
+    .intro {
+      text-align: center;
+      color: #0c477e;
+      margin-bottom: 30px;
+    }
+    .form-group {
       display: flex;
-      gap: 16px;
+      flex-direction: column;
+      margin-bottom: 20px;
     }
-
-    .two-columns {
+    .form-row {
       display: flex;
-      gap: 16px;
-      justify-content: center; /* centra horizontalmente las dos columnas */
+      gap: 20px;
+      justify-content: center;
     }
-
-    .col {
-      flex: 0 0 48%; /* dos columnas iguales y amplias */
-    }
-
     label {
-      display: block;
-      margin-bottom: 6px;
-      color: var(--bitel-green);
-      font-weight: 600;
-      font-size: 14px;
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #01768b;
     }
-
-    input[type="text"], input[type="date"], select {
+    input, select {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
       width: 100%;
-      padding: 10px 12px;
-      border-radius: 8px;
-      border: 1px solid #d0d6da;
-      font-size: 15px;
-      box-sizing: border-box;
-    }
-
-    input[readonly] {
-      background: #f6f8fa;
-      color: #333;
-    }
-
-    .input-group {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
-
-    .input-group input {
-      flex: 1;
-    }
-
-    .btn-lupa {
-      background: var(--bitel-dark);
-      color: white;
-      border: none;
-      padding: 10px 14px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 16px;
-    }
-
-    .detalle-plan {
-      margin-top: 12px;
-    }
-
-    .detalle-plan .cols {
-      display: flex;
-      gap: 12px;
-    }
-
-    .detalle-plan .cols > div {
-      flex: 1;
-      padding: 12px;
-      border-radius: 8px;
-      background: #fbfdff;
-      border: 1px solid #e6eef4;
       font-size: 14px;
     }
-
-    .btn-container {
+    .dni-group {
       display: flex;
-      gap: 12px;
-      margin-top: 18px;
-      justify-content: center; /* centra los botones */
+      align-items: center;
+      gap: 10px;
     }
-
-    .btn-save {
-      background: var(--bitel-green);
-      color: white;
-      padding: 11px 22px;
+    .dni-group input {
+      flex: 1;
+    }
+    .dni-group button {
+      background: #0c477e;
+      color: #fff;
       border: none;
-      border-radius: 8px;
+      padding: 8px 12px;
+      border-radius: 6px;
       cursor: pointer;
-      font-weight: 700;
-      min-width: 140px;
     }
-
-    .btn-clear {
-      background: var(--bitel-yellow);
-      color: var(--bitel-dark);
-      padding: 11px 22px;
+    .autofill {
+      display: none;
+      margin-top: 20px;
+      padding: 15px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      background: #F4F9FB;
+    }
+    .actions {
+      text-align: center;
+      margin-top: 30px;
+    }
+    .actions button {
+      background: #01768b;
+      color: #fff;
       border: none;
-      border-radius: 8px;
+      padding: 12px 20px;
+      margin: 0 10px;
+      border-radius: 6px;
       cursor: pointer;
-      font-weight: 700;
-      min-width: 140px;
     }
-
-    /* Responsive */
-    @media (max-width: 720px) {
-      .two-columns { flex-direction: column; }
-      .col { flex: 1; }
-      .detalle-plan .cols { flex-direction: column; }
-      .btn-container { flex-direction: column; }
+    .actions button:hover {
+      background: #0c477e;
+    }
+    .plan-details {
+      display: none;
+      margin-top: 20px;
+      padding: 15px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      background: #F4F9FB;
+    }
+    .plan-columns {
+      display: flex;
+      gap: 20px;
+    }
+    .plan-columns div {
+      flex: 1;
+    }
+    #mensaje {
+      margin-top: 20px;
+      text-align: center;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Migraciones y Cancelaciones</h1>
-    <p><strong>Te saluda (Nombre y apellido del agente) del área de Migraciones y Cancelaciones.</strong><br>Por favor, me confirma su:</p>
-  </header>
-
   <div class="container">
+    <h1>Migraciones y Cancelaciones</h1>
+    <p class="intro">
+      Te saluda (Nombre y apellido del agente) del área de Migraciones y Cancelaciones.<br>
+      Por favor, me confirma su:
+    </p>
 
-    <!-- Teléfonos centrados en dos columnas -->
-    <div class="two-columns">
-      <div class="col">
-        <label for="telefonoEntrante">Teléfono entrante</label>
-        <input type="text" id="telefonoEntrante" maxlength="9" placeholder="9 dígitos">
+    <form id="miFormulario">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Teléfono entrante</label>
+          <input type="text" id="telefonoEntrante" maxlength="9" required>
+        </div>
+        <div class="form-group">
+          <label>Teléfono de solicitud</label>
+          <input type="text" id="telefonoSolicitud" maxlength="9" required>
+        </div>
       </div>
-      <div class="col">
-        <label for="telefonoSolicitud">Teléfono de solicitud</label>
-        <input type="text" id="telefonoSolicitud" maxlength="9" placeholder="9 dígitos">
+
+      <div class="form-group">
+        <label>Número de documento</label>
+        <div class="dni-group">
+          <input type="text" id="dni" maxlength="8" required>
+          <button type="button" onclick="buscarDNI()">🔍</button>
+        </div>
       </div>
-    </div>
 
-    <!-- DNI con lupa -->
-    <div style="margin-top:10px;">
-      <label for="dni">Número de documento</label>
-      <div class="input-group">
-        <input type="text" id="dni" maxlength="8" placeholder="Ingrese DNI (8 dígitos)">
-        <button type="button" class="btn-lupa" onclick="buscarDni()">🔍</button>
+      <div class="autofill" id="autofill">
+        <div class="form-group">
+          <label>Nombre completo</label>
+          <input type="text" id="nombre" readonly>
+        </div>
+        <div class="form-group">
+          <label>Fecha de nacimiento</label>
+          <input type="text" id="fechaNacimiento" readonly>
+        </div>
+        <div class="form-group">
+          <label>Departamento - Provincia - Distrito de nacimiento</label>
+          <input type="text" id="ubicacion" readonly>
+        </div>
       </div>
-    </div>
 
-    <!-- Datos autollenados desde RENIEC (simulación) -->
-    <div id="datosReniec" style="display:none; margin-top:12px;">
-      <label for="nombreCompleto">Nombre completo</label>
-      <input type="text" id="nombreCompleto" readonly>
+      <div class="form-group">
+        <label>Motivo de migración</label>
+        <select id="motivo" required>
+          <option value="">Seleccione...</option>
+          <option>Opción 1</option>
+          <option>Opción 2</option>
+          <option>Opción 3</option>
+        </select>
+      </div>
 
-      <label for="fechaNacimiento">Fecha de nacimiento</label>
-      <input type="text" id="fechaNacimiento" readonly placeholder="DD/MM/AAAA">
+      <div class="form-group">
+        <label>Plan deseado a migrar</label>
+        <select id="plan" onchange="mostrarPlan()" required>
+          <option value="">Seleccione...</option>
+          <option value="Bifri5">Bifri5</option>
+          <option value="Ilimitado 29.90">Ilimitado 29.90</option>
+        </select>
+      </div>
 
-      <label for="ubicacion">Departamento - Provincia - Distrito de nacimiento</label>
-      <input type="text" id="ubicacion" readonly>
-    </div>
+      <div class="plan-details" id="planDetails">
+        <div class="plan-columns">
+          <div id="detalle"></div>
+          <div id="consideraciones"></div>
+        </div>
+      </div>
 
-    <!-- Motivo y Plan -->
-    <div style="margin-top:12px;">
-      <label for="motivo">Motivo de migración</label>
-      <select id="motivo">
-        <option value="">Seleccione...</option>
-        <option value="Opción 1">Opción 1</option>
-        <option value="Opción 2">Opción 2</option>
-        <option value="Opción 3">Opción 3</option>
-      </select>
-    </div>
+      <div class="actions">
+        <button type="button" onclick="guardar()">Guardar</button>
+        <button type="button" onclick="limpiar()">Limpiar</button>
+      </div>
 
-    <div style="margin-top:6px;">
-      <label for="plan">Plan deseado a migrar</label>
-      <select id="plan" onchange="mostrarDetalle()">
-        <option value="">Seleccione...</option>
-        <option value="Bifri5">Bifri5</option>
-        <option value="Ilimitado 29.90">Ilimitado 29.90</option>
-      </select>
-    </div>
-
-    <div id="detallePlan" class="detalle-plan"></div>
-
-    <!-- Botones centrados -->
-    <div class="btn-container">
-      <button class="btn-save" onclick="guardarDatos()">Guardar</button>
-      <button class="btn-clear" onclick="limpiarFormulario()">Limpiar</button>
-    </div>
-
+      <div id="mensaje"></div>
+    </form>
   </div>
 
   <script>
-    // Cambia aquí si tu URL o token son otros
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx7YIQehgfBlQ3-uW8hHjBFceLiRyv0_O1BcaVGc7Ga8ge_BNUqYM9WT7owlv5sLfGsiQ/exec";
-    const MY_SECRET_TOKEN = "BitelMigracion2025SuperClave"; // asegúrate que coincida con el SECRET en Apps Script
+    const MY_SECRET_TOKEN = "BitelMigracion2025SuperClave";
 
-    function capitalizeName(name) {
-      if (!name) return '';
-      return name.split(' ').map(w => {
-        w = w.trim();
-        if (!w) return '';
-        return w.charAt(0).toUpperCase() + w.slice(1).toLowerCase();
-      }).filter(Boolean).join(' ');
-    }
-
-    function formatDateToDDMMYYYY(isoDate) {
-      // espera 'YYYY-MM-DD' o Date objeto
-      if (!isoDate) return '';
-      let d;
-      if (typeof isoDate === 'string' && isoDate.includes('-')) {
-        d = new Date(isoDate);
-      } else if (isoDate instanceof Date) {
-        d = isoDate;
-      } else {
-        return isoDate;
-      }
-      if (isNaN(d)) return '';
-      const dd = String(d.getDate()).padStart(2,'0');
-      const mm = String(d.getMonth()+1).padStart(2,'0');
-      const yyyy = d.getFullYear();
-      return `${dd}/${mm}/${yyyy}`;
-    }
-
-    function buscarDni() {
-      const dni = document.getElementById('dni').value.trim();
+    function buscarDNI() {
+      const dni = document.getElementById("dni").value.trim();
       if (dni.length !== 8) {
-        alert('Ingrese un DNI válido de 8 dígitos.');
+        alert("Ingrese un DNI válido de 8 dígitos");
         return;
       }
-
-      // Simulación: aquí puedes reemplazar por fetch a tu API cuando la tengas
-      const datos = {
-        nombre: 'juan pérez lopez', // ejemplo en minúsculas para demostrar formateo
-        fecha: '1995-09-20', // ISO para transformar a DD/MM/AAAA
-        ubicacion: 'Lima - Lima - Miraflores'
-      };
-
-      // Formatea y muestra
-      document.getElementById('nombreCompleto').value = capitalizeName(datos.nombre);
-      document.getElementById('fechaNacimiento').value = formatDateToDDMMYYYY(datos.fecha);
-      document.getElementById('ubicacion').value = datos.ubicacion;
-
-      // Mostrar bloque de datos
-      document.getElementById('datosReniec').style.display = 'block';
+      // Simulación de datos RENIEC
+      document.getElementById("nombre").value = "Juan Perez";
+      document.getElementById("fechaNacimiento").value = "15/08/1990";
+      document.getElementById("ubicacion").value = "Lima - Lima - San Isidro";
+      document.getElementById("autofill").style.display = "block";
     }
 
-    function mostrarDetalle() {
-      const plan = document.getElementById('plan').value;
-      const detalleDiv = document.getElementById('detallePlan');
-      detalleDiv.innerHTML = '';
+    function mostrarPlan() {
+      const plan = document.getElementById("plan").value;
+      const detalle = document.getElementById("detalle");
+      const consideraciones = document.getElementById("consideraciones");
+      const planDetails = document.getElementById("planDetails");
 
-      if (plan === 'Bifri5') {
-        detalleDiv.innerHTML = `\n          <div class="cols">\n            <div><strong>Detalle de Bifri5</strong><br>- 5GB de datos<br>- 100 minutos</div>\n            <div><strong>Consideraciones de Bifri5</strong><br>- Válido solo en Perú</div>\n          </div>`;
-      } else if (plan === 'Ilimitado 29.90') {
-        detalleDiv.innerHTML = `\n          <div class="cols">\n            <div><strong>Detalle de Ilimitado 29.90</strong><br>- Datos ilimitados<br>- Minutos ilimitados</div>\n            <div><strong>Consideraciones de Ilimitado 29.90</strong><br>- Sujeto a política de uso justo</div>\n          </div>`;
+      if (plan === "Bifri5") {
+        detalle.textContent = "Detalle de Bifri5";
+        consideraciones.textContent = "Consideraciones de Bifri5";
+        planDetails.style.display = "block";
+      } else if (plan === "Ilimitado 29.90") {
+        detalle.textContent = "Detalle de Ilimitado 29.90";
+        consideraciones.textContent = "Consideraciones de Ilimitado 29.90";
+        planDetails.style.display = "block";
+      } else {
+        planDetails.style.display = "none";
       }
     }
 
-    async function guardarDatos() {
+    async function guardar() {
       const data = {
         token: MY_SECRET_TOKEN,
-        telefonoEntrante: document.getElementById('telefonoEntrante').value.trim(),
-        telefonoSolicitud: document.getElementById('telefonoSolicitud').value.trim(),
-        dni: document.getElementById('dni').value.trim(),
-        nombre: document.getElementById('nombreCompleto').value.trim(),
-        fechaNacimiento: document.getElementById('fechaNacimiento').value.trim(),
-        ubicacion: document.getElementById('ubicacion').value.trim(),
-        motivo: document.getElementById('motivo').value,
-        plan: document.getElementById('plan').value
+        telefonoEntrante: document.getElementById("telefonoEntrante").value,
+        telefonoSolicitud: document.getElementById("telefonoSolicitud").value,
+        dni: document.getElementById("dni").value,
+        nombre: document.getElementById("nombre").value,
+        fechaNacimiento: document.getElementById("fechaNacimiento").value,
+        ubicacion: document.getElementById("ubicacion").value,
+        motivo: document.getElementById("motivo").value,
+        plan: document.getElementById("plan").value
       };
-
-      if (!data.dni || data.dni.length !== 8) {
-        alert('Por favor ingresa un DNI válido de 8 dígitos antes de guardar.');
-        return;
-      }
 
       try {
         const resp = await fetch(SCRIPT_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          mode: 'cors',
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data)
         });
         const result = await resp.json();
-        // soporta diferentes formas de respuesta: {result:'success'} o {status:'success'}
-        if (result && (result.result === 'success' || result.status === 'success')) {
-          alert('✅ Datos guardados en Google Sheets.');
-          limpiarFormulario();
+        if (result.result === "success") {
+          document.getElementById("mensaje").textContent = "✅ Datos guardados correctamente.";
+          limpiar(false);
         } else {
-          console.error('Guardar - respuesta inesperada:', result);
-          alert('Error al guardar: ' + (result && (result.message||result.msg) ? (result.message||result.msg) : 'Revisa consola.'));
+          document.getElementById("mensaje").textContent = "❌ Error al guardar: " + result.message;
         }
       } catch (err) {
-        console.error('Error de red al guardar:', err);
-        alert('Error de conexión al intentar guardar. Revisa la consola.');
+        document.getElementById("mensaje").textContent = "❌ Error de conexión: " + err.message;
       }
     }
 
-    function limpiarFormulario() {
-      document.getElementById('telefonoEntrante').value = '';
-      document.getElementById('telefonoSolicitud').value = '';
-      document.getElementById('dni').value = '';
-      document.getElementById('nombreCompleto').value = '';
-      document.getElementById('fechaNacimiento').value = '';
-      document.getElementById('ubicacion').value = '';
-      document.getElementById('motivo').value = '';
-      document.getElementById('plan').value = '';
-      document.getElementById('detallePlan').innerHTML = '';
-      document.getElementById('datosReniec').style.display = 'none';
+    function limpiar(borrarMensaje = true) {
+      document.getElementById("miFormulario").reset();
+      document.getElementById("autofill").style.display = "none";
+      document.getElementById("planDetails").style.display = "none";
+      if (borrarMensaje) {
+        document.getElementById("mensaje").textContent = "";
+      }
     }
   </script>
 </body>
