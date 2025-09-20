@@ -6,263 +6,235 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f4f9fb;
+      background: #f2fdf8; /* Verde muy suave */
       margin: 0;
-      padding: 20px;
+      padding: 0;
     }
-
-    h1 {
-      text-align: center;
-      color: #01768b;
-      margin-bottom: 10px;
+    header {
+      background: #01768b;
+      color: white;
+      padding: 15px;
+      display: flex;
+      align-items: center;
+      border-bottom: 6px solid #fbf32f; /* línea amarilla */
     }
-
-    p.intro {
+    header img {
+      height: 40px;
+      margin-right: 15px;
+    }
+    header h1 {
+      font-size: 20px;
+      margin: 0;
+    }
+    .container {
+      max-width: 800px;
+      margin: 20px auto;
+      background: #ffffff;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    h2 {
       text-align: center;
-      font-size: 15px;
       color: #0c477e;
-      margin-bottom: 25px;
-      font-weight: 500;
     }
-
-    .form-container {
-      max-width: 850px;
-      margin: auto;
-      background: #fff;
-      padding: 25px 35px;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      border-top: 6px solid #fbf32f;
-    }
-
-    .form-group {
-      margin-bottom: 18px;
-    }
-
     label {
-      font-weight: bold;
       display: block;
-      margin-bottom: 6px;
-      color: #0c477e;
+      margin: 10px 0 5px;
+      font-weight: bold;
+      color: #01768b;
     }
-
-    input, select {
+    input, select, button {
       width: 100%;
-      padding: 10px;
+      padding: 8px;
+      margin-bottom: 15px;
+      border-radius: 6px;
       border: 1px solid #ccc;
-      border-radius: 8px;
       font-size: 14px;
-      outline: none;
-      transition: border 0.3s;
     }
-
-    input:focus, select:focus {
-      border-color: #01768b;
-      box-shadow: 0 0 4px rgba(1,118,139,0.3);
-    }
-
-    .input-row {
+    .input-group {
       display: flex;
-      gap: 15px;
-    }
-
-    .input-row .form-group {
-      flex: 1;
-    }
-
-    .doc-input {
-      display: flex;
-      gap: 10px;
       align-items: center;
     }
-
-    .doc-input input {
+    .input-group input {
       flex: 1;
     }
-
-    .btn-lupa {
-      background: #01768b;
-      color: #fff;
-      border: none;
-      border-radius: 50%;
-      width: 42px;
-      height: 42px;
-      cursor: pointer;
-      font-size: 18px;
-      transition: background 0.3s;
-    }
-
-    .btn-lupa:hover {
+    .input-group button {
+      width: auto;
       background: #0c477e;
+      color: white;
+      border: none;
+      margin-left: 5px;
+      cursor: pointer;
+      padding: 8px 12px;
+      border-radius: 6px;
     }
-
-    .resultados {
-      margin-top: 20px;
-      padding: 15px;
-      background: #f1f9ff;
-      border-left: 4px solid #01768b;
-      border-radius: 8px;
-    }
-
-    .plan-detalle {
-      display: none;
-      margin-top: 20px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      overflow: hidden;
-    }
-
-    .plan-columns {
+    .two-columns {
       display: flex;
+      gap: 20px;
     }
-
-    .plan-columns div {
+    .two-columns div {
       flex: 1;
-      padding: 15px;
+      padding: 10px;
+      background: #f9f9f9;
+      border-radius: 6px;
+      border: 1px solid #ddd;
     }
-
-    .plan-columns div:nth-child(1) {
-      background: #fbf32f20;
-      border-right: 1px solid #ddd;
+    .btn-container {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
     }
-
-    .plan-columns div:nth-child(2) {
-      background: #fff;
-    }
-
-    /* Botón de envío final (opcional) */
-    .btn-submit {
-      display: block;
-      margin: 25px auto 0;
-      padding: 12px 25px;
-      background: #0c477e;
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
+    .btn-container button {
+      flex: 1;
+      padding: 10px;
       font-size: 15px;
-      font-weight: bold;
-      transition: background 0.3s;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
     }
-
-    .btn-submit:hover {
+    .btn-save {
       background: #01768b;
+      color: white;
+    }
+    .btn-clear {
+      background: #fbf32f;
+      color: #0c477e;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
-  <h1><b>Migraciones y Cancelaciones</b></h1>
-  <p class="intro">
-    Te saluda (Nombre y apellido del agente) del área de Migraciones y Cancelaciones. <br>
-    Por favor, me confirma su:
-  </p>
+  <header>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Bitel_logo.png" alt="Bitel Logo">
+    <h1>Migraciones y Cancelaciones</h1>
+  </header>
 
-  <div class="form-container">
+  <div class="container">
+    <p><strong>Te saluda (Nombre y apellido del agente) del área de Migraciones y Cancelaciones.</strong>  
+    Por favor, me confirma su:</p>
 
-    <div class="input-row">
-      <div class="form-group">
-        <label>Teléfono entrante</label>
-        <input type="text" maxlength="9" placeholder="9 dígitos">
-      </div>
-      <div class="form-group">
-        <label>Teléfono de solicitud</label>
-        <input type="text" maxlength="9" placeholder="9 dígitos">
-      </div>
+    <label>Teléfono entrante</label>
+    <input type="text" id="telefonoEntrante" maxlength="9">
+
+    <label>Teléfono de solicitud</label>
+    <input type="text" id="telefonoSolicitud" maxlength="9">
+
+    <label>Número de documento</label>
+    <div class="input-group">
+      <input type="text" id="dni" maxlength="8">
+      <button type="button" onclick="buscarDni()">🔍</button>
     </div>
 
-    <div class="form-group">
-      <label>Número de documento</label>
-      <div class="doc-input">
-        <input type="text" id="dni" maxlength="8" placeholder="Ingrese DNI">
-        <button class="btn-lupa" onclick="consultarReniec()">🔍</button>
-      </div>
-    </div>
+    <label>Nombre completo</label>
+    <input type="text" id="nombre">
 
-    <div id="datosReniec" class="resultados" style="display:none;">
-      <div class="form-group">
-        <label>Nombre completo</label>
-        <input type="text" id="nombreCompleto" readonly>
-      </div>
-      <div class="form-group">
-        <label>Fecha de nacimiento</label>
-        <input type="text" id="fechaNacimiento" readonly>
-      </div>
-      <div class="form-group">
-        <label>Departamento - Provincia - Distrito de nacimiento</label>
-        <input type="text" id="ubicacion" readonly>
-      </div>
-    </div>
+    <label>Fecha de nacimiento</label>
+    <input type="date" id="fechaNacimiento">
 
-    <div class="form-group">
-      <label>Motivo de migración</label>
-      <select>
-        <option value="">Seleccione...</option>
-        <option>Opción 1</option>
-        <option>Opción 2</option>
-        <option>Opción 3</option>
-      </select>
-    </div>
+    <label>Departamento - Provincia - Distrito de nacimiento</label>
+    <input type="text" id="ubicacion">
 
-    <div class="form-group">
-      <label>Plan deseado a migrar</label>
-      <select id="plan" onchange="mostrarPlan()">
-        <option value="">Seleccione...</option>
-        <option value="bifri5">Bifri5</option>
-        <option value="ilimitado29">Ilimitado 29.90</option>
-      </select>
-    </div>
+    <label>Motivo de migración</label>
+    <select id="motivo">
+      <option value="">Seleccione...</option>
+      <option value="Opción 1">Opción 1</option>
+      <option value="Opción 2">Opción 2</option>
+      <option value="Opción 3">Opción 3</option>
+    </select>
 
-    <div id="detallePlan" class="plan-detalle">
-      <div class="plan-columns">
-        <div id="detalleCol"></div>
-        <div id="consideracionesCol"></div>
-      </div>
-    </div>
+    <label>Plan deseado a migrar</label>
+    <select id="plan" onchange="mostrarDetalle()">
+      <option value="">Seleccione...</option>
+      <option value="Bifri5">Bifri5</option>
+      <option value="Ilimitado 29.90">Ilimitado 29.90</option>
+    </select>
 
-    <button class="btn-submit">Enviar formulario</button>
+    <div id="detallePlan"></div>
+
+    <div class="btn-container">
+      <button class="btn-save" onclick="guardarDatos()">Guardar</button>
+      <button class="btn-clear" onclick="limpiarFormulario()">Limpiar</button>
+    </div>
   </div>
 
   <script>
-    // Simulación de consulta RENIEC
-    function consultarReniec() {
-      let dni = document.getElementById("dni").value.trim();
-      if(dni.length !== 8) {
-        alert("Ingrese un DNI válido de 8 dígitos.");
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzF-x1tGW3OogOyy8cJZr836QuXAvIULsRHJFNZObVn58f3QNV2ZE5Fb9s7Us_8dmHIlw/exec";
+    const MY_SECRET_TOKEN = "BitelMigracion2025SuperClave"; // Usa la misma en tu Apps Script
+
+    function buscarDni() {
+      let dni = document.getElementById("dni").value;
+      if (dni.length !== 8) {
+        alert("Ingrese un DNI válido (8 dígitos).");
         return;
       }
-
-      // ⚠️ Simulación (reemplazar con fetch a la API real de RENIEC)
-      let datos = {
-        nombre: "Juan Perez Lopez",
-        fecha: "20/09/1995",
-        ubicacion: "Lima - Lima - San Juan de Lurigancho"
-      };
-
-      document.getElementById("nombreCompleto").value = datos.nombre;
-      document.getElementById("fechaNacimiento").value = datos.fecha;
-      document.getElementById("ubicacion").value = datos.ubicacion;
-
-      document.getElementById("datosReniec").style.display = "block";
+      // Simulación de datos
+      document.getElementById("nombre").value = "Juan Perez";
+      document.getElementById("fechaNacimiento").value = "1990-05-20";
+      document.getElementById("ubicacion").value = "Lima - Lima - San Isidro";
     }
 
-    // Mostrar detalle del plan
-    function mostrarPlan() {
+    function mostrarDetalle() {
       let plan = document.getElementById("plan").value;
-      let detalle = document.getElementById("detalleCol");
-      let consideraciones = document.getElementById("consideracionesCol");
-      let contenedor = document.getElementById("detallePlan");
+      let detalleDiv = document.getElementById("detallePlan");
+      detalleDiv.innerHTML = "";
 
-      if(plan === "bifri5") {
-        detalle.innerHTML = "<h3>Detalle de Bifri5</h3><p>Datos y beneficios del plan Bifri5.</p>";
-        consideraciones.innerHTML = "<h3>Consideraciones de Bifri5</h3><p>Condiciones y restricciones del plan Bifri5.</p>";
-        contenedor.style.display = "block";
-      } else if(plan === "ilimitado29") {
-        detalle.innerHTML = "<h3>Detalle de Ilimitado 29.90</h3><p>Datos y beneficios del plan Ilimitado 29.90.</p>";
-        consideraciones.innerHTML = "<h3>Consideraciones de Ilimitado 29.90</h3><p>Condiciones y restricciones del plan Ilimitado 29.90.</p>";
-        contenedor.style.display = "block";
-      } else {
-        contenedor.style.display = "none";
+      if (plan === "Bifri5") {
+        detalleDiv.innerHTML = `
+          <div class="two-columns">
+            <div><strong>Detalle de Bifri5</strong><br>- 5GB de datos<br>- 100 minutos</div>
+            <div><strong>Consideraciones de Bifri5</strong><br>- Válido solo en Perú</div>
+          </div>`;
+      } else if (plan === "Ilimitado 29.90") {
+        detalleDiv.innerHTML = `
+          <div class="two-columns">
+            <div><strong>Detalle de Ilimitado 29.90</strong><br>- Datos ilimitados<br>- Minutos ilimitados</div>
+            <div><strong>Consideraciones de Ilimitado 29.90</strong><br>- Sujeto a política de uso justo</div>
+          </div>`;
       }
+    }
+
+    async function guardarDatos() {
+      const data = {
+        token: MY_SECRET_TOKEN,
+        telefonoEntrante: document.getElementById("telefonoEntrante").value,
+        telefonoSolicitud: document.getElementById("telefonoSolicitud").value,
+        dni: document.getElementById("dni").value,
+        nombre: document.getElementById("nombre").value,
+        fechaNacimiento: document.getElementById("fechaNacimiento").value,
+        ubicacion: document.getElementById("ubicacion").value,
+        motivo: document.getElementById("motivo").value,
+        plan: document.getElementById("plan").value
+      };
+
+      try {
+        let response = await fetch(SCRIPT_URL, {
+          method: "POST",
+          body: JSON.stringify(data)
+        });
+        let result = await response.json();
+        if (result.status === "success") {
+          alert("Datos guardados correctamente.");
+          limpiarFormulario();
+        } else {
+          alert("Error al guardar: " + result.message);
+        }
+      } catch (error) {
+        alert("Error de conexión: " + error.message);
+      }
+    }
+
+    function limpiarFormulario() {
+      document.querySelector("form")?.reset?.();
+      document.getElementById("telefonoEntrante").value = "";
+      document.getElementById("telefonoSolicitud").value = "";
+      document.getElementById("dni").value = "";
+      document.getElementById("nombre").value = "";
+      document.getElementById("fechaNacimiento").value = "";
+      document.getElementById("ubicacion").value = "";
+      document.getElementById("motivo").value = "";
+      document.getElementById("plan").value = "";
+      document.getElementById("detallePlan").innerHTML = "";
     }
   </script>
 </body>
