@@ -14,7 +14,9 @@
       align-items: flex-start;
       min-height: 100vh;
       color: #333;
+      transition: background 0.3s, color 0.3s;
     }
+
     /* Header minimalista */
     header {
       position: fixed;
@@ -34,6 +36,44 @@
       font-size: 24px;
       font-weight: 600;
     }
+
+    /* Switch */
+    .switch {
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    .switch input { display: none; }
+    .slider {
+      width: 50px;
+      height: 25px;
+      background: #ccc;
+      border-radius: 25px;
+      position: relative;
+      cursor: pointer;
+      transition: background 0.3s;
+      display: inline-block;
+    }
+    .slider::before {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      left: 3px;
+      top: 2.5px;
+      background: #fff;
+      border-radius: 50%;
+      transition: transform 0.3s;
+      box-shadow: 0px 2px 6px rgba(0,0,0,0.2);
+    }
+    input:checked + .slider {
+      background: #01768b;
+    }
+    input:checked + .slider::before {
+      transform: translateX(24px);
+    }
+
     .container {
       width: 95%;
       max-width: 800px;
@@ -43,18 +83,19 @@
       border-radius: 14px;
       box-shadow: 0px 8px 20px rgba(0,0,0,0.08);
       animation: fadeIn 0.6s ease-in-out;
+      transition: background 0.3s, color 0.3s;
     }
     .intro {
       text-align: center;
-      color: #0c477e;
+      color: #333; /* negro */
       margin-bottom: 35px;
       font-size: 16px;
       font-weight: 500;
       line-height: 1.5em;
     }
     .intro span {
-      color: #01768b;
-      font-weight: 600;
+      color: #01768b; /* verde del título */
+      font-weight: 500;
     }
     .form-group {
       display: flex;
@@ -73,6 +114,7 @@
       margin-bottom: 6px;
       color: #0c477e;
       font-size: 14px;
+      transition: color 0.3s;
     }
     input, select {
       padding: 12px;
@@ -82,6 +124,7 @@
       font-size: 15px;
       transition: all 0.2s ease-in-out;
       background: #fdfdfd;
+      color: #333;
     }
     input:focus, select:focus {
       border-color: #01768b;
@@ -94,9 +137,7 @@
       align-items: center;
       gap: 10px;
     }
-    .dni-group input {
-      flex: 1;
-    }
+    .dni-group input { flex: 1; }
     .dni-group button {
       background: #01768b;
       color: #fff;
@@ -159,6 +200,35 @@
       color: #01768b;
       animation: fadeIn 0.5s ease-in-out;
     }
+
+    /* Modo oscuro */
+    body.dark-mode {
+      background: #1e1f23;
+      color: #e6e6e6;
+    }
+    body.dark-mode header {
+      background: #2a2b31;
+      border-bottom: 3px solid #fbf32f;
+      box-shadow: 0px 2px 8px rgba(0,0,0,0.3);
+    }
+    body.dark-mode .container {
+      background: #2a2b31;
+      box-shadow: 0px 8px 20px rgba(0,0,0,0.4);
+    }
+    body.dark-mode .intro { color: #e6e6e6; }
+    body.dark-mode .intro span { color: #01768b; }
+    body.dark-mode label { color: #fbf32f; }
+    body.dark-mode input, body.dark-mode select {
+      background: #1e1f23;
+      border: 1px solid #444;
+      color: #fff;
+    }
+    body.dark-mode .autofill, body.dark-mode .plan-details {
+      background: #1e1f23;
+      border-left: 4px solid #fbf32f;
+    }
+    body.dark-mode #mensaje { color: #fbf32f; }
+
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
@@ -166,9 +236,13 @@
   </style>
 </head>
 <body>
-  <!-- Header -->
+  <!-- Header con toggle -->
   <header>
     <h1>Migraciones y Cancelaciones</h1>
+    <label class="switch">
+      <input type="checkbox" id="modeToggle">
+      <span class="slider"></span>
+    </label>
   </header>
 
   <div class="container">
@@ -177,6 +251,7 @@
       Por favor, me confirma su:
     </p>
 
+    <!-- Formulario -->
     <form id="miFormulario">
       <div class="form-row">
         <div class="form-group">
@@ -250,6 +325,12 @@
   <script>
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx7YIQehgfBlQ3-uW8hHjBFceLiRyv0_O1BcaVGc7Ga8ge_BNUqYM9WT7owlv5sLfGsiQ/exec";
     const MY_SECRET_TOKEN = "BitelMigracion2025SuperClave";
+
+    // Toggle de modo
+    const toggle = document.getElementById("modeToggle");
+    toggle.addEventListener("change", () => {
+      document.body.classList.toggle("dark-mode", toggle.checked);
+    });
 
     function buscarDNI() {
       const dni = document.getElementById("dni").value.trim();
