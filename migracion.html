@@ -381,17 +381,27 @@
           method: "POST",
           body: data
         });
-        const result = await resp.json();
+
+        const raw = await resp.text();
+        let result = {};
+        try {
+          result = JSON.parse(raw);
+        } catch (e) {
+          console.error("Respuesta no es JSON:", raw);
+        }
+
         if (result.result === "success") {
           const codigo = result.codigo ? result.codigo : "Código no recibido";
-          document.getElementById("mensaje").textContent = 
+          document.getElementById("mensaje").textContent =
             `✅ Datos guardados correctamente. Código de solicitud: ${codigo}`;
           limpiar(false);
         } else {
-          document.getElementById("mensaje").textContent = "❌ Error al guardar: " + result.message;
+          document.getElementById("mensaje").textContent =
+            "❌ Error al guardar: " + (result.message || "Respuesta inesperada");
         }
       } catch (err) {
-        document.getElementById("mensaje").textContent = "❌ Error de conexión: " + err.message;
+        document.getElementById("mensaje").textContent =
+          "❌ Error de conexión: " + err.message;
       }
     }
 
