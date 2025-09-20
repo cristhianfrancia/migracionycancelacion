@@ -251,19 +251,23 @@ async function guardar(){
     let result={};
     try{result=JSON.parse(raw);}catch(e){console.error("No JSON:",raw);}
     
-    if(result.result==="success"){
-      const codigo=result.codigo||"Código no recibido";
-      document.getElementById("mensaje").innerHTML=`✅ Datos guardados correctamente.<br><span class="codigo">🔐 Código de solicitud: ${codigo}</span>`;
-      document.getElementById("speech").style.display="block";
-      document.getElementById("speech").innerHTML = `
-        <h3>🎤 Mensaje de confirmación</h3>
-        <p>Hola <span class="green">${document.getElementById("nombre").value}</span>, su solicitud ha sido registrada exitosamente.</p>
-        <p>Usuario de agente: <span class="green">${usuarioAgente}</span></p>
-        <p>ID usado: <span class="green">${idEntrante || idSaliente}</span></p>
-        <p>Teléfono de contacto: <span class="green">${telefonoSolicitud}</span></p>
-        <p>Plan: <span class="green">${plan}</span> - Motivo: <span class="green">${motivo}</span></p>`;
-      limpiar(false);
-    } else {
+if(result.result==="success"){
+  const codigo=result.codigo||"Código no recibido";
+  const telefonoSolicitudVal = telefonoSolicitud;
+  const planVal = plan;
+
+  document.getElementById("mensaje").innerHTML=`✅ Datos guardados correctamente.<br><span class="codigo">🔐 Código de solicitud: ${codigo}</span>`;
+  
+  document.getElementById("speech").style.display="block";
+  document.getElementById("speech").innerHTML = `
+    <h3>🗣️ Mensaje de confirmación</h3>
+    <p>Agente: “Se ha gestionado la migración de su línea <span class="green">${telefonoSolicitudVal}</span> al plan <span class="green">${planVal}</span>. El cambio se realizará en un máximo de 24 horas. Cuando pierda señal, reinicie su equipo y haga una llamada para activar el servicio. Recibirá el código de solicitud por SMS o email.</p>
+    <p>El código de solicitud es <span class="green">${codigo}</span> y lo recibirá por SMS y/o email.</p>
+    <p>“Eso sería todo de mi parte, gracias por comunicarse. En breve recibirá una encuesta por SMS para calificar mi atención. Que tenga un excelente día.”</p>
+  `;
+  
+  limpiar(false);
+} else {
       document.getElementById("mensaje").textContent="❌ Error al guardar: "+(result.message||"Respuesta inesperada");
     }
   } catch(err){
