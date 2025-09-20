@@ -21,7 +21,7 @@
       border-radius: 14px;
       box-shadow: 0px 6px 14px rgba(0,0,0,0.1);
       width: 100%;
-      max-width: 800px; /* 👉 más ancho */
+      max-width: 800px;
     }
     h1 {
       text-align: center;
@@ -31,14 +31,14 @@
     }
     p {
       text-align: center;
-      color: #0c477e; /* azulito */
-      font-weight: 500;
+      color: #000; /* negro */
+      font-weight: normal;
       margin-bottom: 25px;
       font-size: 15px;
     }
     p span {
       color: #01768b; /* verdecito para el nombre */
-      font-weight: 600;
+      font-weight: normal;
     }
     label {
       display: block;
@@ -60,7 +60,6 @@
       border-color: #01768b;
       background: #f8ffff;
     }
-    /* check verde al estar correctos */
     input.valid, select.valid {
       border-color: #4caf50;
       background: #f1fff1 url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="%234caf50" viewBox="0 0 24 24"><path d="M20.285 6.709l-11.285 11.291-5.285-5.291 1.414-1.414 3.871 3.877 9.871-9.877z"/></svg>') no-repeat right 10px center;
@@ -109,7 +108,7 @@
     }
     .plan-details .row {
       display: grid;
-      grid-template-columns: 1fr 1fr; /* 👉 dos columnas */
+      grid-template-columns: 1fr 1fr;
       gap: 20px;
     }
     .plan-details .col {
@@ -132,20 +131,11 @@
       font-weight: 500;
       transition: 0.3s;
       font-size: 15px;
-    }
-    .guardar {
       background: #01768b;
       color: white;
     }
-    .guardar:hover {
+    .buttons button:hover {
       background: #0c477e;
-    }
-    .limpiar {
-      background: #fbf32f;
-      color: #333;
-    }
-    .limpiar:hover {
-      background: #f0e600;
     }
     #mensaje {
       margin-top: 25px;
@@ -224,8 +214,8 @@
       </div>
 
       <div class="buttons">
-        <button type="button" class="guardar" onclick="guardar()">Guardar</button>
-        <button type="button" class="limpiar" onclick="limpiar()">Limpiar</button>
+        <button type="button" onclick="guardar()">Guardar</button>
+        <button type="button" onclick="limpiar()">Limpiar</button>
       </div>
     </form>
     <div id="mensaje"></div>
