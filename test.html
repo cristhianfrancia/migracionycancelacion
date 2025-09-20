@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Prueba de conexión</title>
+</head>
+<body style="font-family:Arial; background:#F4F9FB; text-align:center; padding:50px;">
+
+  <h2>🔌 Test de conexión con Google Apps Script</h2>
+  <p>Presiona el botón y revisa si llega a tu hoja.</p>
+
+  <button onclick="probarConexion()" style="padding:10px 20px; background:#01768b; color:#fff; border:none; border-radius:6px; cursor:pointer;">
+    Enviar prueba
+  </button>
+
+  <pre id="resultado" style="margin-top:20px; background:#fff; padding:10px; border-radius:6px; max-width:500px; margin:auto;"></pre>
+
+  <script>
+    // URL de tu Apps Script desplegado como Web App
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx7YIQehgfBlQ3-uW8hHjBFceLiRyv0_O1BcaVGc7Ga8ge_BNUqYM9WT7owlv5sLfGsiQ/exec";
+    // Token de seguridad (igual al Apps Script)
+    const MY_SECRET_TOKEN = "BitelMigracion2025SuperClave";
+
+    async function probarConexion() {
+      const data = {
+        token: MY_SECRET_TOKEN,
+        telefonoEntrante: "999999999",
+        telefonoSolicitud: "888888888",
+        dni: "12345678",
+        nombre: "Prueba Conexion",
+        fechaNacimiento: "01/01/2000",
+        ubicacion: "Lima - Lima - San Isidro",
+        motivo: "Opción 1",
+        plan: "Bifri5"
+      };
+
+      try {
+        const resp = await fetch(SCRIPT_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        });
+        const result = await resp.json();
+        document.getElementById("resultado").textContent = JSON.stringify(result, null, 2);
+      } catch (err) {
+        document.getElementById("resultado").textContent = "❌ Error: " + err.message;
+      }
+    }
+  </script>
+
+</body>
+</html>
