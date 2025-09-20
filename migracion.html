@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>Migraciones y Cancelaciones</title>
   <style>
     body {
@@ -21,24 +21,35 @@
       border-radius: 14px;
       box-shadow: 0px 6px 14px rgba(0,0,0,0.1);
       width: 100%;
-      max-width: 800px;
+      max-width: 900px;
     }
     h1 {
       text-align: center;
       color: #01768b;
-      margin-bottom: 15px;
-      font-size: 26px;
+      margin-bottom: 20px;
+      font-size: 28px;
     }
-    p {
-      text-align: center;
-      color: #000; /* negro */
-      font-weight: normal;
+    details {
       margin-bottom: 25px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 10px 15px;
+      background: #fafafa;
+    }
+    details summary {
+      font-weight: bold;
+      cursor: pointer;
+      color: #0c477e;
+      font-size: 16px;
+    }
+    details p {
+      margin: 10px 0;
       font-size: 15px;
     }
-    p span {
-      color: #01768b; /* verdecito para el nombre */
-      font-weight: normal;
+    h2 {
+      color:#0c477e;
+      font-size:20px;
+      margin-top: 20px;
     }
     label {
       display: block;
@@ -49,21 +60,15 @@
     }
     input, select {
       width: 100%;
-      padding: 11px;
+      padding: 10px;
       border: 1.5px solid #ccc;
       border-radius: 6px;
       font-size: 15px;
       outline: none;
-      transition: border 0.3s, background 0.3s;
     }
     input:focus, select:focus {
       border-color: #01768b;
       background: #f8ffff;
-    }
-    input.valid, select.valid {
-      border-color: #4caf50;
-      background: #f1fff1 url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="%234caf50" viewBox="0 0 24 24"><path d="M20.285 6.709l-11.285 11.291-5.285-5.291 1.414-1.414 3.871 3.877 9.871-9.877z"/></svg>') no-repeat right 10px center;
-      background-size: 18px;
     }
     .input-row {
       display: flex;
@@ -76,9 +81,7 @@
       display: flex;
       gap: 10px;
     }
-    .dni-container input {
-      flex: 1;
-    }
+    .dni-container input { flex: 1; }
     .dni-container button {
       padding: 10px;
       background: #01768b;
@@ -86,37 +89,8 @@
       border-radius: 6px;
       color: white;
       cursor: pointer;
-      transition: 0.3s;
     }
-    .dni-container button:hover {
-      background: #0c477e;
-    }
-    .plan-details {
-      display: none;
-      margin-top: 20px;
-      padding: 20px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      background: #fafafa;
-    }
-    .plan-details h3 {
-      margin-top: 0;
-      color: #01768b;
-      font-size: 16px;
-      border-bottom: 1px solid #eee;
-      padding-bottom: 6px;
-    }
-    .plan-details .row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-    }
-    .plan-details .col {
-      padding: 10px;
-      background: #fff;
-      border-radius: 6px;
-      box-shadow: 0px 2px 6px rgba(0,0,0,0.05);
-    }
+    .dni-container button:hover { background: #0c477e; }
     .buttons {
       margin-top: 25px;
       display: flex;
@@ -134,31 +108,132 @@
       background: #01768b;
       color: white;
     }
-    .buttons button:hover {
-      background: #0c477e;
-    }
+    .buttons button:hover { background: #0c477e; }
     #mensaje {
       margin-top: 25px;
       text-align: center;
       font-size: 15px;
       font-weight: 500;
     }
-    #mensaje .codigo {
-      display: block;
-      margin-top: 8px;
-      color: #c62828;
-      font-weight: 600;
+    #speech {
+      margin-top: 25px;
+      padding: 15px;
+      border: 1px dashed #01768b;
+      border-radius: 8px;
+      background: #fdfdfd;
+      display: none;
+    }
+    #speech .green { color: #01768b; font-weight: bold; }
+
+    /* Modal confirmación */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      justify-content: center;
+      align-items: center;
+    }
+    .modal.show { display: flex; }
+    .modal-content {
+      background: #fff;
+      padding: 25px;
+      border-radius: 12px;
+      text-align: center;
+      max-width: 400px;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.2);
+    }
+    .modal-content h2 { color: #0c477e; margin-bottom: 15px; }
+    .modal-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    .modal-buttons button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+      color: #fff;
+    }
+    .btn-yes { background: #01768b; }
+    .btn-yes:hover { background: #0c477e; }
+    .btn-no { background: #c62828; }
+    .btn-no:hover { background: #a61c1c; }
+
+    /* Plan details animación */
+    .plan-details {
+      margin-top: 20px;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background: #fafafa;
+      opacity: 0;
+      transform: translateY(-10px);
+      max-height: 0;
+      overflow: hidden;
+      transition: all 0.4s ease;
+    }
+    .plan-details.show {
+      opacity: 1;
+      transform: translateY(0);
+      max-height: 600px;
+    }
+    .plan-details .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .plan-details .col {
+      padding: 10px;
+      background: #fff;
+      border-radius: 6px;
+      box-shadow: 0px 2px 6px rgba(0,0,0,0.05);
+    }
+    .plan-details h3 {
+      margin-top: 0;
+      color: #01768b;
+      font-size: 16px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 6px;
     }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>Migraciones y Cancelaciones</h1>
-    <p>
-      Te saluda <span>(Nombre y apellido del agente)</span> del área de Migraciones y Cancelaciones.<br>
-      Por favor, me confirma su:
-    </p>
-    <form id="miFormulario">
+
+    <!-- Sección presentación -->
+    <details>
+      <summary>Presentación:</summary>
+      <p>1. “Hola, te habla [Nombre del asesor] de Bitel. ¿Me brindaría su nombre por favor?"</p>
+      <p>2. (Nombre del cliente), ¿Qué operación va a realizar?</p>
+      <p>3. “El número que llama es el que quiere migrar el que termina en XXX”</p>
+      <p>4. "¿Podrías indicarme el motivo de la migración de este número y a qué plan deseas cambiarte?"</p>
+    </details>
+
+    <!-- Sección llenado de datos -->
+    <h2>Llenado de datos</h2>
+    <form id="miFormulario" onsubmit="return false;">
+      <div class="input-row">
+        <div>
+          <label for="usuarioAgente">Usuario de agente</label>
+          <input type="text" id="usuarioAgente" placeholder="cpc_xxxx_vtp" style="text-transform: lowercase;">
+        </div>
+        <div>
+          <label for="idEntrante">ID de llamada entrante</label>
+          <input type="text" id="idEntrante" placeholder="$$__&&">
+        </div>
+        <div>
+          <label for="idSaliente">ID de llamada saliente</label>
+          <input type="text" id="idSaliente" placeholder="$$__&&">
+        </div>
+      </div>
+
       <div class="input-row">
         <div>
           <label for="telefonoEntrante">Teléfono entrante</label>
@@ -200,6 +275,7 @@
         <option value="Ilimitado 29.90">Ilimitado 29.90</option>
       </select>
 
+      <!-- Detalles/consideraciones -->
       <div class="plan-details" id="planDetails">
         <div class="row">
           <div class="col">
@@ -214,109 +290,134 @@
       </div>
 
       <div class="buttons">
-        <button type="button" onclick="guardar()">Guardar</button>
+        <button type="button" onclick="abrirConfirmacion()">Guardar</button>
         <button type="button" onclick="limpiar()">Limpiar</button>
       </div>
     </form>
+
     <div id="mensaje"></div>
+    <div id="speech"></div>
   </div>
 
-  <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx7YIQehgfBlQ3-uW8hHjBFceLiRyv0_O1BcaVGc7Ga8ge_BNUqYM9WT7owlv5sLfGsiQ/exec";
-    const MY_SECRET_TOKEN = "BitelMigracion2025SuperClave";
+  <!-- Modal confirmación -->
+  <div id="confirmModal" class="modal">
+    <div class="modal-content">
+      <h2>⚠️ Confirmación</h2>
+      <p>¿Cliente está de acuerdo en generar la migración?</p>
+      <div class="modal-buttons">
+        <button class="btn-yes" onclick="guardar()">Sí</button>
+        <button class="btn-no" onclick="cerrarModal()">No</button>
+      </div>
+    </div>
+  </div>
 
-    function buscarDNI() {
-      const dni = document.getElementById("dni").value.trim();
-      if (dni.length !== 8) {
-        alert("Ingrese un DNI válido de 8 dígitos");
-        return;
-      }
-      document.getElementById("nombre").value = "Juan Perez";
-      document.getElementById("fechaNacimiento").value = "15/08/1990";
-      document.getElementById("ubicacion").value = "Lima - Lima - San Isidro";
-      document.getElementById("autofill").style.display = "block";
+<script>
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx7YIQehgfBlQ3-uW8hHjBFceLiRyv0_O1BcaVGc7Ga8ge_BNUqYM9WT7owlv5sLfGsiQ/exec";
+  const MY_SECRET_TOKEN = "BitelMigracion2025SuperClave";
+
+  function buscarDNI() {
+    const dni = document.getElementById("dni").value.trim();
+    if (dni.length !== 8) { alert("Ingrese un DNI válido de 8 dígitos"); return; }
+    // Simulación datos RENIEC
+    document.getElementById("nombre").value = "Juan Perez";
+    document.getElementById("fechaNacimiento").value = "15/08/1990";
+    document.getElementById("ubicacion").value = "Lima - Lima - San Isidro";
+    document.getElementById("autofill").style.display = "block";
+  }
+
+  function mostrarPlan() {
+    const plan = document.getElementById("plan").value;
+    const detalle = document.getElementById("detalle");
+    const consideraciones = document.getElementById("consideraciones");
+    const planDetails = document.getElementById("planDetails");
+
+    if (plan === "Bifri5") {
+      detalle.innerHTML = `
+        <ul><li>5GB de datos</li><li>Redes sociales libres</li><li>30 minutos a todo operador</li></ul>`;
+      consideraciones.innerHTML = `
+        <ul><li>Vigencia 30 días</li><li>No acumulable</li><li>Recarga mínima S/5</li></ul>`;
+      planDetails.classList.add("show");
+    } else if (plan === "Ilimitado 29.90") {
+      detalle.innerHTML = `
+        <ul><li>Llamadas ilimitadas a todo operador</li><li>10GB de alta velocidad</li><li>WhatsApp ilimitado</li></ul>`;
+      consideraciones.innerHTML = `
+        <ul><li>Velocidad reducida después de 10GB</li><li>No incluye roaming</li><li>Costo fijo mensual S/29.90</li></ul>`;
+      planDetails.classList.add("show");
+    } else {
+      planDetails.classList.remove("show");
+    }
+  }
+
+  function abrirConfirmacion() { document.getElementById("confirmModal").classList.add("show"); }
+  function cerrarModal() { document.getElementById("confirmModal").classList.remove("show"); }
+
+  async function guardar() {
+    cerrarModal();
+    const usuarioAgente = document.getElementById("usuarioAgente").value.trim();
+    const idEntrante = document.getElementById("idEntrante").value.trim() || "-";
+    const idSaliente = document.getElementById("idSaliente").value.trim() || "-";
+    const telefonoEntrante = document.getElementById("telefonoEntrante").value.trim();
+    const telefonoSolicitud = document.getElementById("telefonoSolicitud").value.trim();
+    const dni = document.getElementById("dni").value.trim();
+    const motivo = document.getElementById("motivo").value;
+    const plan = document.getElementById("plan").value;
+
+    if (!usuarioAgente || !telefonoEntrante || !telefonoSolicitud || !dni || !motivo || !plan) {
+      document.getElementById("mensaje").textContent = "⚠️ Complete todos los campos obligatorios.";
+      return;
     }
 
-    function mostrarPlan() {
-      const plan = document.getElementById("plan").value;
-      const detalle = document.getElementById("detalle");
-      const consideraciones = document.getElementById("consideraciones");
-      const planDetails = document.getElementById("planDetails");
+    const data = new URLSearchParams({
+      token: MY_SECRET_TOKEN,
+      usuarioAgente, idEntrante, idSaliente,
+      telefonoEntrante, telefonoSolicitud,
+      dni,
+      nombre: document.getElementById("nombre").value,
+      fechaNacimiento: document.getElementById("fechaNacimiento").value,
+      ubicacion: document.getElementById("ubicacion").value,
+      motivo, plan
+    });
 
-      if (plan === "Bifri5") {
-        detalle.textContent = "Detalle de Bifri5";
-        consideraciones.textContent = "Consideraciones de Bifri5";
-        planDetails.style.display = "block";
-      } else if (plan === "Ilimitado 29.90") {
-        detalle.textContent = "Detalle de Ilimitado 29.90";
-        consideraciones.textContent = "Consideraciones de Ilimitado 29.90";
-        planDetails.style.display = "block";
+    try {
+      const resp = await fetch(SCRIPT_URL, { method: "POST", body: data });
+      const raw = await resp.text();
+      let result = {};
+      try { result = JSON.parse(raw); } catch(e){ console.error("No JSON:", raw); }
+
+      if (result.result === "success") {
+        const codigo = result.codigo || "Código no recibido";
+        document.getElementById("mensaje").innerHTML =
+          `✅ Datos guardados correctamente.<br><span class="codigo">🔐 Código de solicitud: ${codigo}</span>`;
+
+        let planTexto = plan === "Bifri5" ? "Prepago: Bifri5" : "Control: Ilimitado 29.90";
+        const speech = `
+        🗣️ Agente: “Se ha gestionado la migración de su línea <span class='green'>${telefonoSolicitud}</span> al plan ${planTexto}.
+        El cambio se realizará en un máximo de 24 horas. Cuando pierda señal, reinicie su equipo y haga una llamada para activar el servicio.
+        Recibirá el código de solicitud por SMS o email.<br><br>
+        El código de solicitud es <span class='green'>${codigo}</span> y lo recibirá por SMS y/o email.<br><br>
+        Eso sería todo de mi parte. Gracias por comunicarse. En breve recibirá una encuesta por SMS para calificar mi atención. Que tenga un excelente día.”`;
+        document.getElementById("speech").innerHTML = speech;
+        document.getElementById("speech").style.display = "block";
+
+        limpiar(false);
       } else {
-        planDetails.style.display = "none";
+        document.getElementById("mensaje").textContent =
+          "❌ Error al guardar: " + (result.message || "Respuesta inesperada");
       }
+    } catch (err) {
+      document.getElementById("mensaje").textContent = "❌ Error de conexión: " + err.message;
     }
+  }
 
-    async function guardar() {
-      const telefonoEntrante = document.getElementById("telefonoEntrante");
-      const telefonoSolicitud = document.getElementById("telefonoSolicitud");
-      const dni = document.getElementById("dni");
-      const motivo = document.getElementById("motivo");
-      const plan = document.getElementById("plan");
-
-      [telefonoEntrante, telefonoSolicitud, dni, motivo, plan].forEach(el => el.classList.remove("valid"));
-
-      let valido = true;
-      if (telefonoEntrante.value.trim()) telefonoEntrante.classList.add("valid"); else valido = false;
-      if (telefonoSolicitud.value.trim()) telefonoSolicitud.classList.add("valid"); else valido = false;
-      if (dni.value.trim()) dni.classList.add("valid"); else valido = false;
-      if (motivo.value) motivo.classList.add("valid"); else valido = false;
-      if (plan.value) plan.classList.add("valid"); else valido = false;
-
-      if (!valido) {
-        document.getElementById("mensaje").textContent = "⚠️ Por favor complete todos los campos obligatorios.";
-        return;
-      }
-
-      const data = new URLSearchParams({
-        token: MY_SECRET_TOKEN,
-        telefonoEntrante: telefonoEntrante.value.trim(),
-        telefonoSolicitud: telefonoSolicitud.value.trim(),
-        dni: dni.value.trim(),
-        nombre: document.getElementById("nombre").value,
-        fechaNacimiento: document.getElementById("fechaNacimiento").value,
-        ubicacion: document.getElementById("ubicacion").value,
-        motivo: motivo.value,
-        plan: plan.value
-      });
-
-      try {
-        const resp = await fetch(SCRIPT_URL, { method: "POST", body: data });
-        const raw = await resp.text();
-        let result = {};
-        try { result = JSON.parse(raw); } catch(e){ console.error("No JSON:", raw); }
-
-        if (result.result === "success") {
-          const codigo = result.codigo ? result.codigo : "Código no recibido";
-          document.getElementById("mensaje").innerHTML =
-            `✅ Datos guardados correctamente.<br><span class="codigo">🔐 Código de solicitud: ${codigo}</span>`;
-          limpiar(false);
-        } else {
-          document.getElementById("mensaje").textContent =
-            "❌ Error al guardar: " + (result.message || "Respuesta inesperada");
-        }
-      } catch (err) {
-        document.getElementById("mensaje").textContent = "❌ Error de conexión: " + err.message;
-      }
+  function limpiar(borrarMensaje = true) {
+    document.getElementById("miFormulario").reset();
+    document.getElementById("autofill").style.display = "none";
+    document.getElementById("planDetails").classList.remove("show");
+    if (borrarMensaje) {
+      document.getElementById("mensaje").textContent = "";
+      document.getElementById("speech").style.display = "none";
     }
-
-    function limpiar(borrarMensaje = true) {
-      document.getElementById("miFormulario").reset();
-      document.getElementById("autofill").style.display = "none";
-      document.getElementById("planDetails").style.display = "none";
-      ["telefonoEntrante","telefonoSolicitud","dni","motivo","plan"]
-        .forEach(id => document.getElementById(id).classList.remove("valid"));
-      if (borrarMensaje) document.getElementById("mensaje").textContent = "";
-    }
-  </script>
+  }
+</script>
 </body>
 </html>
