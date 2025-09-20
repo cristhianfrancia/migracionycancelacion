@@ -9,56 +9,66 @@
       font-family: Arial, sans-serif;
       background: #F4F9FB;
       margin: 0;
-      padding: 0;
+      padding: 20px;
       display: flex;
       justify-content: center;
-      align-items: center;
+      align-items: flex-start;
       min-height: 100vh;
     }
     .container {
       background: #fff;
-      padding: 25px 30px;
-      border-radius: 12px;
-      box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
-      width: 95%;
-      max-width: 650px;
+      padding: 30px 40px;
+      border-radius: 14px;
+      box-shadow: 0px 6px 14px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 800px; /* 👉 más ancho */
     }
     h1 {
       text-align: center;
       color: #01768b;
-      margin-bottom: 10px;
+      margin-bottom: 15px;
+      font-size: 26px;
     }
     p {
       text-align: center;
-      color: #0c477e;
+      color: #0c477e; /* azulito */
       font-weight: 500;
-      margin-bottom: 20px;
+      margin-bottom: 25px;
+      font-size: 15px;
     }
     p span {
-      color: #01768b;
+      color: #01768b; /* verdecito para el nombre */
       font-weight: 600;
     }
     label {
       display: block;
-      margin-top: 12px;
-      margin-bottom: 5px;
+      margin-top: 15px;
+      margin-bottom: 6px;
       font-weight: 500;
       color: #333;
     }
     input, select {
       width: 100%;
-      padding: 10px;
-      border: 1px solid #ccc;
+      padding: 11px;
+      border: 1.5px solid #ccc;
       border-radius: 6px;
-      font-size: 14px;
+      font-size: 15px;
+      outline: none;
+      transition: border 0.3s, background 0.3s;
     }
-    input.error, select.error {
-      border-color: #c62828;
-      background: #fdecea;
+    input:focus, select:focus {
+      border-color: #01768b;
+      background: #f8ffff;
+    }
+    /* check verde al estar correctos */
+    input.valid, select.valid {
+      border-color: #4caf50;
+      background: #f1fff1 url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="%234caf50" viewBox="0 0 24 24"><path d="M20.285 6.709l-11.285 11.291-5.285-5.291 1.414-1.414 3.871 3.877 9.871-9.877z"/></svg>') no-repeat right 10px center;
+      background-size: 18px;
     }
     .input-row {
       display: flex;
-      gap: 15px;
+      gap: 20px;
     }
     .input-row > div {
       flex: 1;
@@ -84,30 +94,44 @@
     }
     .plan-details {
       display: none;
-      margin-top: 15px;
-      padding: 15px;
-      border: 1px solid #ccc;
+      margin-top: 20px;
+      padding: 20px;
+      border: 1px solid #ddd;
       border-radius: 8px;
-      background: #fdfdfd;
+      background: #fafafa;
+    }
+    .plan-details h3 {
+      margin-top: 0;
+      color: #01768b;
+      font-size: 16px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 6px;
     }
     .plan-details .row {
-      display: flex;
-      justify-content: space-between;
+      display: grid;
+      grid-template-columns: 1fr 1fr; /* 👉 dos columnas */
       gap: 20px;
     }
+    .plan-details .col {
+      padding: 10px;
+      background: #fff;
+      border-radius: 6px;
+      box-shadow: 0px 2px 6px rgba(0,0,0,0.05);
+    }
     .buttons {
-      margin-top: 20px;
+      margin-top: 25px;
       display: flex;
-      gap: 10px;
+      gap: 12px;
       justify-content: center;
     }
     .buttons button {
-      padding: 10px 20px;
+      padding: 12px 24px;
       border: none;
       border-radius: 6px;
       cursor: pointer;
       font-weight: 500;
       transition: 0.3s;
+      font-size: 15px;
     }
     .guardar {
       background: #01768b;
@@ -124,14 +148,14 @@
       background: #f0e600;
     }
     #mensaje {
-      margin-top: 20px;
+      margin-top: 25px;
       text-align: center;
       font-size: 15px;
       font-weight: 500;
     }
     #mensaje .codigo {
       display: block;
-      margin-top: 5px;
+      margin-top: 8px;
       color: #c62828;
       font-weight: 600;
     }
@@ -188,8 +212,14 @@
 
       <div class="plan-details" id="planDetails">
         <div class="row">
-          <div id="detalle"></div>
-          <div id="consideraciones"></div>
+          <div class="col">
+            <h3>Detalle</h3>
+            <div id="detalle"></div>
+          </div>
+          <div class="col">
+            <h3>Consideraciones</h3>
+            <div id="consideraciones"></div>
+          </div>
         </div>
       </div>
 
@@ -243,16 +273,14 @@
       const motivo = document.getElementById("motivo");
       const plan = document.getElementById("plan");
 
-      // quitar errores previos
-      [telefonoEntrante, telefonoSolicitud, dni, motivo, plan].forEach(el => el.classList.remove("error"));
+      [telefonoEntrante, telefonoSolicitud, dni, motivo, plan].forEach(el => el.classList.remove("valid"));
 
-      // validar obligatorios
       let valido = true;
-      if (!telefonoEntrante.value.trim()) { telefonoEntrante.classList.add("error"); valido = false; }
-      if (!telefonoSolicitud.value.trim()) { telefonoSolicitud.classList.add("error"); valido = false; }
-      if (!dni.value.trim()) { dni.classList.add("error"); valido = false; }
-      if (!motivo.value) { motivo.classList.add("error"); valido = false; }
-      if (!plan.value) { plan.classList.add("error"); valido = false; }
+      if (telefonoEntrante.value.trim()) telefonoEntrante.classList.add("valid"); else valido = false;
+      if (telefonoSolicitud.value.trim()) telefonoSolicitud.classList.add("valid"); else valido = false;
+      if (dni.value.trim()) dni.classList.add("valid"); else valido = false;
+      if (motivo.value) motivo.classList.add("valid"); else valido = false;
+      if (plan.value) plan.classList.add("valid"); else valido = false;
 
       if (!valido) {
         document.getElementById("mensaje").textContent = "⚠️ Por favor complete todos los campos obligatorios.";
@@ -296,7 +324,7 @@
       document.getElementById("autofill").style.display = "none";
       document.getElementById("planDetails").style.display = "none";
       ["telefonoEntrante","telefonoSolicitud","dni","motivo","plan"]
-        .forEach(id => document.getElementById(id).classList.remove("error"));
+        .forEach(id => document.getElementById(id).classList.remove("valid"));
       if (borrarMensaje) document.getElementById("mensaje").textContent = "";
     }
   </script>
