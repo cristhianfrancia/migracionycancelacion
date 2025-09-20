@@ -6,7 +6,7 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #F4F9FB;
+      background: #E9F7FB;
       margin: 0;
       padding: 0;
       display: flex;
@@ -15,44 +15,56 @@
       min-height: 100vh;
     }
     .container {
-      max-width: 900px;
+      width: 95%;
+      max-width: 1000px;
       background: #fff;
-      padding: 30px;
+      padding: 40px 50px;
       margin: 40px auto;
-      border-radius: 10px;
-      box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+      border-radius: 16px;
+      box-shadow: 0px 8px 20px rgba(0,0,0,0.1);
+      animation: fadeIn 0.6s ease-in-out;
     }
     h1 {
       text-align: center;
       color: #01768b;
       margin-bottom: 10px;
+      font-size: 28px;
     }
     .intro {
       text-align: center;
       color: #0c477e;
-      margin-bottom: 30px;
+      margin-bottom: 35px;
+      font-size: 18px;
     }
     .form-group {
       display: flex;
       flex-direction: column;
       margin-bottom: 20px;
+      flex: 1;
     }
     .form-row {
       display: flex;
       gap: 20px;
       justify-content: center;
+      flex-wrap: wrap;
     }
     label {
       font-weight: bold;
-      margin-bottom: 5px;
-      color: #01768b;
+      margin-bottom: 6px;
+      color: #0c477e;
     }
     input, select {
-      padding: 10px;
+      padding: 14px;
       border: 1px solid #ccc;
-      border-radius: 6px;
+      border-radius: 10px;
       width: 100%;
-      font-size: 14px;
+      font-size: 15px;
+      transition: all 0.2s ease-in-out;
+    }
+    input:focus, select:focus {
+      border-color: #01768b;
+      box-shadow: 0px 0px 8px rgba(1,118,139,0.3);
+      outline: none;
     }
     .dni-group {
       display: flex;
@@ -63,56 +75,69 @@
       flex: 1;
     }
     .dni-group button {
-      background: #0c477e;
-      color: #fff;
+      background: #fbf32f;
+      color: #0c477e;
+      font-weight: bold;
       border: none;
-      padding: 8px 12px;
-      border-radius: 6px;
+      padding: 10px 16px;
+      border-radius: 8px;
       cursor: pointer;
+      transition: all 0.3s ease;
     }
-    .autofill {
+    .dni-group button:hover {
+      background: #f0e600;
+      transform: scale(1.05);
+    }
+    .autofill, .plan-details {
       display: none;
       margin-top: 20px;
-      padding: 15px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      background: #F4F9FB;
+      padding: 20px;
+      border: 2px solid #fbf32f;
+      border-radius: 12px;
+      background: #fffbea;
+      animation: fadeIn 0.5s ease-in-out;
     }
     .actions {
       text-align: center;
       margin-top: 30px;
     }
     .actions button {
-      background: #01768b;
+      background: linear-gradient(135deg, #01768b, #0c477e);
       color: #fff;
       border: none;
-      padding: 12px 20px;
-      margin: 0 10px;
-      border-radius: 6px;
+      padding: 14px 26px;
+      margin: 0 12px;
+      border-radius: 10px;
       cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      transition: all 0.3s ease;
     }
     .actions button:hover {
-      background: #0c477e;
-    }
-    .plan-details {
-      display: none;
-      margin-top: 20px;
-      padding: 15px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      background: #F4F9FB;
+      transform: translateY(-2px);
+      box-shadow: 0px 6px 12px rgba(0,0,0,0.2);
     }
     .plan-columns {
       display: flex;
       gap: 20px;
+      flex-wrap: wrap;
     }
     .plan-columns div {
       flex: 1;
+      font-size: 15px;
+      color: #333;
     }
     #mensaje {
       margin-top: 20px;
       text-align: center;
       font-weight: bold;
+      font-size: 16px;
+      color: #01768b;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
