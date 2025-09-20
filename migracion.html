@@ -383,8 +383,9 @@
         });
         const result = await resp.json();
         if (result.result === "success") {
+          const codigo = result.codigo ? result.codigo : "Código no recibido";
           document.getElementById("mensaje").textContent = 
-            `✅ Datos guardados correctamente. Código de solicitud: ${result.codigo}`;
+            `✅ Datos guardados correctamente. Código de solicitud: ${codigo}`;
           limpiar(false);
         } else {
           document.getElementById("mensaje").textContent = "❌ Error al guardar: " + result.message;
