@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Migraciones y Cancelaciones - Bitel Perú</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f9fb;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #01768b;
+      margin-bottom: 10px;
+    }
+
+    p.intro {
+      text-align: center;
+      font-size: 15px;
+      color: #0c477e;
+      margin-bottom: 25px;
+      font-weight: 500;
+    }
+
+    .form-container {
+      max-width: 850px;
+      margin: auto;
+      background: #fff;
+      padding: 25px 35px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      border-top: 6px solid #fbf32f;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 6px;
+      color: #0c477e;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+      outline: none;
+      transition: border 0.3s;
+    }
+
+    input:focus, select:focus {
+      border-color: #01768b;
+      box-shadow: 0 0 4px rgba(1,118,139,0.3);
+    }
+
+    .input-row {
+      display: flex;
+      gap: 15px;
+    }
+
+    .input-row .form-group {
+      flex: 1;
+    }
+
+    .doc-input {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .doc-input input {
+      flex: 1;
+    }
+
+    .btn-lupa {
+      background: #01768b;
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 42px;
+      height: 42px;
+      cursor: pointer;
+      font-size: 18px;
+      transition: background 0.3s;
+    }
+
+    .btn-lupa:hover {
+      background: #0c477e;
+    }
+
+    .resultados {
+      margin-top: 20px;
+      padding: 15px;
+      background: #f1f9ff;
+      border-left: 4px solid #01768b;
+      border-radius: 8px;
+    }
+
+    .plan-detalle {
+      display: none;
+      margin-top: 20px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .plan-columns {
+      display: flex;
+    }
+
+    .plan-columns div {
+      flex: 1;
+      padding: 15px;
+    }
+
+    .plan-columns div:nth-child(1) {
+      background: #fbf32f20;
+      border-right: 1px solid #ddd;
+    }
+
+    .plan-columns div:nth-child(2) {
+      background: #fff;
+    }
+
+    /* Botón de envío final (opcional) */
+    .btn-submit {
+      display: block;
+      margin: 25px auto 0;
+      padding: 12px 25px;
+      background: #0c477e;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+
+    .btn-submit:hover {
+      background: #01768b;
+    }
+  </style>
+</head>
+<body>
+  <h1><b>Migraciones y Cancelaciones</b></h1>
+  <p class="intro">
+    Te saluda (Nombre y apellido del agente) del área de Migraciones y Cancelaciones. <br>
+    Por favor, me confirma su:
+  </p>
+
+  <div class="form-container">
+
+    <div class="input-row">
+      <div class="form-group">
+        <label>Teléfono entrante</label>
+        <input type="text" maxlength="9" placeholder="9 dígitos">
+      </div>
+      <div class="form-group">
+        <label>Teléfono de solicitud</label>
+        <input type="text" maxlength="9" placeholder="9 dígitos">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Número de documento</label>
+      <div class="doc-input">
+        <input type="text" id="dni" maxlength="8" placeholder="Ingrese DNI">
+        <button class="btn-lupa" onclick="consultarReniec()">🔍</button>
+      </div>
+    </div>
+
+    <div id="datosReniec" class="resultados" style="display:none;">
+      <div class="form-group">
+        <label>Nombre completo</label>
+        <input type="text" id="nombreCompleto" readonly>
+      </div>
+      <div class="form-group">
+        <label>Fecha de nacimiento</label>
+        <input type="text" id="fechaNacimiento" readonly>
+      </div>
+      <div class="form-group">
+        <label>Departamento - Provincia - Distrito de nacimiento</label>
+        <input type="text" id="ubicacion" readonly>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Motivo de migración</label>
+      <select>
+        <option value="">Seleccione...</option>
+        <option>Opción 1</option>
+        <option>Opción 2</option>
+        <option>Opción 3</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Plan deseado a migrar</label>
+      <select id="plan" onchange="mostrarPlan()">
+        <option value="">Seleccione...</option>
+        <option value="bifri5">Bifri5</option>
+        <option value="ilimitado29">Ilimitado 29.90</option>
+      </select>
+    </div>
+
+    <div id="detallePlan" class="plan-detalle">
+      <div class="plan-columns">
+        <div id="detalleCol"></div>
+        <div id="consideracionesCol"></div>
+      </div>
+    </div>
+
+    <button class="btn-submit">Enviar formulario</button>
+  </div>
+
+  <script>
+    // Simulación de consulta RENIEC
+    function consultarReniec() {
+      let dni = document.getElementById("dni").value.trim();
+      if(dni.length !== 8) {
+        alert("Ingrese un DNI válido de 8 dígitos.");
+        return;
+      }
+
+      // ⚠️ Simulación (reemplazar con fetch a la API real de RENIEC)
+      let datos = {
+        nombre: "Juan Perez Lopez",
+        fecha: "20/09/1995",
+        ubicacion: "Lima - Lima - San Juan de Lurigancho"
+      };
+
+      document.getElementById("nombreCompleto").value = datos.nombre;
+      document.getElementById("fechaNacimiento").value = datos.fecha;
+      document.getElementById("ubicacion").value = datos.ubicacion;
+
+      document.getElementById("datosReniec").style.display = "block";
+    }
+
+    // Mostrar detalle del plan
+    function mostrarPlan() {
+      let plan = document.getElementById("plan").value;
+      let detalle = document.getElementById("detalleCol");
+      let consideraciones = document.getElementById("consideracionesCol");
+      let contenedor = document.getElementById("detallePlan");
+
+      if(plan === "bifri5") {
+        detalle.innerHTML = "<h3>Detalle de Bifri5</h3><p>Datos y beneficios del plan Bifri5.</p>";
+        consideraciones.innerHTML = "<h3>Consideraciones de Bifri5</h3><p>Condiciones y restricciones del plan Bifri5.</p>";
+        contenedor.style.display = "block";
+      } else if(plan === "ilimitado29") {
+        detalle.innerHTML = "<h3>Detalle de Ilimitado 29.90</h3><p>Datos y beneficios del plan Ilimitado 29.90.</p>";
+        consideraciones.innerHTML = "<h3>Consideraciones de Ilimitado 29.90</h3><p>Condiciones y restricciones del plan Ilimitado 29.90.</p>";
+        contenedor.style.display = "block";
+      } else {
+        contenedor.style.display = "none";
+      }
+    }
+  </script>
+</body>
+</html>
