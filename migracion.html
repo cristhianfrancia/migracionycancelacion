@@ -231,7 +231,7 @@
     }
 
     async function guardar() {
-      const data = {
+      const data = new URLSearchParams({
         token: MY_SECRET_TOKEN,
         telefonoEntrante: document.getElementById("telefonoEntrante").value,
         telefonoSolicitud: document.getElementById("telefonoSolicitud").value,
@@ -241,13 +241,12 @@
         ubicacion: document.getElementById("ubicacion").value,
         motivo: document.getElementById("motivo").value,
         plan: document.getElementById("plan").value
-      };
+      });
 
       try {
         const resp = await fetch(SCRIPT_URL, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data)
+          body: data
         });
         const result = await resp.json();
         if (result.result === "success") {
