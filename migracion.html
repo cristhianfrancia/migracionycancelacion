@@ -22,6 +22,7 @@
     box-shadow: 0px 6px 14px rgba(0,0,0,0.1);
     width: 100%;
     max-width: 900px;
+    box-sizing: border-box;
   }
   h1 {
     text-align: center;
@@ -64,6 +65,7 @@
     flex-direction: column;
     flex: 1;
     min-width: 150px;
+    box-sizing: border-box;
   }
   .input-group label {
     font-size: 13px;
@@ -92,6 +94,7 @@
     gap: 4px;
   }
   .input-with-mark span {
+    font-weight: bold;
     color: #000;
   }
 
@@ -126,6 +129,7 @@
     display: flex;
     gap: 12px;
     justify-content: center;
+    flex-wrap: wrap;
   }
   .buttons button {
     padding: 12px 24px;
@@ -218,12 +222,25 @@
     box-shadow: 0 6px 14px rgba(0,0,0,0.2);
   }
   .modal-content h2 { color: #0c477e; margin-bottom: 15px; }
-  .modal-buttons { display: flex; justify-content: center; gap: 15px; margin-top: 20px; }
+  .modal-buttons { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
   .modal-buttons button { padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; color: #fff; }
   .btn-yes { background: #01768b; }
   .btn-yes:hover { background: #0c477e; }
   .btn-no { background: #c62828; }
   .btn-no:hover { background: #a61c1c; }
+
+  /* Responsive */
+  @media (max-width: 768px){
+    .input-row {
+      flex-direction: column;
+    }
+    .plan-details .row {
+      grid-template-columns: 1fr;
+    }
+    .buttons button, .modal-buttons button {
+      width: 100%;
+    }
+  }
 </style>
 </head>
 <body>
@@ -258,7 +275,6 @@
         <span>_&&</span>
       </div>
     </div>
-
     <div class="input-group">
       <label for="idSaliente">ID de llamada saliente</label>
       <div class="input-with-mark">
@@ -286,7 +302,6 @@
       <label for="telefonoEntrante">Teléfono entrante</label>
       <input type="text" id="telefonoEntrante" maxlength="9" placeholder="9 dígitos">
     </div>
-
     <div class="input-group">
       <label for="telefonoSolicitud">Teléfono de solicitud</label>
       <input type="text" id="telefonoSolicitud" maxlength="9" placeholder="9 dígitos">
@@ -304,7 +319,6 @@
         <option value="Opción 3">Opción 3</option>
       </select>
     </div>
-
     <div class="input-group">
       <label for="plan">Plan deseado a migrar</label>
       <select id="plan" onchange="mostrarPlan()">
@@ -355,10 +369,8 @@
 </form>
 
 <div id="mensaje"></div>
+<div id="speech"></div>
 
-<!-- Speech final -->
-<div id="speech">
-  <h3>Speech final</h3>
 </div>
 
 <!-- Modal -->
@@ -379,7 +391,7 @@ const MY_SECRET_TOKEN = "BitelMigracion2025SuperClave";
 
 function buscarDNI(){
   const dni = document.getElementById("dni").value.trim();
-  if(dni.length!==8){alert("Ingrese un DNI válido de 8 dígitos");return;}
+  if(dni.length!==8){ alert("Ingrese un DNI válido de 8 dígitos"); return; }
   document.getElementById("nombre").value="Juan Perez";
   document.getElementById("fechaNacimiento").value="15/08/1990";
   document.getElementById("ubicacion").value="Lima - Lima - San Isidro";
@@ -387,7 +399,7 @@ function buscarDNI(){
 }
 
 function mostrarPlan(){
-  const plan = document.getElementById("plan").value;
+  const plan=document.getElementById("plan").value;
   const detalle=document.getElementById("detalle");
   const consideraciones=document.getElementById("consideraciones");
   const planDetails=document.getElementById("planDetails");
@@ -435,7 +447,7 @@ async function guardar(){
       const codigo=result.codigo||"Código no recibido";
       document.getElementById("mensaje").innerHTML=`✅ Datos guardados correctamente.<br><span class="codigo">🔐 Código de solicitud: ${codigo}</span>`;
       let planTexto=plan==="Bifri5"?"Prepago: Bifri5":"Control: Ilimitado 29.90";
-      document.getElementById("speech").innerHTML=`<h3>Speech final</h3>🗣️ <span class="blue">Agente:</span> “Se ha gestionado la migración de su línea <span class='green'>${telefonoSolicitud}</span> al plan <span class='green'>${planTexto}</span>. El cambio se realizará en un máximo de 24 horas. Cuando pierda señal, reinicie su equipo y haga una llamada para activar el servicio. Recibirá el código de solicitud por SMS o email.<br><br> El código de solicitud es <span class='green'>${codigo}</span> y lo recibirá por SMS y/o email.<br><br> Eso sería todo de mi parte. Gracias por comunicarse. En breve recibirá una encuesta por SMS para calificar mi atención. Que tenga un excelente día.”`;
+      document.getElementById("speech").innerHTML=`<h3>Speech final</h3>🗣️ <span class="blue">Agente:</span> “Se ha gestionado la migración de su línea <span class='green'>${telefonoSolicitud}</span> al plan ${planTexto}. El cambio se realizará en un máximo de 24 horas. Cuando pierda señal, reinicie su equipo y haga una llamada para activar el servicio. Recibirá el código de solicitud por SMS o email.<br><br> El código de solicitud es <span class='green'>${codigo}</span> y lo recibirá por SMS y/o email.<br><br> Eso sería todo de mi parte. Gracias por comunicarse. En breve recibirá una encuesta por SMS para calificar mi atención. Que tenga un excelente día.”`;
       document.getElementById("speech").style.display="block";
       limpiar(false);
     } else {
