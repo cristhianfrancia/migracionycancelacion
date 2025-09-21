@@ -78,13 +78,14 @@
   <div class="input-row">
     <div class="input-group">
       <label for="usuarioAgente">Usuario de agente</label>
-      <input type="text" name="usuarioAgente" id="usuarioAgente" placeholder="cpc_xxxx_vtp" style="text-transform: lowercase;" required>
+      <input type="text" name="usuarioAgente" id="usuarioAgente" placeholder="cpc_xxxxxx_vtp" style="text-transform: lowercase;" required>
     </div>
+
     <div class="input-group">
       <label for="idEntrante">ID de llamada</label>
       <div class="input-with-mark">
         <span>$$_</span>
-        <input type="text" name="idEntrante" id="idEntrante" placeholder="ID directo">
+        <input type="text" name="idEntrante" id="idEntrante" placeholder="ID directo" required>
         <span>_&&</span>
       </div>
     </div>
@@ -94,7 +95,7 @@
     <div class="input-group">
       <label for="dni">Número de documento de identidad</label>
       <div class="dni-container">
-        <input type="text" name="dni" id="dni" maxlength="8" placeholder="8 dígitos">
+        <input type="number" name="dni" id="dni" required >
         <button type="button" onclick="buscarDNI()">🔍</button>
       </div>
     </div>
@@ -103,11 +104,12 @@
   <div class="input-row">
     <div class="input-group">
       <label for="telefonoEntrante">Teléfono entrante</label>
-      <input type="text" name="telefonoEntrante" id="telefonoEntrante" maxlength="9" placeholder="9 dígitos" required>
+      <input type="number" name="telefonoEntrante" id="telefonoEntrante" maxlength="9" placeholder="9 dígitos" required>
     </div>
+
     <div class="input-group">
       <label for="telefonoSolicitud">Teléfono de solicitud</label>
-      <input type="text" name="telefonoSolicitud" id="telefonoSolicitud" maxlength="9" placeholder="9 dígitos" required>
+      <input type="number" name="telefonoSolicitud" id="telefonoSolicitud" maxlength="9" placeholder="9 dígitos" required>
     </div>
   </div>
 
@@ -191,6 +193,10 @@ formulario.addEventListener("submit", function(e){
 
 btnYes.addEventListener("click", function(){
     modal.classList.remove("show");
+
+btnNo.addEventListener("click", function(){
+    modal.classList.remove("show");
+});
 
     // Agregar símbolos al ID
     const idInput = document.getElementById("idEntrante");
@@ -303,4 +309,3 @@ function mostrarPlan(){
 </script>
 </body>
 </html>
-
