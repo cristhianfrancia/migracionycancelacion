@@ -187,14 +187,52 @@ function mostrarPlan(){
   const planDetails = document.getElementById("planDetails");
 
   if (plan === "Prepago Bifri5") {
-    detalle.innerHTML = `<ul><li>Llamadas y SMS ilimitados a todo destino nacional</li><li>650 MB de libre uso + navegación ilimitada a velocidad reducida</li><li>1.5 GB en alta velocidad para WhatsApp + navegación ilimitada</li><li>1.5 GB para Waze, Mobile Legends, Free Fire</li><li>1 GB para YouTube, TikTok, Viki, América TVGO</li><li>Facebook e Instagram full</li><li>Vigencia del bono: 5 días.</li></ul>`;
-    consideraciones.innerHTML = `<ul><li>Puede desistir en 40 días</li><li>Debe estar al día en sus pagos</li><li>No permite adquirir equipos</li><li>Línea activa y sin bloqueos</li></ul>`;
+    detalle.innerHTML = `
+      <p>Estos beneficios se brindan automáticamente por migrar a prepago, el bono se otorga por única vez y no es necesario que realice una recarga:</p>
+      <ul>
+        <li>Llamadas y SMS ilimitados a todo destino nacional</li>
+        <li>650 MB de libre uso + navegación ilimitada a velocidad reducida</li>
+        <li>1.5 GB en alta velocidad para WhatsApp + navegación ilimitada a velocidad reducida</li>
+        <li>1.5 GB en alta velocidad para: Waze, Mobile Legends, Garena Free Fire</li>
+        <li>1 GB en alta velocidad para: YouTube, TikTok, Viki, América TVGO</li>
+        <li>Facebook e Instagram (versión full)</li>
+        <li>Vigencia del bono: 5 días.</li>
+      </ul>
+      <p><strong>¿Estaría de acuerdo en realizar la migración al plan prepago Bifri5?</strong></p>
+    `;
+    consideraciones.innerHTML = `
+<p>Sr. [Nombre del cliente], la migración es gratuita, mantiene su chip y se ejecuta en un máximo de 24 horas</p>
+<ul>
+        <li>Puede desistir en un plazo de 40 días útiles</li>
+        <li>Debe estar al día en sus pagos, ya que la migración no exime de deudas ni penalidades</li>
+        <li>Este proceso no permite adquirir equipos</li>
+        <li>Su línea debe estar activa y sin bloqueos</li>
+        <li>Conservará sus puntos Bitel no vencidos, pero perderá los beneficios del plan anterior y recibirá los del nuevo</li>
+</ul>
+      <p><strong>¿Está de acuerdo con realizar la migración?</strong></p>
+    `;
     planDetails.classList.add("show");
+
   } else if (plan === "Ilimitado 29.90") {
-    detalle.innerHTML = `<ul><li>Llamadas ilimitadas a todo operador</li><li>10GB de alta velocidad</li><li>WhatsApp ilimitado</li></ul>`;
-    consideraciones.innerHTML = `<ul><li>Velocidad reducida después de 10GB</li><li>No incluye roaming</li><li>Costo mensual S/29.90</li></ul>`;
+    detalle.innerHTML = `
+      <ul>
+        <li>Llamadas ilimitadas a todo operador</li>
+        <li>10GB de alta velocidad</li>
+        <li>WhatsApp ilimitado</li>
+      </ul>
+    `;
+    consideraciones.innerHTML = `
+      <ul>
+        <li>Velocidad reducida después de 10GB</li>
+        <li>No incluye roaming</li>
+        <li>Costo fijo mensual S/29.90</li>
+      </ul>
+    `;
     planDetails.classList.add("show");
-  } else { planDetails.classList.remove("show"); }
+
+  } else {
+    planDetails.classList.remove("show");
+  }
 }
 
 function abrirConfirmacion(){ document.getElementById("confirmModal").classList.add("show"); }
@@ -232,22 +270,31 @@ async function guardar(){
   try{
     const resp = await fetch(SCRIPT_URL, {
       method: "POST",
-      body: JSON.stringify(payload),
-      headers: { "Content-Type": "application/json" }
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
     });
 
     const result = await resp.json();
 
     if(result.result === "success"){
       const codigo = result.codigo || "Código no recibido";
+
       document.getElementById("mensaje").innerHTML = `✅ Datos guardados correctamente.<br><span class="codigo">🔐 Código de solicitud: ${codigo}</span>`;
+
       document.getElementById("speech").style.display = "block";
-      document.getElementById("speech").innerHTML = `<h3>Speech a cliente</h3><p>Estimado cliente, se generó la migración con código <span class="green">${codigo}</span>.</p>`;
+      document.getElementById("speech").innerHTML = `
+        <h3>🗣️ Speech de confirmación:</h3>
+        <p>“Se ha gestionado la migración de su línea <span class="green">${telefonoSolicitud}</span> al plan <span class="green">${plan}</span>. El cambio se realizará en un máximo de 24 horas. Cuando pierda señal, reinicie su equipo y haga una llamada para activar el servicio. Recibirá el código de solicitud por SMS o email.</p>
+        <p>El código de solicitud es <span class="green">${codigo}</span> y lo recibirá por SMS y/o email.</p>
+        <p>“Eso sería todo de mi parte, gracias por comunicarse. En breve recibirá una encuesta por SMS para calificar mi atención. Que tenga un excelente día.”</p>
+      `;
+
+      limpiar(false);
     } else {
-      document.getElementById("mensaje").textContent = `❌ Error: ${result.message}`;
+      document.getElementById("mensaje").textContent = "❌ Error al guardar: " + (result.message || "Respuesta inesperada");
     }
-  }catch(err){
-    document.getElementById("mensaje").textContent = `❌ Error de conexión: ${err}`;
+  } catch(err){
+    document.getElementById("mensaje").textContent = "❌ Error de conexión: " + err.message;
   }
 }
 
