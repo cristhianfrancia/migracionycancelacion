@@ -13,10 +13,15 @@
   details p { margin:10px 0; font-size:15px; }
   h2 { color:#0c477e; font-size:20px; margin-top:20px; }
 
-  /* Inputs y labels uniformes */
-  .input-row { display:flex; gap:15px; flex-wrap:wrap; margin-bottom:20px; }
-  .input-group { display:flex; flex-direction:column; flex:1; min-width:200px; box-sizing:border-box; }
-  .input-group label { font-size:14px; margin-bottom:6px; font-weight:500; color:#333; } /* UNIFORME */
+  /* Inputs y labels */
+  .input-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom:20px;
+  }
+  .input-group { display:flex; flex-direction:column; box-sizing:border-box; }
+  .input-group label { font-size:14px; margin-bottom:6px; font-weight:500; color:#333; }
   input, select { width:100%; padding:10px; border:1.5px solid #ccc; border-radius:8px; font-size:14px; outline:none; transition:0.3s; background:#fff; }
   input:focus, select:focus { border-color:#01768b; background:#f8ffff; }
   .input-with-mark { display:flex; align-items:center; gap:4px; }
@@ -56,10 +61,10 @@
   .btn-yes { background:#01768b; } .btn-yes:hover { background:#0c477e; }
   .btn-no { background:#c62828; } .btn-no:hover { background:#a61c1c; }
 
-  @media (max-width:1024px){ 
-    .input-row { flex-direction:column; } 
-    .plan-details .row { grid-template-columns:1fr; } 
-    .buttons button, .modal-buttons button { width:100%; } 
+  @media (max-width:768px){
+    .input-row { grid-template-columns:1fr; }
+    .plan-details .row { grid-template-columns:1fr; }
+    .buttons button, .modal-buttons button { width:100%; }
   }
 </style>
 </head>
@@ -77,23 +82,22 @@
 
 <h2>Llenado de datos</h2>
 <form id="miFormulario" onsubmit="return false;">
-
-  <!-- FILA UNIFORME: Usuario, ID Entrante, ID Saliente -->
   <div class="input-row">
     <div class="input-group">
       <label for="usuarioAgente">Usuario de agente</label>
       <input type="text" id="usuarioAgente" placeholder="cpc_xxxx_vtp" style="text-transform: lowercase;">
     </div>
+  </div>
 
+  <div class="input-row">
     <div class="input-group">
       <label for="idEntrante">ID de llamada entrante</label>
       <div class="input-with-mark">
         <span>$$_</span>
         <input type="text" id="idEntrante" placeholder="ID directo" oninput="toggleID('entrante')">
-        <span>_&&</san>
+        <span>_&&</span>
       </div>
     </div>
-
     <div class="input-group">
       <label for="idSaliente">ID de llamada saliente</label>
       <div class="input-with-mark">
@@ -114,13 +118,11 @@
     </div>
   </div>
 
-  <!-- TELEFONOS UNIFORMES -->
   <div class="input-row">
     <div class="input-group">
       <label for="telefonoEntrante">Teléfono entrante</label>
       <input type="text" id="telefonoEntrante" maxlength="9" placeholder="9 dígitos">
     </div>
-
     <div class="input-group">
       <label for="telefonoSolicitud">Teléfono de solicitud</label>
       <input type="text" id="telefonoSolicitud" maxlength="9" placeholder="9 dígitos">
@@ -137,7 +139,6 @@
         <option value="Opción 3">Opción 3</option>
       </select>
     </div>
-
     <div class="input-group">
       <label for="plan">Plan deseado a migrar</label>
       <select id="plan" onchange="mostrarPlan()">
@@ -171,8 +172,8 @@
 
 <div id="mensaje"></div>
 <div id="speech"></div>
+</div>
 
-<!-- Modal Confirmación -->
 <div id="confirmModal" class="modal">
   <div class="modal-content">
     <h2>⚠️ Confirmación</h2>
@@ -185,8 +186,7 @@
 </div>
 
 <script>
-// SCRIPT Google Apps
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx7YIQehgfBlQ3-uW8hHjBFceLiRyv0_O1BcaVGc7Ga8ge_BNUqYM9WT7owlv5sLfGsiQ/exec"; 
+const SCRIPT_URL = "TU_WEB_APP_URL_AQUI"; 
 const MY_SECRET_TOKEN = "BitelMigracion2025SuperClave";
 
 function toggleID(tipo){
@@ -274,9 +274,9 @@ if(result.result==="success"){
     <p>El código de solicitud es <span class="green">${codigo}</span> y lo recibirá por SMS y/o email.</p>
     <p>“Eso sería todo de mi parte, gracias por comunicarse. En breve recibirá una encuesta por SMS para calificar mi atención. Que tenga un excelente día.”</p>
   `;
-
-      limpiar(false);
-    } else {
+  
+  limpiar(false);
+} else {
       document.getElementById("mensaje").textContent="❌ Error al guardar: "+(result.message||"Respuesta inesperada");
     }
   } catch(err){
