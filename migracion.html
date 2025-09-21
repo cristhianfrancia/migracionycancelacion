@@ -270,8 +270,8 @@ async function guardar(){
       
       document.getElementById("speech").style.display="block";
       document.getElementById("speech").innerHTML = `
-        <h3>🗣️ Mensaje de confirmación</h3>
-        <p>Agente: “Se ha gestionado la migración de su línea <span class="green">${telefonoSolicitudVal}</span> al plan <span class="green">${planVal}</span>. El cambio se realizará en un máximo de 24 horas. Cuando pierda señal, reinicie su equipo y haga una llamada para activar el servicio. Recibirá el código de solicitud por SMS o email.</p>
+        <h3>🗣️ Speech de confirmación:</h3>
+        <p>“Se ha gestionado la migración de su línea <span class="green">${telefonoSolicitudVal}</span> al plan <span class="green">${planVal}</span>. El cambio se realizará en un máximo de 24 horas. Cuando pierda señal, reinicie su equipo y haga una llamada para activar el servicio. Recibirá el código de solicitud por SMS o email.</p>
         <p>El código de solicitud es <span class="green">${codigo}</span> y lo recibirá por SMS y/o email.</p>
         <p>“Eso sería todo de mi parte, gracias por comunicarse. En breve recibirá una encuesta por SMS para calificar mi atención. Que tenga un excelente día.”</p>
       `;
@@ -298,3 +298,4 @@ function limpiar(full=true){
 </script>
 </body>
 </html>
+
