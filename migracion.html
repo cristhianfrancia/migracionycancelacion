@@ -269,61 +269,64 @@ function cerrarModal(){ document.getElementById("confirmModal").classList.remove
 
 async function guardar(){
   cerrarModal();
-  const usuarioAgente=document.getElementById("usuarioAgente").value.trim();
-  const idEntrante=document.getElementById("idEntrante").value.trim();
-  const telefonoEntrante=document.getElementById("telefonoEntrante").value.trim();
-  const telefonoSolicitud=document.getElementById("telefonoSolicitud").value.trim();
-  const dni=document.getElementById("dni").value.trim();
-  const motivo=document.getElementById("motivo").value;
-  const plan=document.getElementById("plan").value;
-  
-  if(!usuarioAgente||!telefonoEntrante||!telefonoSolicitud||!dni||!motivo||!plan){
-    document.getElementById("mensaje").textContent="⚠️ Complete todos los campos obligatorios.";return;
+  const usuarioAgente = document.getElementById("usuarioAgente").value.trim();
+  const idEntrante = document.getElementById("idEntrante").value.trim();
+  const telefonoEntrante = document.getElementById("telefonoEntrante").value.trim();
+  const telefonoSolicitud = document.getElementById("telefonoSolicitud").value.trim();
+  const dni = document.getElementById("dni").value.trim();
+  const motivo = document.getElementById("motivo").value;
+  const plan = document.getElementById("plan").value;
+
+  if(!usuarioAgente || !telefonoEntrante || !telefonoSolicitud || !dni || !motivo || !plan){
+    document.getElementById("mensaje").textContent = "⚠️ Complete todos los campos obligatorios.";
+    return;
   }
-  
-  const data=new URLSearchParams({
-    token:MY_SECRET_TOKEN,
+
+  const payload = {
+    token: MY_SECRET_TOKEN,
     usuarioAgente,
     idEntrante: idEntrante ? `$$_${idEntrante}_&&` : '',
     telefonoEntrante,
     telefonoSolicitud,
     dni,
-    nombre:document.getElementById("nombre").value,
-    fechaNacimiento:document.getElementById("fechaNacimiento").value,
-    ubicacion:document.getElementById("ubicacion").value,
+    nombre: document.getElementById("nombre").value,
+    fechaNacimiento: document.getElementById("fechaNacimiento").value,
+    ubicacion: document.getElementById("ubicacion").value,
     motivo,
     plan
-  });
+  };
 
   try{
-    const resp=await fetch(SCRIPT_URL,{ method:"POST", headers:{"Content-Type":"application/x-www-form-urlencoded"}, body:data });
-    const raw=await resp.text();
-    let result={};
-    try{result=JSON.parse(raw);}catch(e){console.error("No JSON:",raw);}
-    
-    if(result.result==="success"){
-      const codigo=result.codigo||"Código no recibido";
-      const telefonoSolicitudVal = telefonoSolicitud;
-      const planVal = plan;
+    const resp = await fetch(SCRIPT_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
 
-      document.getElementById("mensaje").innerHTML=`✅ Datos guardados correctamente.<br><span class="codigo">🔐 Código de solicitud: ${codigo}</span>`;
-      
-      document.getElementById("speech").style.display="block";
+    const result = await resp.json();
+
+    if(result.result === "success"){
+      const codigo = result.codigo || "Código no recibido";
+
+      document.getElementById("mensaje").innerHTML = `✅ Datos guardados correctamente.<br><span class="codigo">🔐 Código de solicitud: ${codigo}</span>`;
+
+      document.getElementById("speech").style.display = "block";
       document.getElementById("speech").innerHTML = `
         <h3>🗣️ Speech de confirmación:</h3>
-        <p>“Se ha gestionado la migración de su línea <span class="green">${telefonoSolicitudVal}</span> al plan <span class="green">${planVal}</span>. El cambio se realizará en un máximo de 24 horas. Cuando pierda señal, reinicie su equipo y haga una llamada para activar el servicio.</p>
+        <p>“Se ha gestionado la migración de su línea <span class="green">${telefonoSolicitud}</span> al plan <span class="green">${plan}</span>. El cambio se realizará en un máximo de 24 horas. Cuando pierda señal, reinicie su equipo y haga una llamada para activar el servicio. Recibirá el código de solicitud por SMS o email.</p>
         <p>El código de solicitud es <span class="green">${codigo}</span> y lo recibirá por SMS y/o email.</p>
         <p>“Eso sería todo de mi parte, gracias por comunicarse. En breve recibirá una encuesta por SMS para calificar mi atención. Que tenga un excelente día.”</p>
       `;
-      
+
       limpiar(false);
     } else {
-      document.getElementById("mensaje").textContent="❌ Error al guardar: "+(result.message||"Respuesta inesperada");
+      document.getElementById("mensaje").textContent = "❌ Error al guardar: " + (result.message || "Respuesta inesperada");
     }
   } catch(err){
-    document.getElementById("mensaje").textContent="❌ Error de conexión: "+err.message;
+    document.getElementById("mensaje").textContent = "❌ Error de conexión: " + err.message;
   }
 }
+
 
 function limpiar(full=true){
   if(full){
@@ -338,4 +341,3 @@ function limpiar(full=true){
 </script>
 </body>
 </html>
-
