@@ -13,7 +13,6 @@
   details p { margin:10px 0; font-size:15px; }
   h2 { color:#0c477e; font-size:20px; margin-top:20px; }
 
-  /* Inputs y labels */
   .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
   .input-group { display: flex; flex-direction: column; }
   .input-group label { font-size: 14px; margin-bottom: 5px; font-weight: 500; color: #333; min-height: 18px; }
@@ -22,13 +21,11 @@
   .input-with-mark { display:flex; align-items:center; gap:4px; }
   .input-with-mark span { color:#000; }
 
-  /* DNI */
   .dni-container { display:flex; gap:10px; }
   .dni-container input { flex:1; padding:10px; border:1.5px solid #ccc; border-radius:8px; font-size:14px; }
   .dni-container button { padding:10px 15px; background:#01768b; border:none; border-radius:8px; color:white; cursor:pointer; transition:0.3s; }
   .dni-container button:hover { background:#0c477e; }
 
-  /* Botones */
   .buttons { margin-top:25px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
   .buttons button { padding:12px 24px; border:none; border-radius:8px; cursor:pointer; font-weight:500; transition:0.3s; font-size:15px; background:#01768b; color:white; }
   .buttons button:hover { background:#0c477e; }
@@ -39,14 +36,12 @@
   #speech .green { color:#01768b; font-weight:bold; }
   .blue { color:#0c477e; }
 
-  /* Plan details */
   .plan-details { margin-top:15px; padding:15px; border:1px solid #ccc; border-radius:8px; background:#fafafa; display:none; }
   .plan-details.show { display:block; }
   .plan-details .row { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
-  .plan-details .col { padding:10px; background:#fff; border-radius:6px; box-shadow:0px 2px 6px rgba(0,0,0,0.05); }
+  .plan-details .col { padding:10px; background:#fff; border-radius:6px; box-shadow:0 2px 6px rgba(0,0,0,0.05); }
   .plan-details h3 { margin-top:0; color:#01768b; font-size:16px; border-bottom:1px solid #eee; padding-bottom:6px; }
 
-  /* Modal */
   .modal { display:none; position:fixed; z-index:1000; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); justify-content:center; align-items:center; }
   .modal.show { display:flex; }
   .modal-content { background:#fff; padding:25px; border-radius:12px; text-align:center; max-width:400px; box-shadow:0 6px 14px rgba(0,0,0,0.2); }
@@ -167,7 +162,7 @@
 </div>
 
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzq3MWR3rI5ZkLNlkwOs6PuHNx9ipVRpeesOmS2XbtE7olSWHfO-V757wQ7tLJpsvHlbA/exec"; 
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzq3MWR3rI5ZkLNlkwOs6PuHNx9ipVRpeesOmS2XbtE7olSWHfO-V757wQ7tLJpsvHlbA/exec";
 const MY_SECRET_TOKEN = "BitelMigracion2025SuperClave";
 
 // === Funciones ===
@@ -268,13 +263,14 @@ async function guardar(){
   };
 
   try{
-    const resp = await fetch(SCRIPT_URL, {
+    const resp = await fetch(`${SCRIPT_URL}?callback=callback`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload)
     });
 
-    const result = await resp.json();
+    const text = await resp.text();
+    const result = JSON.parse(text.replace(/^callback\((.*)\)$/, '$1'));
 
     if(result.result === "success"){
       const codigo = result.codigo || "Código no recibido";
@@ -303,9 +299,14 @@ function limpiar(full=true){
     document.getElementById("miFormulario").reset();
     document.getElementById("autofill").style.display="none";
     document.getElementById("planDetails").classList.remove("show");
-    document.getElementById("mensaje").textContent="";
     document.getElementById("speech").style.display="none";
-    document.getElementById("speech").innerHTML="";
+    document.getElementById("mensaje").textContent="";
+  } else {
+    document.getElementById("idEntrante").value="";
+    document.getElementById("telefonoEntrante").value="";
+    document.getElementById("telefonoSolicitud").value="";
+    document.getElementById("motivo").value="";
+    document.getElementById("plan").value="";
   }
 }
 </script>
