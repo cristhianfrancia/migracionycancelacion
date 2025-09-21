@@ -15,12 +15,12 @@
 
   /* Inputs y labels uniformes */
   .input-row { display:flex; gap:15px; flex-wrap:wrap; margin-bottom:20px; }
-  .input-group { display:flex; flex-direction:column; flex:1; min-width:180px; box-sizing:border-box; }
-  .input-group label { font-size:12px; margin-bottom:4px; font-weight:400; color:#333; }
+  .input-group { display:flex; flex-direction:column; flex:1; min-width:200px; box-sizing:border-box; }
+  .input-group label { font-size:14px; margin-bottom:6px; font-weight:500; color:#333; } /* UNIFORME */
   input, select { width:100%; padding:10px; border:1.5px solid #ccc; border-radius:8px; font-size:14px; outline:none; transition:0.3s; background:#fff; }
   input:focus, select:focus { border-color:#01768b; background:#f8ffff; }
   .input-with-mark { display:flex; align-items:center; gap:4px; }
-  .input-with-mark span { color:#000; }
+  .input-with-mark span { font-weight:bold; color:#000; }
 
   /* DNI */
   .dni-container { display:flex; gap:10px; }
@@ -90,7 +90,7 @@
       <div class="input-with-mark">
         <span>$$_</span>
         <input type="text" id="idEntrante" placeholder="ID directo" oninput="toggleID('entrante')">
-        <span>_&&</span>
+        <span>_&&</san>
       </div>
     </div>
 
@@ -120,6 +120,7 @@
       <label for="telefonoEntrante">Teléfono entrante</label>
       <input type="text" id="telefonoEntrante" maxlength="9" placeholder="9 dígitos">
     </div>
+
     <div class="input-group">
       <label for="telefonoSolicitud">Teléfono de solicitud</label>
       <input type="text" id="telefonoSolicitud" maxlength="9" placeholder="9 dígitos">
@@ -136,6 +137,7 @@
         <option value="Opción 3">Opción 3</option>
       </select>
     </div>
+
     <div class="input-group">
       <label for="plan">Plan deseado a migrar</label>
       <select id="plan" onchange="mostrarPlan()">
