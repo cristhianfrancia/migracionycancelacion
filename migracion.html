@@ -348,18 +348,14 @@ function mostrarMensaje(respuesta){
     const match = respuesta.match(regex);
     const codigo = match ? match[1] : "N/A";
 
-    document.getElementById("mensaje").innerHTML = "✅ Datos guardados correctamente. Código: " + codigo;
-
-    let speech = `
-        <h3>📣 Speech de cierre</h3>
-        <p>✅ <span class="green">Gracias por la espera, se generó tu código de atención:</span> <span class="blue">${codigo}</span></p>
-        <p>✅ <span class="green">Se realizó tu migración al plan:</span> <span class="blue">${plan || 'N/A'}</span></p>
-        <p>✅ <span class="green">Con el número:</span> <span class="blue">${telefonoSolicitud || 'N/A'}</span></p>
-    `;
-    document.getElementById("speech").innerHTML = speech;
+    document.getElementById("mensaje").innerHTML = `✅ Datos guardados correctamente.<br><span class="codigo">🔐 Código de solicitud: ${codigo}</span>`;
     document.getElementById("speech").style.display = "block";
-
-    limpiar();
+    document.getElementById("speech").innerHTML = `
+        <h3>🗣️ Speech de confirmación:</h3>
+        <p>“Se ha gestionado la migración de su línea <span class="green">${telefonoSolicitud}</span> al plan <span class="green">${plan}</span>. El cambio se realizará en un máximo de 24 horas. Cuando pierda señal, reinicie su equipo y haga una llamada para activar el servicio.</p>
+        <p>El código de solicitud es <span class="green">${codigo}</span> y lo recibirá por SMS y/o email.</p>
+        <p>“Eso sería todo de mi parte, gracias por comunicarse. En breve recibirá una encuesta por SMS para calificar mi atención. Que tenga un excelente día.”</p>
+    `;
 }
 
 function limpiar(){
