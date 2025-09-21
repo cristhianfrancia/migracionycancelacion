@@ -72,7 +72,7 @@
 </details>
 
 <h2>Llenado de datos</h2>
-<form id="miFormulario" action="https://script.google.com/macros/s/AKfycbzq3MWR3rI5ZkLNlkwOs6PuHNx9ipVRpeesOmS2XbtE7olSWHfO-V757wQ7tLJpsvHlbA/exec" method="post" target="hidden_iframe">
+<form id="miFormulario" action="https://script.google.com/macros/s/AKfycbx7YIQehgfBlQ3-uW8hHjBFceLiRyv0_O" method="post" target="hidden_iframe">
   <input type="hidden" name="token" value="BitelMigracion2025SuperClave">
 
   <div class="input-row">
@@ -139,7 +139,7 @@
     </div>
   </div>
 
-  <div class="autofill" id="autofill" style="display:none;">
+  <div id="autofill" style="display:none;">
     <div class="input-row">
       <div class="input-group"><label for="nombre">Nombre completo</label><input type="text" id="nombre" readonly></div>
       <div class="input-group"><label for="fechaNacimiento">Fecha de nacimiento</label><input type="text" id="fechaNacimiento" readonly></div>
@@ -170,7 +170,7 @@
 </div>
 
 <script>
-let telefonoSolicitud, plan, codigo;
+let telefonoSolicitud, plan;
 
 document.getElementById("telefonoSolicitud").addEventListener("input", function(){
     telefonoSolicitud = this.value;
@@ -189,23 +189,37 @@ formulario.addEventListener("submit", function(e){
     modal.classList.add("show");
 });
 
-btnYes.addEventListener("click", function(){
+btnYes.addEventListener("click", async function(){
     modal.classList.remove("show");
-    codigo = "MIG" + Math.floor(Math.random()*90000+10000);
 
-    // Agregar símbolos al ID
+    // Agregar símbolos al ID antes de enviar
     const idInput = document.getElementById("idEntrante");
     idInput.value = `$$_${idInput.value}_&&`;
 
-    formulario.submit();
-    mostrarMensaje();
+    const formData = new FormData(formulario);
+
+    try {
+        const response = await fetch(formulario.action, {
+            method: 'POST',
+            body: formData
+        });
+        const text = await response.text();
+
+        const match = text.match(/Código: (\w+)/);
+        const codigo = match ? match[1] : "MIG-XXXX";
+
+        mostrarMensaje(codigo);
+
+    } catch(err) {
+        alert("❌ Error al guardar los datos: " + err);
+    }
 });
 
 btnNo.addEventListener("click", function(){
     modal.classList.remove("show");
 });
 
-function mostrarMensaje(){
+function mostrarMensaje(codigo){
     document.getElementById("mensaje").innerHTML = `✅ Datos guardados correctamente.<br><span class="codigo">🔐 Código de solicitud: ${codigo}</span>`;
     document.getElementById("speech").style.display = "block";
     document.getElementById("speech").innerHTML = `
@@ -224,6 +238,7 @@ function limpiar(){
     document.getElementById("mensaje").textContent="";
 }
 
+// Función buscar DNI (simulación)
 function buscarDNI(){
   const dni=document.getElementById("dni").value.trim();
   if(dni.length!==8){ alert("Ingrese un DNI válido de 8 dígitos"); return; }
@@ -233,6 +248,7 @@ function buscarDNI(){
   document.getElementById("autofill").style.display="block";
 }
 
+// Función mostrar plan
 function mostrarPlan(){
   const planSelect = document.getElementById("plan").value;
   const detalle = document.getElementById("detalle");
