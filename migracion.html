@@ -177,19 +177,16 @@
 
   <div class="input-row">
     <div class="input-group">
-      <label for="usuarioAgente">Usuario de agente</label>
-      <input type="text" name="usuarioAgente" id="usuarioAgente" placeholder="cpc_xxxxxx_vtp" style="text-transform: lowercase;" required>
+      <label for="telefonoEntrante">Teléfono entrante</label>
+      <input type="number" name="telefonoEntrante" id="telefonoEntrante" placeholder="9 dígitos" required maxlength="9" oninput="this.value=this.value.slice(0,9)">
     </div>
 
     <div class="input-group">
-      <label for="idEntrante">ID de llamada</label>
-      <div class="input-with-mark">
-        <span>$$_</span>
-        <input type="text" name="idEntrante" id="idEntrante" placeholder="ID directo" required>
-        <span>_&&</span>
-      </div>
+      <label for="telefonoSolicitud">Teléfono de solicitud</label>
+      <input type="number" name="telefonoSolicitud" id="telefonoSolicitud" placeholder="9 dígitos" required maxlength="9" oninput="this.value=this.value.slice(0,9)">
     </div>
   </div>
+
 
   <!-- DNI + lupa -->
   <div class="input-row">
@@ -197,7 +194,6 @@
       <label for="dni">Número de documento de identidad</label>
       <div class="dni-container">
         <input type="number" name="dni" id="dni" required >
-        <button type="button" onclick="buscarDNI()">🔍</button>
       </div>
     </div>
   </div>
@@ -210,22 +206,26 @@
       <div class="input-group"><label for="fechaNacimiento">Fecha de nacimiento</label><input type="text" id="fechaNacimiento" readonly></div>
       <div class="input-group"><label for="ubicacion">Departamento - Provincia - Distrito</label><input type="text" id="ubicacion" readonly></div>
     </div>
-    <button type="button" onclick="ocultarDNI()">Ocultar datos ✖</button>
   </div>
+<button type="button" onclick="buscarDNI()">🔍</button>
+<button type="button" onclick="ocultarDNI()">Ocultar datos ✖</button>
+
+<br><br>
 
   <div class="input-row">
     <div class="input-group">
-      <label for="telefonoEntrante">Teléfono entrante</label>
-      <input type="number" name="telefonoEntrante" id="telefonoEntrante" placeholder="9 dígitos" required maxlength="9" oninput="this.value=this.value.slice(0,9)">
+      <label for="usuarioAgente">Usuario de agente</label>
+      <input type="text" name="usuarioAgente" id="usuarioAgente" placeholder="cpc_xxxxxx_vtp" style="text-transform: lowercase;" required>
     </div>
 
     <div class="input-group">
-      <label for="telefonoSolicitud">Teléfono de solicitud</label>
-      <input type="number" name="telefonoSolicitud" id="telefonoSolicitud" placeholder="9 dígitos" required maxlength="9" oninput="this.value=this.value.slice(0,9)">
+      <label for="idEntrante">ID de llamada</label>
+      <div class="input-with-mark">
+        <input type="text" name="idEntrante" id="idEntrante" placeholder="ID directo" required>
+      </div>
     </div>
-  </div>
 
-  <div class="input-row">
+
     <div class="input-group">
       <label for="motivo">Motivo de migración</label>
       <select name="motivo" id="motivo" required>
