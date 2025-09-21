@@ -298,11 +298,15 @@ async function guardar(){
   }
 }
 
-function limpiar(){
-  document.getElementById("miFormulario").reset();
-  document.getElementById("autofill").style.display="none";
-  document.getElementById("mensaje").textContent="";
-  document.getElementById("speech").style.display="none";
+function limpiar(full=true){
+  if(full){
+    document.getElementById("miFormulario").reset();
+    document.getElementById("autofill").style.display="none";
+    document.getElementById("planDetails").classList.remove("show");
+    document.getElementById("mensaje").textContent="";
+    document.getElementById("speech").style.display="none";
+    document.getElementById("speech").innerHTML="";
+  }
 }
 </script>
 </body>
