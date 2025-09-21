@@ -16,7 +16,7 @@
   .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
   .input-group { display: flex; flex-direction: column; }
   .input-group label { font-size: 14px; margin-bottom: 5px; font-weight: 500; color: #333; min-height: 18px; }
-  input, select { width: 100%; padding: 10px; font-size: 14px; border: 1.5px solid #ccc; border-radius: 8px; outline: none; transition: 0.3s; background: #fff; box-sizing: border-box; min-height: 38px; }
+  input, select { width: 100%; padding: 10px; font-size: 14px; border: 1.5px solid #ccc; border-radius: 8px; outline: none; transition: 0.3s; background: #fff; box-sizing:border-box; min-height: 38px; }
   input:focus, select:focus { border-color: #01768b; background: #f8ffff; }
   .input-with-mark { display:flex; align-items:center; gap:4px; }
   .input-with-mark span { color:#000; }
@@ -67,17 +67,19 @@
 </details>
 
 <h2>Llenado de datos</h2>
-<form id="miFormulario" onsubmit="return false;">
+<form id="miFormulario" action="https://script.google.com/macros/s/AKfycbzq3MWR3rI5ZkLNlkwOs6PuHNx9ipVRpeesOmS2XbtE7olSWHfO-V757wQ7tLJpsvHlbA/exec" method="post" target="hidden_iframe">
+  <input type="hidden" name="token" value="BitelMigracion2025SuperClave">
+
   <div class="input-row">
     <div class="input-group">
       <label for="usuarioAgente">Usuario de agente</label>
-      <input type="text" id="usuarioAgente" placeholder="cpc_xxxx_vtp" style="text-transform: lowercase;">
+      <input type="text" name="usuarioAgente" id="usuarioAgente" placeholder="cpc_xxxx_vtp" style="text-transform: lowercase;" required>
     </div>
     <div class="input-group">
       <label for="idEntrante">ID de llamada</label>
       <div class="input-with-mark">
         <span>$$_</span>
-        <input type="text" id="idEntrante" placeholder="ID directo">
+        <input type="text" name="idEntrante" id="idEntrante" placeholder="ID directo">
         <span>_&&</span>
       </div>
     </div>
@@ -87,7 +89,7 @@
     <div class="input-group">
       <label for="dni">Número de documento de identidad</label>
       <div class="dni-container">
-        <input type="text" id="dni" maxlength="8" placeholder="8 dígitos">
+        <input type="text" name="dni" id="dni" maxlength="8" placeholder="8 dígitos">
         <button type="button" onclick="buscarDNI()">🔍</button>
       </div>
     </div>
@@ -96,18 +98,18 @@
   <div class="input-row">
     <div class="input-group">
       <label for="telefonoEntrante">Teléfono entrante</label>
-      <input type="text" id="telefonoEntrante" maxlength="9" placeholder="9 dígitos">
+      <input type="text" name="telefonoEntrante" id="telefonoEntrante" maxlength="9" placeholder="9 dígitos" required>
     </div>
     <div class="input-group">
       <label for="telefonoSolicitud">Teléfono de solicitud</label>
-      <input type="text" id="telefonoSolicitud" maxlength="9" placeholder="9 dígitos">
+      <input type="text" name="telefonoSolicitud" id="telefonoSolicitud" maxlength="9" placeholder="9 dígitos" required>
     </div>
   </div>
 
   <div class="input-row">
     <div class="input-group">
       <label for="motivo">Motivo de migración</label>
-      <select id="motivo">
+      <select name="motivo" id="motivo" required>
         <option value="">Seleccione...</option>
         <option value="Motivo 1">Motivo 1</option>
         <option value="Motivo 2">Motivo 2</option>
@@ -117,7 +119,7 @@
 
     <div class="input-group">
       <label for="plan">Plan deseado a migrar</label>
-      <select id="plan" onchange="mostrarPlan()">
+      <select name="plan" id="plan" onchange="mostrarPlan()" required>
         <option value="">Seleccione:</option>
         <option value="Prepago Bifri5">Prepago Bifri5</option>
         <option value="Ilimitado 29.90">Ilimitado 29.90</option>
@@ -141,30 +143,17 @@
   </div>
 
   <div class="buttons">
-    <button type="button" onclick="abrirConfirmacion()">Guardar</button>
+    <button type="submit">Guardar</button>
     <button type="button" onclick="limpiar()">Limpiar</button>
   </div>
 </form>
 
 <div id="mensaje"></div>
 <div id="speech"></div>
-</div>
 
-<div id="confirmModal" class="modal">
-  <div class="modal-content">
-    <h2>⚠️ Confirmación</h2>
-    <p>¿Cliente está de acuerdo en generar la migración?</p>
-    <div class="modal-buttons">
-      <button class="btn-yes" onclick="guardar()">Sí</button>
-      <button class="btn-no" onclick="cerrarModal()">No</button>
-    </div>
-  </div>
-</div>
+<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="mostrarMensaje()"></iframe>
 
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzq3MWR3rI5ZkLNlkwOs6PuHNx9ipVRpeesOmS2XbtE7olSWHfO-V757wQ7tLJpsvHlbA/exec";
-const MY_SECRET_TOKEN = "BitelMigracion2025SuperClave";
-
 function buscarDNI(){
   const dni=document.getElementById("dni").value.trim();
   if(dni.length!==8){ alert("Ingrese un DNI válido de 8 dígitos"); return; }
@@ -195,14 +184,14 @@ function mostrarPlan(){
       <p><strong>¿Estaría de acuerdo en realizar la migración al plan prepago Bifri5?</strong></p>
     `;
     consideraciones.innerHTML = `
-<p>Sr. [Nombre del cliente], la migración es gratuita, mantiene su chip y se ejecuta en un máximo de 24 horas</p>
-<ul>
+      <p>Sr. [Nombre del cliente], la migración es gratuita, mantiene su chip y se ejecuta en un máximo de 24 horas</p>
+      <ul>
         <li>Puede desistir en un plazo de 40 días útiles</li>
         <li>Debe estar al día en sus pagos, ya que la migración no exime de deudas ni penalidades</li>
         <li>Este proceso no permite adquirir equipos</li>
         <li>Su línea debe estar activa y sin bloqueos</li>
         <li>Conservará sus puntos Bitel no vencidos, pero perderá los beneficios del plan anterior y recibirá los del nuevo</li>
-</ul>
+      </ul>
       <p><strong>¿Está de acuerdo con realizar la migración?</strong></p>
     `;
     planDetails.classList.add("show");
@@ -229,80 +218,24 @@ function mostrarPlan(){
   }
 }
 
-function abrirConfirmacion(){ document.getElementById("confirmModal").classList.add("show"); }
-function cerrarModal(){ document.getElementById("confirmModal").classList.remove("show"); }
+function limpiar(){
+  document.getElementById("miFormulario").reset();
+  document.getElementById("autofill").style.display="none";
+  document.getElementById("planDetails").classList.remove("show");
+  document.getElementById("speech").style.display="none";
+  document.getElementById("mensaje").textContent="";
+}
 
-async function guardar(){
-  cerrarModal();
-  const usuarioAgente = document.getElementById("usuarioAgente").value.trim();
-  const idEntrante = document.getElementById("idEntrante").value.trim();
-  const telefonoEntrante = document.getElementById("telefonoEntrante").value.trim();
-  const telefonoSolicitud = document.getElementById("telefonoSolicitud").value.trim();
-  const dni = document.getElementById("dni").value.trim();
-  const motivo = document.getElementById("motivo").value;
-  const plan = document.getElementById("plan").value;
-
-  if(!usuarioAgente || !telefonoEntrante || !telefonoSolicitud || !dni || !motivo || !plan){
-    document.getElementById("mensaje").textContent = "⚠️ Complete todos los campos obligatorios.";
-    return;
-  }
-
-  const payload = {
-    token: MY_SECRET_TOKEN,
-    usuarioAgente,
-    idEntrante: idEntrante ? `$$_${idEntrante}_&&` : '',
-    telefonoEntrante,
-    telefonoSolicitud,
-    dni,
-    nombre: document.getElementById("nombre").value,
-    fechaNacimiento: document.getElementById("fechaNacimiento").value,
-    ubicacion: document.getElementById("ubicacion").value,
-    motivo,
-    plan
-  };
-
-  try{
-    const resp = await fetch(SCRIPT_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    });
-    const result = await resp.json();
-
-    if(result.result === "success"){
-      const codigo = result.codigo || "Código no recibido";
-      document.getElementById("mensaje").innerHTML = `✅ Datos guardados correctamente.<br><span class="codigo">🔐 Código de solicitud: ${codigo}</span>`;
-
-      document.getElementById("speech").style.display = "block";
-      document.getElementById("speech").innerHTML = `
+function mostrarMensaje(){
+  if(document.getElementById("mensaje").textContent===""){
+    document.getElementById("mensaje").textContent="✅ Datos enviados correctamente a la hoja de cálculo.";
+    document.getElementById("speech").style.display="block";
+    document.getElementById("speech").innerHTML=`
         <h3>🗣️ Speech de confirmación:</h3>
         <p>“Se ha gestionado la migración de su línea <span class="green">${telefonoSolicitud}</span> al plan <span class="green">${plan}</span>. El cambio se realizará en un máximo de 24 horas. Cuando pierda señal, reinicie su equipo y haga una llamada para activar el servicio. Recibirá el código de solicitud por SMS o email.</p>
         <p>El código de solicitud es <span class="green">${codigo}</span> y lo recibirá por SMS y/o email.</p>
         <p>“Eso sería todo de mi parte, gracias por comunicarse. En breve recibirá una encuesta por SMS para calificar mi atención. Que tenga un excelente día.”</p>
       `;
-
-      limpiar(false);
-    } else {
-      document.getElementById("mensaje").textContent = "❌ Error al guardar: " + (result.message || "Respuesta inesperada");
-    }
-  } catch(err){
-    document.getElementById("mensaje").textContent = "❌ Error de conexión: " + err.message;
-  }
-}
-
-function limpiar(full=true){
-  if(full){
-    document.getElementById("miFormulario").reset();
-    document.getElementById("autofill").style.display="none";
-    document.getElementById("planDetails").classList.remove("show");
-    document.getElementById("speech").style.display="none";
-    document.getElementById("mensaje").textContent="";
-  } else {
-    document.getElementById("idEntrante").value="";
-    document.getElementById("telefonoEntrante").value="";
-    document.getElementById("telefonoSolicitud").value="";
-    document.getElementById("motivo").value="";
-    document.getElementById("plan").value="";
   }
 }
 </script>
