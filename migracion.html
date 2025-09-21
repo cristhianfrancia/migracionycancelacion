@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Migraciones y Cancelaciones</title>
 <style>
-  body { font-family: Arial, sans-serif; background: #F4F9FB; margin:0; padding:20px; display:flex; justify-content:center; align-items:flex-start; min-height:100vh; }
-  .container { background:#fff; padding:20px 30px; border-radius:14px; box-shadow:0px 6px 14px rgba(0,0,0,0.1); width:90%; max-width:1000px; box-sizing:border-box; }
+  body { font-family: Arial, sans-serif; background: #F4F9FB; margin:0; padding:20px; display:flex; justify-content:center; align-items:flex-start; min-height:100vh; transition: background 0.3s, color 0.3s; }
+  .container { background:#fff; padding:20px 30px; border-radius:14px; box-shadow:0px 6px 14px rgba(0,0,0,0.1); width:90%; max-width:1000px; box-sizing:border-box; transition: background 0.3s, color 0.3s; }
   h1 { text-align:center; color:#01768b; margin-bottom:20px; font-size:28px; }
   details { margin-bottom:25px; border:1px solid #ccc; border-radius:8px; padding:10px 15px; background:#fafafa; }
   details summary { font-weight:bold; cursor:pointer; color:#0c477e; font-size:16px; }
@@ -52,6 +52,23 @@
   .btn-yes { background:#01768b; } .btn-yes:hover { background:#0c477e; }
   .btn-no { background:#c62828; } .btn-no:hover { background:#a61c1c; }
 
+  /* Switch modo oscuro */
+  .switch { position: relative; display: inline-block; width: 50px; height: 25px; }
+  .switch input { display:none; }
+  .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 25px; }
+  .slider:before { position: absolute; content: ""; height: 19px; width: 19px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+  input:checked + .slider { background-color: #007BFF; }
+  input:checked + .slider:before { transform: translateX(24px); }
+
+  /* Estilos modo oscuro */
+  body.dark-mode { background-color: #121212; color: #f1f1f1; }
+  body.dark-mode .container { background:#1e1e1e; color:#f1f1f1; }
+  body.dark-mode input, body.dark-mode select { background-color: #222; color: #f1f1f1; border: 1px solid #444; }
+  body.dark-mode details { background:#1c1c1c; border-color:#444; }
+  body.dark-mode .plan-details { background:#1c1c1c; border-color:#444; }
+  body.dark-mode .plan-details .col { background:#2a2a2a; }
+  body.dark-mode .modal-content { background:#1e1e1e; color:#f1f1f1; }
+
   @media (max-width:768px){ 
     .input-row { grid-template-columns: 1fr; } 
     .plan-details .row { grid-template-columns:1fr; } 
@@ -60,6 +77,14 @@
 </style>
 </head>
 <body>
+<!-- Switch de modo oscuro -->
+<div style="position: absolute; top: 15px; right: 20px;">
+  <label class="switch">
+    <input type="checkbox" id="darkSwitch">
+    <span class="slider"></span>
+  </label>
+</div>
+
 <div class="container">
 <h1>Migraciones y Cancelaciones</h1>
 
@@ -104,12 +129,12 @@
   <div class="input-row">
     <div class="input-group">
       <label for="telefonoEntrante">Teléfono entrante</label>
-      <input type="number" name="telefonoEntrante" id="telefonoEntrante" maxlength="9" placeholder="9 dígitos" required>
+      <input type="number" name="telefonoEntrante" id="telefonoEntrante" placeholder="9 dígitos" required maxlength="9" oninput="this.value=this.value.slice(0,9)">
     </div>
 
     <div class="input-group">
       <label for="telefonoSolicitud">Teléfono de solicitud</label>
-      <input type="number" name="telefonoSolicitud" id="telefonoSolicitud" maxlength="9" placeholder="9 dígitos" required>
+      <input type="number" name="telefonoSolicitud" id="telefonoSolicitud" placeholder="9 dígitos" required maxlength="9" oninput="this.value=this.value.slice(0,9)">
     </div>
   </div>
 
@@ -210,7 +235,6 @@ btnNo.addEventListener("click", function(){
     })
     .then(res => res.text())
     .then(txt => {
-        // El script devuelve: "✅ Datos guardados correctamente. Código: MIGxxxxxx"
         mostrarMensaje(txt);
     })
     .catch(err => {
@@ -219,7 +243,6 @@ btnNo.addEventListener("click", function(){
 });
 
 function mostrarMensaje(respuesta){
-    // Extraer el código MIG de la respuesta del servidor
     const regex = /Código:\s*(MIG\d+)/;
     const match = respuesta.match(regex);
     const codigo = match ? match[1] : "N/A";
@@ -233,7 +256,6 @@ function mostrarMensaje(respuesta){
         <p>“Eso sería todo de mi parte, gracias por comunicarse. En breve recibirá una encuesta por SMS para calificar mi atención. Que tenga un excelente día.”</p>
     `;
 }
-
 
 function limpiar(){
     formulario.reset();
@@ -264,48 +286,46 @@ function mostrarPlan(){
       <ul>
         <li>Llamadas y SMS ilimitados a todo destino nacional</li>
         <li>650 MB de libre uso + navegación ilimitada a velocidad reducida</li>
-        <li>1.5 GB en alta velocidad para WhatsApp + navegación ilimitada a velocidad reducida</li>
-        <li>1.5 GB en alta velocidad para: Waze, Mobile Legends, Garena Free Fire</li>
-        <li>1 GB en alta velocidad para: YouTube, TikTok, Viki, América TVGO</li>
-        <li>Facebook e Instagram (versión full)</li>
-        <li>Vigencia del bono: 5 días.</li>
+        <li>1.5 GB en apps ilimitadas (FB, IG, YT, TikTok, Spotify)</li>
+        <li>80 min LDI a 10 destinos</li>
+        <li>Vigencia de 35 días</li>
       </ul>
-      <p><strong>¿Estaría de acuerdo en realizar la migración al plan prepago Bifri5?</strong></p>
     `;
     consideraciones.innerHTML = `
-      <p>Sr. [Nombre del cliente], la migración es gratuita, mantiene su chip y se ejecuta en un máximo de 24 horas</p>
-      <ul>
-        <li>Puede desistir en un plazo de 40 días útiles</li>
-        <li>Debe estar al día en sus pagos, ya que la migración no exime de deudas ni penalidades</li>
-        <li>Este proceso no permite adquirir equipos</li>
-        <li>Su línea debe estar activa y sin bloqueos</li>
-        <li>Conservará sus puntos Bitel no vencidos, pero perderá los beneficios del plan anterior y recibirá los del nuevo</li>
-      </ul>
-      <p><strong>¿Está de acuerdo con realizar la migración?</strong></p>
+      <p>• El beneficio se asigna solo una vez. Luego se debe recargar para tener beneficios de prepago.</p>
+      <p>• El bono puede demorar hasta 24 horas en reflejarse.</p>
+      <p>• Para llamadas internacionales, marcar 1911 + 00 + código de país + número.</p>
     `;
     planDetails.classList.add("show");
-
-  } else if (planSelect === "Ilimitado 29.90") {
+  }
+  else if (planSelect === "Ilimitado 29.90") {
     detalle.innerHTML = `
+      <p>Estos beneficios se asignan automáticamente al migrar:</p>
       <ul>
-        <li>Llamadas ilimitadas a todo operador</li>
-        <li>10GB de alta velocidad</li>
-        <li>WhatsApp ilimitado</li>
+        <li>Llamadas y SMS ilimitados a todo destino nacional</li>
+        <li>10 GB de libre uso + navegación ilimitada a velocidad reducida</li>
+        <li>Apps ilimitadas (FB, IG, YT, TikTok, Spotify)</li>
+        <li>200 min LDI a 10 destinos</li>
       </ul>
     `;
     consideraciones.innerHTML = `
-      <ul>
-        <li>Velocidad reducida después de 10GB</li>
-        <li>No incluye roaming</li>
-        <li>Costo fijo mensual S/29.90</li>
-      </ul>
+      <p>• El plan se activa en un máximo de 24 horas.</p>
+      <p>• Al migrar, se pierde cualquier saldo o beneficio vigente.</p>
+      <p>• La facturación será mensual desde la fecha de migración.</p>
     `;
     planDetails.classList.add("show");
-
-  } else {
+  }
+  else {
     planDetails.classList.remove("show");
   }
 }
+
+// Switch modo oscuro
+const darkSwitch = document.getElementById("darkSwitch");
+darkSwitch.addEventListener("change", function(){
+  document.body.classList.toggle("dark-mode", this.checked);
+});
 </script>
+</div>
 </body>
 </html>
