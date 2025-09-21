@@ -222,7 +222,7 @@ function mostrarMensaje(respuesta){
     document.getElementById("speech").style.display = "block";
     document.getElementById("speech").innerHTML = `
         <h3>🗣️ Speech de confirmación:</h3>
-        <p>“Se ha gestionado la migración de su línea <span class="green">${telefonoSolicitud}</span> al plan <span class="green">${plan}</span>. El cambio se realizará en un máximo de 24 horas. Cuando pierda señal, reinicie su equipo y haga una llamada para activar el servicio. Recibirá el código de solicitud por SMS o email.</p>
+        <p>“Se ha gestionado la migración de su línea <span class="green">${telefonoSolicitud}</span> al plan <span class="green">${plan}</span>. El cambio se realizará en un máximo de 24 horas. Cuando pierda señal, reinicie su equipo y haga una llamada para activar el servicio.</p>
         <p>El código de solicitud es <span class="green">${codigo}</span> y lo recibirá por SMS y/o email.</p>
         <p>“Eso sería todo de mi parte, gracias por comunicarse. En breve recibirá una encuesta por SMS para calificar mi atención. Que tenga un excelente día.”</p>
     `;
@@ -303,3 +303,4 @@ function mostrarPlan(){
 </script>
 </body>
 </html>
+
