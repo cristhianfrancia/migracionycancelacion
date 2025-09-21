@@ -16,14 +16,35 @@
   /* Inputs y labels */
   .input-row {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr; /* dos columnas iguales */
     gap: 15px;
-    margin-bottom:20px;
+    margin-bottom: 20px;
   }
-  .input-group { display:flex; flex-direction:column; box-sizing:border-box; }
-  .input-group label { font-size:14px; margin-bottom:6px; font-weight:500; color:#333; }
-  input, select { width:100%; padding:10px; border:1.5px solid #ccc; border-radius:8px; font-size:14px; outline:none; transition:0.3s; background:#fff; }
-  input:focus, select:focus { border-color:#01768b; background:#f8ffff; }
+  .input-group {
+    display: flex;
+    flex-direction: column;
+  }
+  .input-group label {
+    font-size: 14px;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #333;
+    min-height: 18px; /* altura uniforme para todos los labels */
+  }
+  input, select {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1.5px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    transition: 0.3s;
+    background: #fff;
+    box-sizing: border-box;
+    min-height: 38px;
+  }
+  input:focus, select:focus { border-color: #01768b; background: #f8ffff; }
+
   .input-with-mark { display:flex; align-items:center; gap:4px; }
   .input-with-mark span { font-weight:bold; color:#000; }
 
@@ -61,11 +82,7 @@
   .btn-yes { background:#01768b; } .btn-yes:hover { background:#0c477e; }
   .btn-no { background:#c62828; } .btn-no:hover { background:#a61c1c; }
 
-  @media (max-width:768px){
-    .input-row { grid-template-columns:1fr; }
-    .plan-details .row { grid-template-columns:1fr; }
-    .buttons button, .modal-buttons button { width:100%; }
-  }
+  @media (max-width:768px){ .input-row { grid-template-columns: 1fr; } .plan-details .row { grid-template-columns:1fr; } .buttons button, .modal-buttons button { width:100%; } }
 </style>
 </head>
 <body>
@@ -260,23 +277,23 @@ async function guardar(){
     let result={};
     try{result=JSON.parse(raw);}catch(e){console.error("No JSON:",raw);}
     
-if(result.result==="success"){
-  const codigo=result.codigo||"Código no recibido";
-  const telefonoSolicitudVal = telefonoSolicitud;
-  const planVal = plan;
+    if(result.result==="success"){
+      const codigo=result.codigo||"Código no recibido";
+      const telefonoSolicitudVal = telefonoSolicitud;
+      const planVal = plan;
 
-  document.getElementById("mensaje").innerHTML=`✅ Datos guardados correctamente.<br><span class="codigo">🔐 Código de solicitud: ${codigo}</span>`;
-  
-  document.getElementById("speech").style.display="block";
-  document.getElementById("speech").innerHTML = `
-    <h3>🗣️ Mensaje de confirmación</h3>
-    <p>Agente: “Se ha gestionado la migración de su línea <span class="green">${telefonoSolicitudVal}</span> al plan <span class="green">${planVal}</span>. El cambio se realizará en un máximo de 24 horas. Cuando pierda señal, reinicie su equipo y haga una llamada para activar el servicio. Recibirá el código de solicitud por SMS o email.</p>
-    <p>El código de solicitud es <span class="green">${codigo}</span> y lo recibirá por SMS y/o email.</p>
-    <p>“Eso sería todo de mi parte, gracias por comunicarse. En breve recibirá una encuesta por SMS para calificar mi atención. Que tenga un excelente día.”</p>
-  `;
-  
-  limpiar(false);
-} else {
+      document.getElementById("mensaje").innerHTML=`✅ Datos guardados correctamente.<br><span class="codigo">🔐 Código de solicitud: ${codigo}</span>`;
+      
+      document.getElementById("speech").style.display="block";
+      document.getElementById("speech").innerHTML = `
+        <h3>🗣️ Mensaje de confirmación</h3>
+        <p>Agente: “Se ha gestionado la migración de su línea <span class="green">${telefonoSolicitudVal}</span> al plan <span class="green">${planVal}</span>. El cambio se realizará en un máximo de 24 horas. Cuando pierda señal, reinicie su equipo y haga una llamada para activar el servicio. Recibirá el código de solicitud por SMS o email.</p>
+        <p>El código de solicitud es <span class="green">${codigo}</span> y lo recibirá por SMS y/o email.</p>
+        <p>“Eso sería todo de mi parte, gracias por comunicarse. En breve recibirá una encuesta por SMS para calificar mi atención. Que tenga un excelente día.”</p>
+      `;
+      
+      limpiar(false);
+    } else {
       document.getElementById("mensaje").textContent="❌ Error al guardar: "+(result.message||"Respuesta inesperada");
     }
   } catch(err){
