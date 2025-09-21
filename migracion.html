@@ -280,42 +280,51 @@ function mostrarPlan(){
   const consideraciones = document.getElementById("consideraciones");
   const planDetails = document.getElementById("planDetails");
 
-  if (planSelect === "Prepago Bifri5") {
+    if (planSelect === "Prepago Bifri5") {
     detalle.innerHTML = `
       <p>Estos beneficios se brindan automáticamente por migrar a prepago, el bono se otorga por única vez y no es necesario que realice una recarga:</p>
       <ul>
         <li>Llamadas y SMS ilimitados a todo destino nacional</li>
         <li>650 MB de libre uso + navegación ilimitada a velocidad reducida</li>
-        <li>1.5 GB en apps ilimitadas (FB, IG, YT, TikTok, Spotify)</li>
-        <li>80 min LDI a 10 destinos</li>
-        <li>Vigencia de 35 días</li>
+        <li>1.5 GB en alta velocidad para WhatsApp + navegación ilimitada a velocidad reducida</li>
+        <li>1.5 GB en alta velocidad para: Waze, Mobile Legends, Garena Free Fire</li>
+        <li>1 GB en alta velocidad para: YouTube, TikTok, Viki, América TVGO</li>
+        <li>Facebook e Instagram (versión full)</li>
+        <li>Vigencia del bono: 5 días.</li>
       </ul>
+      <p><strong>¿Estaría de acuerdo en realizar la migración al plan prepago Bifri5?</strong></p>
     `;
     consideraciones.innerHTML = `
-      <p>• El beneficio se asigna solo una vez. Luego se debe recargar para tener beneficios de prepago.</p>
-      <p>• El bono puede demorar hasta 24 horas en reflejarse.</p>
-      <p>• Para llamadas internacionales, marcar 1911 + 00 + código de país + número.</p>
-    `;
-    planDetails.classList.add("show");
-  }
-  else if (planSelect === "Ilimitado 29.90") {
-    detalle.innerHTML = `
-      <p>Estos beneficios se asignan automáticamente al migrar:</p>
+      <p>Sr. [Nombre del cliente], la migración es gratuita, mantiene su chip y se ejecuta en un máximo de 24 horas</p>
       <ul>
-        <li>Llamadas y SMS ilimitados a todo destino nacional</li>
-        <li>10 GB de libre uso + navegación ilimitada a velocidad reducida</li>
-        <li>Apps ilimitadas (FB, IG, YT, TikTok, Spotify)</li>
-        <li>200 min LDI a 10 destinos</li>
+        <li>Puede desistir en un plazo de 40 días útiles</li>
+        <li>Debe estar al día en sus pagos, ya que la migración no exime de deudas ni penalidades</li>
+        <li>Este proceso no permite adquirir equipos</li>
+        <li>Su línea debe estar activa y sin bloqueos</li>
+        <li>Conservará sus puntos Bitel no vencidos, pero perderá los beneficios del plan anterior y recibirá los del nuevo</li>
+      </ul>
+      <p><strong>¿Está de acuerdo con realizar la migración?</strong></p>
+    `;
+    planDetails.classList.add("show");
+
+  } else if (planSelect === "Ilimitado 29.90") {
+    detalle.innerHTML = `
+      <ul>
+        <li>Llamadas ilimitadas a todo operador</li>
+        <li>10GB de alta velocidad</li>
+        <li>WhatsApp ilimitado</li>
       </ul>
     `;
     consideraciones.innerHTML = `
-      <p>• El plan se activa en un máximo de 24 horas.</p>
-      <p>• Al migrar, se pierde cualquier saldo o beneficio vigente.</p>
-      <p>• La facturación será mensual desde la fecha de migración.</p>
+      <ul>
+        <li>Velocidad reducida después de 10GB</li>
+        <li>No incluye roaming</li>
+        <li>Costo fijo mensual S/29.90</li>
+      </ul>
     `;
     planDetails.classList.add("show");
-  }
-  else {
+
+  } else {
     planDetails.classList.remove("show");
   }
 }
