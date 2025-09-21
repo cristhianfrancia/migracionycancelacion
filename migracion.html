@@ -99,32 +99,23 @@
 
 <h2>Llenado de datos</h2>
 <form id="miFormulario" onsubmit="return false;">
+  <!-- Usuario de agente + ID de llamada entrante en la misma fila -->
   <div class="input-row">
     <div class="input-group">
       <label for="usuarioAgente">Usuario de agente</label>
       <input type="text" id="usuarioAgente" placeholder="cpc_xxxx_vtp" style="text-transform: lowercase;">
     </div>
-  </div>
-
-  <div class="input-row">
     <div class="input-group">
       <label for="idEntrante">ID de llamada entrante</label>
       <div class="input-with-mark">
         <span>$$_</span>
-        <input type="text" id="idEntrante" placeholder="ID directo" oninput="toggleID('entrante')">
-        <span>_&&</span>
-      </div>
-    </div>
-    <div class="input-group">
-      <label for="idSaliente">ID de llamada saliente</label>
-      <div class="input-with-mark">
-        <span>$$_</span>
-        <input type="text" id="idSaliente" placeholder="ID directo" oninput="toggleID('saliente')">
+        <input type="text" id="idEntrante" placeholder="ID directo">
         <span>_&&</span>
       </div>
     </div>
   </div>
 
+  <!-- Número de documento -->
   <div class="input-row">
     <div class="input-group">
       <label for="dni">Número de documento</label>
@@ -135,6 +126,7 @@
     </div>
   </div>
 
+  <!-- Teléfonos -->
   <div class="input-row">
     <div class="input-group">
       <label for="telefonoEntrante">Teléfono entrante</label>
@@ -146,6 +138,7 @@
     </div>
   </div>
 
+  <!-- Motivo y plan -->
   <div class="input-row">
     <div class="input-group">
       <label for="motivo">Motivo de migración</label>
@@ -206,13 +199,6 @@
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx7YIQehgfBlQ3-uW8hHjBFceLiRyv0_O1BcaVGc7Ga8ge_BNUqYM9WT7owlv5sLfGsiQ/exec"; 
 const MY_SECRET_TOKEN = "BitelMigracion2025SuperClave";
 
-function toggleID(tipo){
-  const idEntrante = document.getElementById("idEntrante");
-  const idSaliente = document.getElementById("idSaliente");
-  if(tipo==="entrante"){ idSaliente.disabled = idEntrante.value.trim() !== ""; } 
-  else { idEntrante.disabled = idSaliente.value.trim() !== ""; }
-}
-
 function buscarDNI(){
   const dni=document.getElementById("dni").value.trim();
   if(dni.length!==8){ alert("Ingrese un DNI válido de 8 dígitos"); return; }
@@ -245,7 +231,6 @@ async function guardar(){
   cerrarModal();
   const usuarioAgente=document.getElementById("usuarioAgente").value.trim();
   const idEntrante=document.getElementById("idEntrante").value.trim();
-  const idSaliente=document.getElementById("idSaliente").value.trim();
   const telefonoEntrante=document.getElementById("telefonoEntrante").value.trim();
   const telefonoSolicitud=document.getElementById("telefonoSolicitud").value.trim();
   const dni=document.getElementById("dni").value.trim();
@@ -260,7 +245,6 @@ async function guardar(){
     token:MY_SECRET_TOKEN,
     usuarioAgente,
     idEntrante: idEntrante ? `$$_${idEntrante}_&&` : '',
-    idSaliente: idSaliente ? `$$_${idSaliente}_&&` : '',
     telefonoEntrante,
     telefonoSolicitud,
     dni,
@@ -306,8 +290,6 @@ function limpiar(full=true){
     document.getElementById("miFormulario").reset();
     document.getElementById("autofill").style.display="none";
     document.getElementById("planDetails").classList.remove("show");
-    document.getElementById("idEntrante").disabled=false;
-    document.getElementById("idSaliente").disabled=false;
     document.getElementById("mensaje").textContent="";
     document.getElementById("speech").style.display="none";
     document.getElementById("speech").innerHTML="";
@@ -315,4 +297,4 @@ function limpiar(full=true){
 }
 </script>
 </body>
-</html>	
+</html>
