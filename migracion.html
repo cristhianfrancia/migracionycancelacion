@@ -1,63 +1,63 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Migraciones y Cancelaciones</title>
-<style>
-  body { font-family: Arial, sans-serif; background: #F4F9FB; margin:0; padding:20px; display:flex; justify-content:center; align-items:flex-start; min-height:100vh; }
-  .container { background:#fff; padding:20px 30px; border-radius:14px; box-shadow:0px 6px 14px rgba(0,0,0,0.1); width:90%; max-width:1000px; box-sizing:border-box; }
-  h1 { text-align:center; color:#01768b; margin-bottom:20px; font-size:28px; }
-  details { margin-bottom:25px; border:1px solid #ccc; border-radius:8px; padding:10px 15px; background:#fafafa; }
-  details summary { font-weight:bold; cursor:pointer; color:#0c477e; font-size:16px; }
-  details p { margin:10px 0; font-size:15px; }
-  h2 { color:#0c477e; font-size:20px; margin-top:20px; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Migraciones y Cancelaciones</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #F4F9FB; margin:0; padding:20px; display:flex; justify-content:center; align-items:flex-start; min-height:100vh; }
+    .container { background:#fff; padding:20px 30px; border-radius:14px; box-shadow:0px 6px 14px rgba(0,0,0,0.1); width:90%; max-width:1000px; box-sizing:border-box; }
+    h1 { text-align:center; color:#01768b; margin-bottom:20px; font-size:28px; font-weight:bold; }
+    details { margin-bottom:25px; border:1px solid #ccc; border-radius:8px; padding:10px 15px; background:#fafafa; }
+    details summary { font-weight:bold; cursor:pointer; color:#0c477e; font-size:16px; }
+    details p { margin:10px 0; font-size:15px; }
+    h2 { color:#0c477e; font-size:20px; margin-top:20px; }
 
-  .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
-  .input-group { display: flex; flex-direction: column; }
-  .input-group label { font-size: 14px; margin-bottom: 5px; font-weight: 500; color: #333; min-height: 18px; }
-  input, select { width: 100%; padding: 10px; font-size: 14px; border: 1.5px solid #ccc; border-radius: 8px; outline: none; transition: 0.3s; background: #fff; box-sizing:border-box; min-height: 38px; }
-  input:focus, select:focus { border-color: #01768b; background: #f8ffff; }
-  .input-with-mark { display:flex; align-items:center; gap:4px; }
-  .input-with-mark span { color:#000; }
+    .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+    .input-group { display: flex; flex-direction: column; }
+    .input-group label { font-size: 14px; margin-bottom: 5px; font-weight: 500; color: #333; min-height: 18px; }
+    input, select { width: 100%; padding: 10px; font-size: 14px; border: 1.5px solid #ccc; border-radius: 8px; outline: none; transition: 0.3s; background: #fff; box-sizing:border-box; min-height: 38px; }
+    input:focus, select:focus { border-color: #01768b; background: #f8ffff; }
+    .input-with-mark { display:flex; align-items:center; gap:4px; }
+    .input-with-mark span { color:#000; }
 
-  .dni-container { display:flex; gap:10px; }
-  .dni-container input { flex:1; padding:10px; border:1.5px solid #ccc; border-radius:8px; font-size:14px; }
-  .dni-container button { padding:10px 15px; background:#01768b; border:none; border-radius:8px; color:white; cursor:pointer; transition:0.3s; }
-  .dni-container button:hover { background:#0c477e; }
+    .dni-container { display:flex; gap:10px; }
+    .dni-container input { flex:1; padding:10px; border:1.5px solid #ccc; border-radius:8px; font-size:14px; }
+    .dni-container button { padding:10px 15px; background:#01768b; border:none; border-radius:8px; color:white; cursor:pointer; transition:0.3s; }
+    .dni-container button:hover { background:#0c477e; }
 
-  .buttons { margin-top:25px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
-  .buttons button { padding:12px 24px; border:none; border-radius:8px; cursor:pointer; font-weight:500; transition:0.3s; font-size:15px; background:#01768b; color:white; }
-  .buttons button:hover { background:#0c477e; }
+    .buttons { margin-top:25px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+    .buttons button { padding:12px 24px; border:none; border-radius:8px; cursor:pointer; font-weight:500; transition:0.3s; font-size:15px; background:#01768b; color:white; }
+    .buttons button:hover { background:#0c477e; }
 
-  #mensaje { margin-top:25px; text-align:center; font-size:15px; font-weight:500; }
-  #speech { margin-top:25px; padding:15px; border:1px dashed #01768b; border-radius:8px; background:#fdfdfd; display:none; }
-  #speech h3 { margin-top:0; margin-bottom:10px; color:#0c477e; font-size:20px; font-weight:bold; }
-  #speech .green { color:#01768b; font-weight:bold; }
-  .blue { color:#0c477e; }
+    #mensaje { margin-top:25px; text-align:center; font-size:15px; font-weight:500; }
+    #speech { margin-top:25px; padding:15px; border:1px dashed #01768b; border-radius:8px; background:#fdfdfd; display:none; }
+    #speech h3 { margin-top:0; margin-bottom:10px; color:#0c477e; font-size:20px; font-weight:bold; }
+    #speech .green { color:#01768b; font-weight:bold; }
+    .blue { color:#0c477e; }
 
-  .plan-details { margin-top:15px; padding:15px; border:1px solid #ccc; border-radius:8px; background:#fafafa; display:none; }
-  .plan-details.show { display:block; }
-  .plan-details .row { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
-  .plan-details .col { padding:10px; background:#fff; border-radius:6px; box-shadow:0 2px 6px rgba(0,0,0,0.05); }
-  .plan-details h3 { margin-top:0; color:#01768b; font-size:16px; border-bottom:1px solid #eee; padding-bottom:6px; }
+    .plan-details { margin-top:15px; padding:15px; border:1px solid #ccc; border-radius:8px; background:#fafafa; display:none; }
+    .plan-details.show { display:block; }
+    .plan-details .row { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+    .plan-details .col { padding:10px; background:#fff; border-radius:6px; box-shadow:0 2px 6px rgba(0,0,0,0.05); }
+    .plan-details h3 { margin-top:0; color:#01768b; font-size:16px; border-bottom:1px solid #eee; padding-bottom:6px; }
 
-  /* Modal confirmación */
-  .modal { display:none; position:fixed; z-index:1000; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); justify-content:center; align-items:center; }
-  .modal.show { display:flex; }
-  .modal-content { background:#fff; padding:25px; border-radius:12px; text-align:center; max-width:400px; box-shadow:0 6px 14px rgba(0,0,0,0.2); }
-  .modal-content h2 { color:#0c477e; margin-bottom:15px; }
-  .modal-buttons { display:flex; justify-content:center; gap:15px; margin-top:20px; flex-wrap:wrap; }
-  .modal-buttons button { padding:10px 20px; border:none; border-radius:6px; cursor:pointer; font-weight:500; color:#fff; }
-  .btn-yes { background:#01768b; } .btn-yes:hover { background:#0c477e; }
-  .btn-no { background:#c62828; } .btn-no:hover { background:#a61c1c; }
+    /* Modal confirmación */
+    .modal { display:none; position:fixed; z-index:1000; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); justify-content:center; align-items:center; }
+    .modal.show { display:flex; }
+    .modal-content { background:#fff; padding:25px; border-radius:12px; text-align:center; max-width:400px; box-shadow:0 6px 14px rgba(0,0,0,0.2); }
+    .modal-content h2 { color:#0c477e; margin-bottom:15px; }
+    .modal-buttons { display:flex; justify-content:center; gap:15px; margin-top:20px; flex-wrap:wrap; }
+    .modal-buttons button { padding:10px 20px; border:none; border-radius:6px; cursor:pointer; font-weight:500; color:#fff; }
+    .btn-yes { background:#01768b; } .btn-yes:hover { background:#0c477e; }
+    .btn-no { background:#c62828; } .btn-no:hover { background:#a61c1c; }
 
-  @media (max-width:768px){ 
-    .input-row { grid-template-columns: 1fr; } 
-    .plan-details .row { grid-template-columns:1fr; } 
-    .buttons button, .modal-buttons button { width:100%; } 
-  }
-</style>
+    @media (max-width:768px){ 
+      .input-row { grid-template-columns: 1fr; } 
+      .plan-details .row { grid-template-columns:1fr; } 
+      .buttons button, .modal-buttons button { width:100%; } 
+    }
+  </style>
 </head>
 <body>
 <div class="container">
@@ -72,8 +72,10 @@
 </details>
 
 <h2>Llenado de datos</h2>
-<form id="miFormulario" action="https://script.google.com/macros/s/AKfycbx7YIQehgfBlQ3-uW8hHjBFceLiRyv0_O" method="post" target="hidden_iframe">
+<form id="miFormulario" action="https://script.google.com/macros/s/AKfycbzq3MWR3rI5ZkLNlkwOs6PuHNx9ipVRpeesOmS2XbtE7olSWHfO-V757wQ7tLJpsvHlbA/exec" method="post" target="hidden_iframe">
   <input type="hidden" name="token" value="BitelMigracion2025SuperClave">
+  <!-- Campo oculto para enviar el ID corregido -->
+  <input type="hidden" name="idEntranteFinal" id="idEntranteFinal">
 
   <div class="input-row">
     <div class="input-group">
@@ -84,66 +86,38 @@
       <label for="idEntrante">ID de llamada</label>
       <div class="input-with-mark">
         <span>$$_</span>
-        <input type="text" name="idEntrante" id="idEntrante" placeholder="ID directo">
+        <input type="text" id="idEntrante" placeholder="ID directo">
         <span>_&&</span>
       </div>
     </div>
   </div>
 
+  <!-- Ejemplo otros campos -->
   <div class="input-row">
     <div class="input-group">
-      <label for="dni">Número de documento de identidad</label>
-      <div class="dni-container">
-        <input type="text" name="dni" id="dni" maxlength="8" placeholder="8 dígitos">
-        <button type="button" onclick="buscarDNI()">🔍</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="input-row">
-    <div class="input-group">
-      <label for="telefonoEntrante">Teléfono entrante</label>
-      <input type="text" name="telefonoEntrante" id="telefonoEntrante" maxlength="9" placeholder="9 dígitos" required>
+      <label for="telefonoSolicitud">Teléfono a migrar</label>
+      <input type="text" id="telefonoSolicitud" name="telefonoSolicitud" maxlength="9" required>
     </div>
     <div class="input-group">
-      <label for="telefonoSolicitud">Teléfono de solicitud</label>
-      <input type="text" name="telefonoSolicitud" id="telefonoSolicitud" maxlength="9" placeholder="9 dígitos" required>
-    </div>
-  </div>
-
-  <div class="input-row">
-    <div class="input-group">
-      <label for="motivo">Motivo de migración</label>
-      <select name="motivo" id="motivo" required>
-        <option value="">Seleccione...</option>
-        <option value="Motivo 1">Motivo 1</option>
-        <option value="Motivo 2">Motivo 2</option>
-        <option value="Motivo 3">Motivo 3</option>
-      </select>
-    </div>
-
-    <div class="input-group">
-      <label for="plan">Plan deseado a migrar</label>
-      <select name="plan" id="plan" onchange="mostrarPlan()" required>
-        <option value="">Seleccione:</option>
+      <label for="plan">Plan</label>
+      <select id="plan" name="plan" onchange="mostrarPlan()" required>
+        <option value="">Seleccione</option>
         <option value="Prepago Bifri5">Prepago Bifri5</option>
         <option value="Ilimitado 29.90">Ilimitado 29.90</option>
       </select>
     </div>
   </div>
 
-  <div class="plan-details" id="planDetails">
+  <div id="planDetails" class="plan-details">
     <div class="row">
-      <div class="col"><h3>🗣️ 1. Speech - Detalle de beneficios</h3><div id="detalle"></div></div>
-      <div class="col"><h3>🗣️ 2. Speech - Detalle de consideraciones</h3><div id="consideraciones"></div></div>
-    </div>
-  </div>
-
-  <div id="autofill" style="display:none;">
-    <div class="input-row">
-      <div class="input-group"><label for="nombre">Nombre completo</label><input type="text" id="nombre" readonly></div>
-      <div class="input-group"><label for="fechaNacimiento">Fecha de nacimiento</label><input type="text" id="fechaNacimiento" readonly></div>
-      <div class="input-group"><label for="ubicacion">Departamento - Provincia - Distrito</label><input type="text" id="ubicacion" readonly></div>
+      <div class="col">
+        <h3>Detalle</h3>
+        <div id="detalle"></div>
+      </div>
+      <div class="col">
+        <h3>Consideraciones</h3>
+        <div id="consideraciones"></div>
+      </div>
     </div>
   </div>
 
@@ -155,7 +129,6 @@
 
 <div id="mensaje"></div>
 <div id="speech"></div>
-
 <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
 
 <!-- Modal -->
@@ -170,7 +143,7 @@
 </div>
 
 <script>
-let telefonoSolicitud, plan;
+let telefonoSolicitud, plan, codigo;
 
 document.getElementById("telefonoSolicitud").addEventListener("input", function(){
     telefonoSolicitud = this.value;
@@ -186,45 +159,29 @@ const btnNo = document.getElementById("btnNo");
 
 formulario.addEventListener("submit", function(e){
     e.preventDefault();
+    // Generamos el valor con símbolos en el hidden
+    const idVal = document.getElementById("idEntrante").value.trim();
+    document.getElementById("idEntranteFinal").value = `$$_${idVal}_&&`;
     modal.classList.add("show");
 });
 
-btnYes.addEventListener("click", async function(){
+btnYes.addEventListener("click", function(){
     modal.classList.remove("show");
-
-    // Agregar símbolos al ID antes de enviar
-    const idInput = document.getElementById("idEntrante");
-    idInput.value = `$$_${idInput.value}_&&`;
-
-    const formData = new FormData(formulario);
-
-    try {
-        const response = await fetch(formulario.action, {
-            method: 'POST',
-            body: formData
-        });
-        const text = await response.text();
-
-        const match = text.match(/Código: (\w+)/);
-        const codigo = match ? match[1] : "MIG-XXXX";
-
-        mostrarMensaje(codigo);
-
-    } catch(err) {
-        alert("❌ Error al guardar los datos: " + err);
-    }
+    codigo = "MIG" + Math.floor(Math.random()*900000+100000);
+    formulario.submit();
+    mostrarMensaje();
 });
 
 btnNo.addEventListener("click", function(){
     modal.classList.remove("show");
 });
 
-function mostrarMensaje(codigo){
+function mostrarMensaje(){
     document.getElementById("mensaje").innerHTML = `✅ Datos guardados correctamente.<br><span class="codigo">🔐 Código de solicitud: ${codigo}</span>`;
     document.getElementById("speech").style.display = "block";
     document.getElementById("speech").innerHTML = `
         <h3>🗣️ Speech de confirmación:</h3>
-        <p>“Se ha gestionado la migración de su línea <span class="green">${telefonoSolicitud}</span> al plan <span class="green">${plan}</span>. El cambio se realizará en un máximo de 24 horas. Cuando pierda señal, reinicie su equipo y haga una llamada para activar el servicio. Recibirá el código de solicitud por SMS o email.</p>
+        <p>“Se ha gestionado la migración de su línea <span class="green">${telefonoSolicitud}</span> al plan <span class="green">${plan}</span>. El cambio se realizará en un máximo de 24 horas. Cuando pierda señal, reinicie su equipo y haga una llamada para activar el servicio.</p>
         <p>El código de solicitud es <span class="green">${codigo}</span> y lo recibirá por SMS y/o email.</p>
         <p>“Eso sería todo de mi parte, gracias por comunicarse. En breve recibirá una encuesta por SMS para calificar mi atención. Que tenga un excelente día.”</p>
     `;
@@ -232,30 +189,18 @@ function mostrarMensaje(codigo){
 
 function limpiar(){
     formulario.reset();
-    document.getElementById("autofill").style.display="none";
     document.getElementById("planDetails").classList.remove("show");
     document.getElementById("speech").style.display="none";
     document.getElementById("mensaje").textContent="";
 }
 
-// Función buscar DNI (simulación)
-function buscarDNI(){
-  const dni=document.getElementById("dni").value.trim();
-  if(dni.length!==8){ alert("Ingrese un DNI válido de 8 dígitos"); return; }
-  document.getElementById("nombre").value="Juan Perez";
-  document.getElementById("fechaNacimiento").value="15/08/1990";
-  document.getElementById("ubicacion").value="Lima - Lima - San Isidro";
-  document.getElementById("autofill").style.display="block";
-}
-
-// Función mostrar plan
 function mostrarPlan(){
   const planSelect = document.getElementById("plan").value;
   const detalle = document.getElementById("detalle");
   const consideraciones = document.getElementById("consideraciones");
   const planDetails = document.getElementById("planDetails");
 
-  if (planSelect === "Prepago Bifri5") {
+  if (plan === "Prepago Bifri5") {
     detalle.innerHTML = `
       <p>Estos beneficios se brindan automáticamente por migrar a prepago, el bono se otorga por única vez y no es necesario que realice una recarga:</p>
       <ul>
@@ -282,7 +227,7 @@ function mostrarPlan(){
     `;
     planDetails.classList.add("show");
 
-  } else if (planSelect === "Ilimitado 29.90") {
+  } else if (plan === "Ilimitado 29.90") {
     detalle.innerHTML = `
       <ul>
         <li>Llamadas ilimitadas a todo operador</li>
