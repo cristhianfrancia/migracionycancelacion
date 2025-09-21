@@ -146,6 +146,37 @@
     .plan-details .row { grid-template-columns:1fr; } 
     .buttons button, .modal-buttons button { width:100%; } 
   }
+
+/* Botones secundarios más pequeños */
+.small-buttons {
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.small-buttons button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  background: #e0e0e0;
+  color: #333;
+  transition: 0.3s;
+}
+.small-buttons button:hover {
+  background: #d5d5d5;
+  box-shadow: 0 0 6px rgba(0,0,0,0.15);
+}
+.small-buttons button:nth-child(1) { background: #01768b; color: #fff; }
+.small-buttons button:nth-child(1):hover { background: #0c477e; }
+.small-buttons button:nth-child(2) { background: #c62828; color: #fff; }
+.small-buttons button:nth-child(2):hover { background: #a61c1c; }
+.small-buttons button:nth-child(3) { background: #444; color: #fff; }
+.small-buttons button:nth-child(3):hover { background: #222; }
+
+
 </style>
 </head>
 <body>
@@ -196,6 +227,13 @@
     </div>
   </div>
 
+<!-- Botones secundarios debajo del autofill -->
+<div class="small-buttons">
+  <button type="button" onclick="buscarDNI()">🔍 Consultar</button>
+  <button type="button" onclick="ocultarDNI()">🔒 Cerrar</button>
+  <button type="button" onclick="abrirReniec()">🪪 Servicios Reniec</button>
+</div>
+
   <!-- Autofill (debajo del DNI con animación y fondo bonito) -->
   <div class="autofill" id="autofill">
     <div class="loader" id="loader"></div>
@@ -206,14 +244,7 @@
     </div>
   </div>
 
-  <!-- Botones de búsqueda / ocultar / reniec con estilo -->
-  <div class="buttons" style="justify-content:flex-start;">
-    <button type="button" onclick="buscarDNI()">🔍 Consultar</button>
-    <button type="button" onclick="ocultarDNI()">🔒 Cerrar</button>
-    <button type="button" onclick="abrirReniec()">🪪 Servicios Reniec</button>
-  </div>
-
-<br><br>
+<br>
 
   <div class="input-row">
     <div class="input-group">
@@ -541,12 +572,34 @@ function ocultarDNI(){
   document.getElementById("autofill").classList.remove("show");
 }
 
-/* Abrir / cerrar modal RENIEC */
+/* Abrir Reniec en ventana emergente */
+/* Abrir Reniec en ventana emergente centrada con zoom 90% */
 function abrirReniec(){
-  if (modalReniec) modalReniec.classList.add("show");
-}
-function cerrarReniec(){
-  if (modalReniec) modalReniec.classList.remove("show");
+  // Tamaño base de la ventana
+  const w = 1200;
+  const h = 800;
+
+  // Calcular posición centrada en la pantalla
+  const left = (screen.width - w) / 2;
+  const top = (screen.height - h) / 2;
+
+  // Abrir ventana emergente centrada
+  const popup = window.open(
+    "https://serviciosweb.reniec.gob.pe/aip/logout.do",
+    "popupReniec",
+    `width=${w},height=${h},top=${top},left=${left},scrollbars=yes,resizable=yes`
+  );
+
+  // Cuando cargue, aplicamos zoom (scale 90%)
+  if (popup) {
+    popup.onload = function(){
+      try {
+        popup.document.body.style.zoom = "90%";
+      } catch(e){
+        console.warn("No se puede aplicar zoom por políticas de la página externa (X-Frame-Options)");
+      }
+    };
+  }
 }
 
 /* ---------------------------
