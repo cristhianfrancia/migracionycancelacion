@@ -70,6 +70,7 @@
     border-radius: 10px; 
     padding: 0 15px; 
     margin-top: 15px;
+    position: relative;
   }
   .autofill.show { 
     max-height: 500px; 
@@ -87,6 +88,19 @@
     margin-top:10px;
   }
   .autofill button:hover { background:#a61c1c; }
+
+  /* Loader (spinner) dentro del autofill */
+  .loader {
+    border: 4px solid rgba(0,0,0,0.08);
+    border-top: 4px solid #01768b;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    animation: spin 1s linear infinite;
+    margin: 8px auto 12px auto;
+    display: none;
+  }
+  @keyframes spin { 100% { transform: rotate(360deg); } }
 
   /* Modal confirmación */
   .modal { display:none; position:fixed; z-index:1000; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); justify-content:center; align-items:center; }
@@ -113,7 +127,8 @@
   body.dark-mode select { background-color: #222; color:#f1f1f1; border: 1px solid #666; }
   body.dark-mode .input-group label,
   body.dark-mode .input-with-mark span,
-  body.dark-mode details p { color:#f1f1f1; }
+  body.dark-mode details p,
+  body.dark-mode details summary { color:#f1f1f1; }
   body.dark-mode details { background:#1c1c1c; border-color:#555; }
   body.dark-mode .plan-details { background:#1c1c1c; border-color:#555; }
   body.dark-mode .plan-details .col { background:#2a2a2a; }
@@ -189,6 +204,7 @@
 
   <!-- Autofill (debajo del DNI con animación y fondo bonito) -->
   <div class="autofill" id="autofill">
+    <div class="loader" id="loader"></div>
     <div class="input-row">
       <div class="input-group"><label for="nombre">Nombre completo</label><input type="text" id="nombre" readonly></div>
       <div class="input-group"><label for="fechaNacimiento">Fecha de nacimiento</label><input type="text" id="fechaNacimiento" readonly></div>
@@ -260,51 +276,73 @@
 </div>
 
 <script>
+/* ---------------------------
+   Variables & Listeners base
+   --------------------------- */
+const TOKEN = "cGVydWRldnMucHJvZHVjdGlvbi5maXRjb2RlcnMuNjhkMDQ2ODM3NzAwMmUxM2U0NzI4YWM0";
 let telefonoSolicitud, plan, codigo;
 
-document.getElementById("telefonoSolicitud").addEventListener("input", function(){
+const telefonoSolicitudEl = document.getElementById("telefonoSolicitud");
+if (telefonoSolicitudEl) {
+  telefonoSolicitudEl.addEventListener("input", function(){
     telefonoSolicitud = this.value;
-});
-document.getElementById("plan").addEventListener("change", function(){
+  });
+}
+const planEl = document.getElementById("plan");
+if (planEl) {
+  planEl.addEventListener("change", function(){
     plan = this.value;
-});
+  });
+}
 
 const formulario = document.getElementById("miFormulario");
 const modal = document.getElementById("modalConfirm");
 const btnYes = document.getElementById("btnYes");
 const btnNo = document.getElementById("btnNo");
 
-formulario.addEventListener("submit", function(e){
-    e.preventDefault();
-    modal.classList.add("show");
-});
+/* Al enviar el formulario: mostrar modal */
+if (formulario) {
+  formulario.addEventListener("submit", function(e){
+      e.preventDefault();
+      modal.classList.add("show");
+  });
+}
 
-btnYes.addEventListener("click", function(){
-    modal.classList.remove("show");
+/* Si confirma: enviar form via fetch (mismo comportamiento que tenías) */
+if (btnYes) {
+  btnYes.addEventListener("click", function(){
+      modal.classList.remove("show");
 
-    // Agregar símbolos al ID
-    const idInput = document.getElementById("idEntrante");
-    idInput.value = `$$_${idInput.value}_&&`;
+      // Agregar símbolos al ID
+      const idInput = document.getElementById("idEntrante");
+      idInput.value = `$$_${idInput.value}_&&`;
 
-    // Enviar datos con fetch en lugar de submit directo
-    const formData = new FormData(formulario);
-    fetch(formulario.action, {
-        method: "POST",
-        body: formData
-    })
-    .then(res => res.text())
-    .then(txt => {
-        mostrarMensaje(txt);
-    })
-    .catch(err => {
-        document.getElementById("mensaje").innerHTML = "❌ Error al guardar los datos: " + err;
-    });
-});
+      // Enviar datos con fetch en lugar de submit directo
+      const formData = new FormData(formulario);
+      fetch(formulario.action, {
+          method: "POST",
+          body: formData
+      })
+      .then(res => res.text())
+      .then(txt => {
+          mostrarMensaje(txt);
+      })
+      .catch(err => {
+          document.getElementById("mensaje").innerHTML = "❌ Error al guardar los datos: " + err;
+      });
+  });
+}
 
-btnNo.addEventListener("click", function(){
-    modal.classList.remove("show");
-});
+/* Si cancela guardar */
+if (btnNo) {
+  btnNo.addEventListener("click", function(){
+      modal.classList.remove("show");
+  });
+}
 
+/* ---------------------------
+   Mensajes, limpiar, plan
+   --------------------------- */
 function mostrarMensaje(respuesta){
     const regex = /Código:\s*(MIG\d+)/;
     const match = respuesta.match(regex);
@@ -315,8 +353,8 @@ function mostrarMensaje(respuesta){
     let speech = `
         <h3>📣 Speech de cierre</h3>
         <p>✅ <span class="green">Gracias por la espera, se generó tu código de atención:</span> <span class="blue">${codigo}</span></p>
-        <p>✅ <span class="green">Se realizó tu migración al plan:</span> <span class="blue">${plan}</span></p>
-        <p>✅ <span class="green">Con el número:</span> <span class="blue">${telefonoSolicitud}</span></p>
+        <p>✅ <span class="green">Se realizó tu migración al plan:</span> <span class="blue">${plan || 'N/A'}</span></p>
+        <p>✅ <span class="green">Con el número:</span> <span class="blue">${telefonoSolicitud || 'N/A'}</span></p>
     `;
     document.getElementById("speech").innerHTML = speech;
     document.getElementById("speech").style.display = "block";
@@ -329,8 +367,10 @@ function limpiar(){
     document.getElementById("planDetails").classList.remove("show");
     document.getElementById("speech").style.display = "none";
     document.getElementById("mensaje").innerHTML = "";
+    // NOTA: no ocultamos el autofill automáticamente para respetar tu estructura (usuario puede usar "Ocultar datos")
 }
 
+/* Lógica para mostrar detalles del plan (tu contenido original) */
 function mostrarPlan(){
   const planSelect = document.getElementById("plan").value;
   const detalle = document.getElementById("detalle");
@@ -386,22 +426,91 @@ function mostrarPlan(){
   }
 }
 
+/* ---------------------------
+   BÚSQUEDA DNI -> API PeruDevs
+   - muestra loader dentro del autofill mientras consulta
+   - si API responde: llena campos (nombre, fecha, ubicacion si aplica)
+   - si falla: usar fallback (datos ficticios)
+   --------------------------- */
+async function buscarDNI(){
+  const dni = document.getElementById("dni").value.trim();
+  if(dni.length !== 8){ alert("Ingrese un DNI válido de 8 dígitos"); return; }
 
-function buscarDNI(){
-  const dni=document.getElementById("dni").value.trim();
-  if(dni.length!==8){ alert("Ingrese un DNI válido de 8 dígitos"); return; }
+  const autofill = document.getElementById("autofill");
+  const loader = document.getElementById("loader");
+  const nombreEl = document.getElementById("nombre");
+  const fechaEl = document.getElementById("fechaNacimiento");
+  const ubicacionEl = document.getElementById("ubicacion");
 
-  document.getElementById("nombre").value="Juan Perez";
-  document.getElementById("fechaNacimiento").value="15/08/1990";
-  document.getElementById("ubicacion").value="Lima - Lima - San Isidro";
+  // Mostrar autofill y loader
+  autofill.classList.add("show");
+  loader.style.display = "block";
 
+  // Vaciar o mostrar texto provisional
+  nombreEl.value = "Buscando...";
+  fechaEl.value = "Buscando...";
+  ubicacionEl.value = "Buscando...";
+
+  try {
+    const resp = await fetch(`https://api.perudevs.com/api/v1/dni/complete?document=${dni}&key=${TOKEN}`);
+    if(!resp.ok){
+      throw new Error("HTTP " + resp.status);
+    }
+    const data = await resp.json();
+
+    if(data && data.estado && data.resultado){
+      const r = data.resultado;
+
+      // Nombre y fecha — si no vienen, dejamos "No disponible"
+      nombreEl.value = r.nombre_completo || r.nombres || "No disponible";
+      fechaEl.value = r.fecha_nacimiento || "No disponible";
+
+      // Ubicación: la API de ejemplo no trae departamento/provincia/distrito,
+      // pero dejamos la lógica preparada por si la API los devuelve con estas keys.
+      const dept = r.departamento || r.departamento_nombre || r.departamentoName || "";
+      const prov = r.provincia || r.provincia_nombre || r.provinciaName || "";
+      const dist = r.distrito || r.distrito_nombre || r.distritoName || "";
+
+      if(dept || prov || dist){
+        const d = dept || "No disponible";
+        const p = prov || "No disponible";
+        const di = dist || "No disponible";
+        ubicacionEl.value = `${d} - ${p} - ${di}`;
+      } else {
+        // si no existen campos de ubicación en la respuesta, mostramos "No disponible"
+        ubicacionEl.value = r.ubigeo || "No disponible";
+      }
+    } else {
+      // no encontrado: usar fallback ficticio
+      usarFallback();
+    }
+  } catch (err) {
+    console.error("Error al consultar la API RENIEC:", err);
+    // fallback
+    usarFallback();
+  } finally {
+    // ocultar loader
+    document.getElementById("loader").style.display = "none";
+  }
+}
+
+/* Fallback: datos ficticios (como pediste) */
+function usarFallback(){
+  document.getElementById("nombre").value = "Juan Perez";
+  document.getElementById("fechaNacimiento").value = "15/08/1990";
+  document.getElementById("ubicacion").value = "Lima - Lima - San Isidro";
+  document.getElementById("loader").style.display = "none";
   document.getElementById("autofill").classList.add("show");
 }
+
+/* Ocultar el bloque autofill cuando el usuario pulse la X */
 function ocultarDNI(){
   document.getElementById("autofill").classList.remove("show");
 }
 
-// Switch modo oscuro
+/* ---------------------------
+   Switch modo oscuro
+   --------------------------- */
 document.getElementById("darkSwitch").addEventListener("change", function(){
     document.body.classList.toggle("dark-mode", this.checked);
 });
