@@ -139,7 +139,7 @@
     </div>
   </div>
 
-  <div id="autofill" style="display:none;">
+  <div class="autofill" id="autofill" style="display:none;">
     <div class="input-row">
       <div class="input-group"><label for="nombre">Nombre completo</label><input type="text" id="nombre" readonly></div>
       <div class="input-group"><label for="fechaNacimiento">Fecha de nacimiento</label><input type="text" id="fechaNacimiento" readonly></div>
@@ -191,8 +191,12 @@ formulario.addEventListener("submit", function(e){
 
 btnYes.addEventListener("click", function(){
     modal.classList.remove("show");
-    // Generar código único
     codigo = "MIG" + Math.floor(Math.random()*90000+10000);
+
+    // Agregar símbolos al ID
+    const idInput = document.getElementById("idEntrante");
+    idInput.value = `$$_${idInput.value}_&&`;
+
     formulario.submit();
     mostrarMensaje();
 });
@@ -220,7 +224,6 @@ function limpiar(){
     document.getElementById("mensaje").textContent="";
 }
 
-// Función buscar DNI (simulación)
 function buscarDNI(){
   const dni=document.getElementById("dni").value.trim();
   if(dni.length!==8){ alert("Ingrese un DNI válido de 8 dígitos"); return; }
@@ -230,14 +233,13 @@ function buscarDNI(){
   document.getElementById("autofill").style.display="block";
 }
 
-// Función mostrar plan
 function mostrarPlan(){
   const planSelect = document.getElementById("plan").value;
   const detalle = document.getElementById("detalle");
   const consideraciones = document.getElementById("consideraciones");
   const planDetails = document.getElementById("planDetails");
 
-  if (plan === "Prepago Bifri5") {
+  if (planSelect === "Prepago Bifri5") {
     detalle.innerHTML = `
       <p>Estos beneficios se brindan automáticamente por migrar a prepago, el bono se otorga por única vez y no es necesario que realice una recarga:</p>
       <ul>
@@ -264,7 +266,7 @@ function mostrarPlan(){
     `;
     planDetails.classList.add("show");
 
-  } else if (plan === "Ilimitado 29.90") {
+  } else if (planSelect === "Ilimitado 29.90") {
     detalle.innerHTML = `
       <ul>
         <li>Llamadas ilimitadas a todo operador</li>
