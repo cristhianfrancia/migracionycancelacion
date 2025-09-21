@@ -231,10 +231,11 @@ function mostrarMensaje(){
     document.getElementById("mensaje").textContent="✅ Datos enviados correctamente a la hoja de cálculo.";
     document.getElementById("speech").style.display="block";
     document.getElementById("speech").innerHTML=`
-      <h3>🗣️ Speech final:</h3>
-      <p>Sr./Sra. <span class="green">[Nombre del cliente]</span>, su solicitud de migración ha sido registrada exitosamente. Gracias por confiar en Bitel.</p>
-      <p>Recuerde que toda la información de su línea se mantiene segura y sus beneficios se aplicarán según el plan seleccionado.</p>
-    `;
+        <h3>🗣️ Speech de confirmación:</h3>
+        <p>“Se ha gestionado la migración de su línea <span class="green">${telefonoSolicitud}</span> al plan <span class="green">${plan}</span>. El cambio se realizará en un máximo de 24 horas. Cuando pierda señal, reinicie su equipo y haga una llamada para activar el servicio. Recibirá el código de solicitud por SMS o email.</p>
+        <p>El código de solicitud es <span class="green">${codigo}</span> y lo recibirá por SMS y/o email.</p>
+        <p>“Eso sería todo de mi parte, gracias por comunicarse. En breve recibirá una encuesta por SMS para calificar mi atención. Que tenga un excelente día.”</p>
+      `;
   }
 }
 </script>
