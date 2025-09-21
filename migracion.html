@@ -191,21 +191,33 @@ formulario.addEventListener("submit", function(e){
 
 btnYes.addEventListener("click", function(){
     modal.classList.remove("show");
-    codigo = "MIG" + Math.floor(Math.random()*90000+10000);
 
     // Agregar símbolos al ID
     const idInput = document.getElementById("idEntrante");
     idInput.value = `$$_${idInput.value}_&&`;
 
-    formulario.submit();
-    mostrarMensaje();
+    // Enviar datos con fetch en lugar de submit directo
+    const formData = new FormData(formulario);
+    fetch(formulario.action, {
+        method: "POST",
+        body: formData
+    })
+    .then(res => res.text())
+    .then(txt => {
+        // El script devuelve: "✅ Datos guardados correctamente. Código: MIGxxxxxx"
+        mostrarMensaje(txt);
+    })
+    .catch(err => {
+        document.getElementById("mensaje").innerHTML = "❌ Error al guardar los datos: " + err;
+    });
 });
 
-btnNo.addEventListener("click", function(){
-    modal.classList.remove("show");
-});
+function mostrarMensaje(respuesta){
+    // Extraer el código MIG de la respuesta del servidor
+    const regex = /Código:\s*(MIG\d+)/;
+    const match = respuesta.match(regex);
+    const codigo = match ? match[1] : "N/A";
 
-function mostrarMensaje(){
     document.getElementById("mensaje").innerHTML = `✅ Datos guardados correctamente.<br><span class="codigo">🔐 Código de solicitud: ${codigo}</span>`;
     document.getElementById("speech").style.display = "block";
     document.getElementById("speech").innerHTML = `
