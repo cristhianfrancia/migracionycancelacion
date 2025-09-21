@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Migraciones y Cancelaciones</title>
 <style>
-  body { font-family: Arial, sans-serif; background: #F4F9FB; margin:0; padding:20px; display:flex; justify-content:center; align-items:flex-start; min-height:100vh; }
+  body { font-family: Arial,sans-serif; background:#F4F9FB; margin:0; padding:20px; display:flex; justify-content:center; align-items:flex-start; min-height:100vh; }
   .container { background:#fff; padding:20px 30px; border-radius:14px; box-shadow:0px 6px 14px rgba(0,0,0,0.1); width:90%; max-width:1000px; box-sizing:border-box; }
   h1 { text-align:center; color:#01768b; margin-bottom:20px; font-size:28px; }
   details { margin-bottom:25px; border:1px solid #ccc; border-radius:8px; padding:10px 15px; background:#fafafa; }
@@ -162,7 +162,7 @@
 </div>
 
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx7YIQehgfBlQ3-uW8hHjBFceLiRyv0_O1BcaVGc7Ga8ge_BNUqYM9WT7owlv5sLfGsiQ/exec"; 
+const SCRIPT_URL = "TU_URL_DE_APPS_SCRIPT"; // reemplaza con tu URL de Web App
 const MY_SECRET_TOKEN = "BitelMigracion2025SuperClave";
 
 function buscarDNI(){
@@ -179,18 +179,11 @@ function mostrarPlan(){
   const detalle = document.getElementById("detalle");
   const consideraciones = document.getElementById("consideraciones");
   const planDetails = document.getElementById("planDetails");
-
-  if (plan === "Prepago Bifri5") {
-    detalle.innerHTML = `<p>Beneficios del plan Prepago Bifri5...</p>`;
-    consideraciones.innerHTML = `<p>Consideraciones del plan Prepago Bifri5...</p>`;
+  if(plan){
+    detalle.innerHTML = `<p>Beneficios del plan ${plan}...</p>`;
+    consideraciones.innerHTML = `<p>Consideraciones del plan ${plan}...</p>`;
     planDetails.classList.add("show");
-  } else if (plan === "Ilimitado 29.90") {
-    detalle.innerHTML = `<p>Beneficios del plan Ilimitado 29.90...</p>`;
-    consideraciones.innerHTML = `<p>Consideraciones del plan Ilimitado 29.90...</p>`;
-    planDetails.classList.add("show");
-  } else {
-    planDetails.classList.remove("show");
-  }
+  } else planDetails.classList.remove("show");
 }
 
 function abrirConfirmacion(){ document.getElementById("confirmModal").classList.add("show"); }
@@ -206,12 +199,12 @@ async function guardar(){
   const motivo = document.getElementById("motivo").value;
   const plan = document.getElementById("plan").value;
 
-  if(!usuarioAgente || !telefonoEntrante || !telefonoSolicitud || !dni || !motivo || !plan){
-    document.getElementById("mensaje").textContent = "⚠️ Complete todos los campos obligatorios.";
+  if(!usuarioAgente||!telefonoEntrante||!telefonoSolicitud||!dni||!motivo||!plan){
+    document.getElementById("mensaje").textContent="⚠️ Complete todos los campos obligatorios.";
     return;
   }
 
-  const payload = {
+  const payload={
     token: MY_SECRET_TOKEN,
     usuarioAgente,
     idEntrante: idEntrante ? `$$_${idEntrante}_&&` : '',
@@ -226,32 +219,15 @@ async function guardar(){
   };
 
   try {
-    const resp = await fetch(SCRIPT_URL, {
-      method: "POST",
-      mode: "cors",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    });
-
-    const text = await resp.text();
-    const result = JSON.parse(text);
-
-    if(result.result === "success"){
-      const codigo = result.codigo || "Código no recibido";
-      document.getElementById("mensaje").innerHTML = `✅ Datos guardados correctamente.<br><span class="codigo">🔐 Código de solicitud: ${codigo}</span>`;
-      document.getElementById("speech").style.display = "block";
-      document.getElementById("speech").innerHTML = `
-        <h3>🗣️ Speech de confirmación:</h3>
-        <p>Se ha gestionado la migración de su línea <span class="green">${telefonoSolicitud}</span> al plan <span class="green">${plan}</span>.</p>
-        <p>El código de solicitud es <span class="green">${codigo}</span>.</p>
-      `;
+    const resp=await fetch(SCRIPT_URL,{method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(payload)});
+    const result=await resp.json();
+    if(result.result==="success"){
+      const codigo=result.codigo||"Código no recibido";
+      document.getElementById("mensaje").innerHTML=`✅ Datos guardados correctamente.<br>🔐 Código de solicitud: ${codigo}`;
       limpiar(false);
-    } else {
-      document.getElementById("mensaje").textContent = "❌ Error al guardar: " + (result.message || "Respuesta inesperada");
-    }
+    } else document.getElementById("mensaje").textContent="❌ Error: "+(result.message||"Respuesta inesperada");
   } catch(err){
-    console.error(err);
-    document.getElementById("mensaje").textContent = "❌ Error de conexión o CORS: " + err.message;
+    document.getElementById("mensaje").textContent="❌ Error de conexión: "+err.message;
   }
 }
 
