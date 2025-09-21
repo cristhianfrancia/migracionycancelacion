@@ -42,6 +42,7 @@
   .plan-details .col { padding:10px; background:#fff; border-radius:6px; box-shadow:0 2px 6px rgba(0,0,0,0.05); }
   .plan-details h3 { margin-top:0; color:#01768b; font-size:16px; border-bottom:1px solid #eee; padding-bottom:6px; }
 
+  /* Modal confirmación */
   .modal { display:none; position:fixed; z-index:1000; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); justify-content:center; align-items:center; }
   .modal.show { display:flex; }
   .modal-content { background:#fff; padding:25px; border-radius:12px; text-align:center; max-width:400px; box-shadow:0 6px 14px rgba(0,0,0,0.2); }
@@ -51,7 +52,11 @@
   .btn-yes { background:#01768b; } .btn-yes:hover { background:#0c477e; }
   .btn-no { background:#c62828; } .btn-no:hover { background:#a61c1c; }
 
-  @media (max-width:768px){ .input-row { grid-template-columns: 1fr; } .plan-details .row { grid-template-columns:1fr; } .buttons button, .modal-buttons button { width:100%; } }
+  @media (max-width:768px){ 
+    .input-row { grid-template-columns: 1fr; } 
+    .plan-details .row { grid-template-columns:1fr; } 
+    .buttons button, .modal-buttons button { width:100%; } 
+  }
 </style>
 </head>
 <body>
@@ -153,6 +158,17 @@
 
 <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="mostrarMensaje()"></iframe>
 
+<!-- Modal de confirmación -->
+<div class="modal" id="modalConfirm">
+  <div class="modal-content">
+    <h2>¿Desea guardar los datos ingresados?</h2>
+    <div class="modal-buttons">
+      <button class="btn-yes" id="btnYes">Sí</button>
+      <button class="btn-no" id="btnNo">No</button>
+    </div>
+  </div>
+</div>
+
 <script>
 function buscarDNI(){
   const dni=document.getElementById("dni").value.trim();
@@ -226,8 +242,45 @@ function limpiar(){
   document.getElementById("mensaje").textContent="";
 }
 
+// Variables globales para speech
+let telefonoSolicitud, plan, codigo;
+
+// Actualiza variables antes de enviar
+document.getElementById("telefonoSolicitud").addEventListener("input", function(){
+    telefonoSolicitud = this.value;
+});
+document.getElementById("plan").addEventListener("change", function(){
+    plan = this.value;
+});
+
+// Modal confirmación
+const formulario = document.getElementById("miFormulario");
+const modal = document.getElementById("modalConfirm");
+const btnYes = document.getElementById("btnYes");
+const btnNo = document.getElementById("btnNo");
+
+// Intercepta submit y muestra modal
+formulario.addEventListener("submit", function(e){
+    e.preventDefault(); // evita envío inmediato
+    modal.classList.add("show");
+});
+
+// Botón "Sí" → envía formulario
+btnYes.addEventListener("click", function(){
+    modal.classList.remove("show");
+    formulario.submit();
+});
+
+// Botón "No" → cierra modal
+btnNo.addEventListener("click", function(){
+    modal.classList.remove("show");
+});
+
+// Mensaje de confirmación al cargar iframe
 function mostrarMensaje(){
-  if(document.getElementById("mensaje").textContent===""){
+  try{
+    if(document.getElementById("mensaje").textContent===""){
+      codigo = Math.floor(Math.random()*90000)+10000; // ejemplo de código
       document.getElementById("mensaje").innerHTML = `✅ Datos guardados correctamente.<br><span class="codigo">🔐 Código de solicitud: ${codigo}</span>`;
       document.getElementById("speech").style.display = "block";
       document.getElementById("speech").innerHTML = `
@@ -236,6 +289,12 @@ function mostrarMensaje(){
         <p>El código de solicitud es <span class="green">${codigo}</span> y lo recibirá por SMS y/o email.</p>
         <p>“Eso sería todo de mi parte, gracias por comunicarse. En breve recibirá una encuesta por SMS para calificar mi atención. Que tenga un excelente día.”</p>
       `;
+      limpiar(false);
+    } else {
+      document.getElementById("mensaje").textContent = "❌ Error al guardar: Respuesta inesperada";
+    }
+  } catch(err){
+    document.getElementById("mensaje").textContent = "❌ Error de conexión: " + err.message;
   }
 }
 </script>
