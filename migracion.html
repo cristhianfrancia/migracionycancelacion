@@ -431,7 +431,13 @@ function limpiar(){
     document.getElementById("planDetails").classList.remove("show");
     document.getElementById("speech").style.display = "none";
     document.getElementById("mensaje").innerHTML = "";
-    // NOTA: no ocultamos el autofill automáticamente para respetar tu estructura (usuario puede usar "Ocultar datos")
+
+    // Ocultar autofill y limpiar sus campos
+    const autofill = document.getElementById("autofill");
+    autofill.classList.remove("show");
+    document.getElementById("nombre").value = "";
+    document.getElementById("fechaNacimiento").value = "";
+    document.getElementById("ubicacion").value = "";
 }
 
 /* Lógica para mostrar detalles del plan (tu contenido original) */
