@@ -56,7 +56,7 @@
   .btn-yes { background:#01768b; } .btn-yes:hover { background:#0c477e; }
   .btn-no { background:#c62828; } .btn-no:hover { background:#a61c1c; }
 
-  @media (max-width:768px){ 
+  @media (max-width:1024px){ 
     .input-row { flex-direction:column; } 
     .plan-details .row { grid-template-columns:1fr; } 
     .buttons button, .modal-buttons button { width:100%; } 
@@ -77,14 +77,13 @@
 
 <h2>Llenado de datos</h2>
 <form id="miFormulario" onsubmit="return false;">
+
+  <!-- FILA UNIFORME: Usuario, ID Entrante, ID Saliente -->
   <div class="input-row">
     <div class="input-group">
       <label for="usuarioAgente">Usuario de agente</label>
       <input type="text" id="usuarioAgente" placeholder="cpc_xxxx_vtp" style="text-transform: lowercase;">
     </div>
-  </div>
-
-  <div class="input-row">
     <div class="input-group">
       <label for="idEntrante">ID de llamada entrante</label>
       <div class="input-with-mark">
@@ -168,8 +167,8 @@
 
 <div id="mensaje"></div>
 <div id="speech"></div>
-</div>
 
+<!-- Modal Confirmación -->
 <div id="confirmModal" class="modal">
   <div class="modal-content">
     <h2>⚠️ Confirmación</h2>
@@ -182,6 +181,7 @@
 </div>
 
 <script>
+// SCRIPT Google Apps
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx7YIQehgfBlQ3-uW8hHjBFceLiRyv0_O1BcaVGc7Ga8ge_BNUqYM9WT7owlv5sLfGsiQ/exec"; 
 const MY_SECRET_TOKEN = "BitelMigracion2025SuperClave";
 
@@ -258,19 +258,14 @@ async function guardar(){
     
     if(result.result==="success"){
       const codigo=result.codigo||"Código no recibido";
-      const telefonoSolicitudVal = telefonoSolicitud;
-      const planVal = plan;
-
       document.getElementById("mensaje").innerHTML=`✅ Datos guardados correctamente.<br><span class="codigo">🔐 Código de solicitud: ${codigo}</span>`;
-      
       document.getElementById("speech").style.display="block";
       document.getElementById("speech").innerHTML = `
-        <h3>🗣️ Mensaje de confirmación</h3>
-        <p>Agente: “Se ha gestionado la migración de su línea <span class="green">${telefonoSolicitudVal}</span> al plan <span class="green">${planVal}</span>. El cambio se realizará en un máximo de 24 horas. Cuando pierda señal, reinicie su equipo y haga una llamada para activar el servicio. Recibirá el código de solicitud por SMS o email.</p>
-        <p>El código de solicitud es <span class="green">${codigo}</span> y lo recibirá por SMS y/o email.</p>
-        <p>“Eso sería todo de mi parte, gracias por comunicarse. En breve recibirá una encuesta por SMS para calificar mi atención. Que tenga un excelente día.”</p>
-      `;
-      
+    <h3>🗣️ Mensaje de confirmación</h3>
+    <p>Agente: “Se ha gestionado la migración de su línea <span class="green">${telefonoSolicitudVal}</span> al plan <span class="green">${planVal}</span>. El cambio se realizará en un máximo de 24 horas. Cuando pierda señal, reinicie su equipo y haga una llamada para activar el servicio. Recibirá el código de solicitud por SMS o email.</p>
+    <p>El código de solicitud es <span class="green">${codigo}</span> y lo recibirá por SMS y/o email.</p>
+    <p>“Eso sería todo de mi parte, gracias por comunicarse. En breve recibirá una encuesta por SMS para calificar mi atención. Que tenga un excelente día.”</p>
+  `;
       limpiar(false);
     } else {
       document.getElementById("mensaje").textContent="❌ Error al guardar: "+(result.message||"Respuesta inesperada");
