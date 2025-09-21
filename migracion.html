@@ -5,23 +5,38 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Migraciones y Cancelaciones</title>
 <style>
-  body { font-family: Arial, sans-serif; background: #F4F9FB; margin:0; padding:20px; display:flex; justify-content:center; align-items:flex-start; min-height:100vh; transition: background 0.3s, color 0.3s; }
-  .container { background:#fff; padding:20px 30px; border-radius:14px; box-shadow:0px 6px 14px rgba(0,0,0,0.1); width:90%; max-width:1000px; box-sizing:border-box; transition: background 0.3s, color 0.3s; }
-  h1 { text-align:center; color:#01768b; margin-bottom:10px; font-size:28px; }
+  body { 
+    font-family: Arial, sans-serif; 
+    background: #F4F9FB; 
+    margin:0; padding:20px; 
+    display:flex; justify-content:center; align-items:flex-start; 
+    min-height:100vh; 
+    transition: background 0.3s, color 0.3s; 
+  }
+  .container { 
+    background:#fff; 
+    padding:20px 30px; 
+    border-radius:14px; 
+    box-shadow:0px 6px 14px rgba(0,0,0,0.1); 
+    width:90%; max-width:1000px; 
+    box-sizing:border-box; 
+    transition: background 0.3s, color 0.3s; 
+  }
+  h1 { text-align:center; color:#01768b; margin-bottom:10px; font-size:28px; font-weight:bold; }
   h1 + hr { border:0; height:4px; background:#fbf32f; border-radius:3px; margin-bottom:20px; }
-  details { margin-bottom:25px; border:1px solid #ccc; border-radius:8px; padding:10px 15px; background:#fafafa; }
+  details { margin-bottom:25px; border:1px solid #ccc; border-radius:8px; padding:10px 15px; background:#fafafa; transition: background 0.3s; }
   details summary { font-weight:bold; cursor:pointer; color:#0c477e; font-size:16px; }
-  details p { margin:10px 0; font-size:15px; }
+  details p { margin:10px 0; font-size:15px; color:#333; }
   h2 { color:#0c477e; font-size:20px; margin-top:20px; border-bottom:3px solid #fbf32f; display:inline-block; padding-bottom:3px; }
   h3 { border-bottom:2px solid #fbf32f; padding-bottom:4px; }
 
   .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
   .input-group { display: flex; flex-direction: column; }
-  .input-group label { font-size: 14px; margin-bottom: 5px; font-weight: 500; color: #333; min-height: 18px; }
-  input, select { width: 100%; padding: 10px; font-size: 14px; border: 1.5px solid #ccc; border-radius: 8px; outline: none; transition: 0.3s; background: #fff; box-sizing:border-box; min-height: 38px; }
+  .input-group label { font-size: 14px; margin-bottom: 5px; font-weight: 500; color: #333; transition: color 0.3s; }
+  input, select { width: 100%; padding: 10px; font-size: 14px; border: 1.5px solid #ccc; border-radius: 8px; outline: none; transition: 0.3s; background: #fff; box-sizing:border-box; min-height: 38px; color:#333; }
   input:focus, select:focus { border-color: #01768b; background: #f8ffff; }
   .input-with-mark { display:flex; align-items:center; gap:4px; }
-  .input-with-mark span { color:#000; }
+  .input-with-mark span { color:#000; transition: color 0.3s; }
 
   .dni-container { display:flex; gap:10px; }
   .dni-container input { flex:1; padding:10px; border:1.5px solid #ccc; border-radius:8px; font-size:14px; }
@@ -32,22 +47,51 @@
   .buttons button { padding:12px 24px; border:none; border-radius:8px; cursor:pointer; font-weight:500; transition:0.3s; font-size:15px; background:#01768b; color:white; }
   .buttons button:hover { background:#0c477e; box-shadow:0 0 8px #fbf32f; }
 
-  #mensaje { margin-top:25px; text-align:center; font-size:15px; font-weight:500; }
-  #speech { margin-top:25px; padding:15px; border:1px dashed #01768b; border-radius:8px; background:#fdfdfd; display:none; }
+  #mensaje { margin-top:25px; text-align:center; font-size:15px; font-weight:500; color:#01768b; }
+  #speech { margin-top:25px; padding:15px; border:1px dashed #01768b; border-radius:8px; background:#fdfdfd; display:none; color:#333; }
   #speech h3 { margin-top:0; margin-bottom:10px; color:#0c477e; font-size:20px; font-weight:bold; }
   #speech .green { color:#01768b; font-weight:bold; }
   .blue { color:#0c477e; }
 
-  .plan-details { margin-top:15px; padding:15px; border:1px solid #ccc; border-radius:8px; background:#fafafa; display:none; }
+  .plan-details { margin-top:15px; padding:15px; border:1px solid #ccc; border-radius:8px; background:#fafafa; display:none; transition: background 0.3s; }
   .plan-details.show { display:block; }
   .plan-details .row { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
   .plan-details .col { padding:10px; background:#fff; border-radius:6px; box-shadow:0 2px 6px rgba(0,0,0,0.05); }
   .plan-details h3 { margin-top:0; color:#01768b; font-size:16px; }
 
+  /* Bloque autofill con animación y estilo */
+  .autofill { 
+    overflow: hidden; 
+    max-height: 0; 
+    opacity: 0; 
+    transition: max-height 0.5s ease, opacity 0.5s ease; 
+    background: #e7f7f9; 
+    border: 1px solid #01768b; 
+    border-radius: 10px; 
+    padding: 0 15px; 
+    margin-top: 15px;
+  }
+  .autofill.show { 
+    max-height: 500px; 
+    opacity: 1; 
+    padding: 15px; 
+  }
+  .autofill .input-row { margin-bottom: 10px; }
+  .autofill button { 
+    background:#c62828; 
+    color:white; 
+    padding:6px 12px; 
+    border:none; 
+    border-radius:6px; 
+    cursor:pointer; 
+    margin-top:10px;
+  }
+  .autofill button:hover { background:#a61c1c; }
+
   /* Modal confirmación */
   .modal { display:none; position:fixed; z-index:1000; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); justify-content:center; align-items:center; }
   .modal.show { display:flex; }
-  .modal-content { background:#fff; padding:25px; border-radius:12px; text-align:center; max-width:400px; box-shadow:0 6px 14px rgba(0,0,0,0.2); }
+  .modal-content { background:#fff; padding:25px; border-radius:12px; text-align:center; max-width:400px; box-shadow:0 6px 14px rgba(0,0,0,0.2); color:#333; }
   .modal-content h2 { color:#0c477e; margin-bottom:15px; }
   .modal-buttons { display:flex; justify-content:center; gap:15px; margin-top:20px; flex-wrap:wrap; }
   .modal-buttons button { padding:10px 20px; border:none; border-radius:6px; cursor:pointer; font-weight:500; color:#fff; }
@@ -65,14 +109,24 @@
   /* Estilos modo oscuro */
   body.dark-mode { background-color: #121212; color: #f1f1f1; }
   body.dark-mode .container { background:#1e1e1e; color:#f1f1f1; }
-  body.dark-mode input, body.dark-mode select { background-color: #222; color:#f1f1f1; border: 1px solid #666; }
+  body.dark-mode input, 
+  body.dark-mode select { background-color: #222; color:#f1f1f1; border: 1px solid #666; }
+  body.dark-mode .input-group label,
+  body.dark-mode .input-with-mark span,
+  body.dark-mode details p { color:#f1f1f1; }
   body.dark-mode details { background:#1c1c1c; border-color:#555; }
   body.dark-mode .plan-details { background:#1c1c1c; border-color:#555; }
   body.dark-mode .plan-details .col { background:#2a2a2a; }
+  body.dark-mode .autofill { background:#1c2b30; border-color:#fbf32f; }
   body.dark-mode .modal-content { background:#1e1e1e; color:#f1f1f1; }
   body.dark-mode h1, 
   body.dark-mode h2, 
   body.dark-mode h3 { color:#fbf32f; }
+  body.dark-mode #speech { background:#1c1c1c; border-color:#fbf32f; color:#eee; }
+  body.dark-mode #speech h3 { color:#fbf32f; }
+  body.dark-mode #mensaje { color:#fbf32f; }
+  body.dark-mode .blue { color:#4eaaff; }
+  body.dark-mode .green { color:#a6ff8a; }
 
   @media (max-width:768px){ 
     .input-row { grid-template-columns: 1fr; } 
@@ -122,6 +176,7 @@
     </div>
   </div>
 
+  <!-- DNI + lupa -->
   <div class="input-row">
     <div class="input-group">
       <label for="dni">Número de documento de identidad</label>
@@ -131,6 +186,18 @@
       </div>
     </div>
   </div>
+
+  <!-- Autofill (debajo del DNI con animación y fondo bonito) -->
+  <div class="autofill" id="autofill">
+    <div class="input-row">
+      <div class="input-group"><label for="nombre">Nombre completo</label><input type="text" id="nombre" readonly></div>
+      <div class="input-group"><label for="fechaNacimiento">Fecha de nacimiento</label><input type="text" id="fechaNacimiento" readonly></div>
+      <div class="input-group"><label for="ubicacion">Departamento - Provincia - Distrito</label><input type="text" id="ubicacion" readonly></div>
+    </div>
+    <button type="button" onclick="ocultarDNI()">Ocultar datos ✖</button>
+  </div>
+
+<br>
 
   <div class="input-row">
     <div class="input-group">
@@ -169,14 +236,6 @@
     <div class="row">
       <div class="col"><h3>🗣️ 1. Speech - Detalle de beneficios</h3><div id="detalle"></div></div>
       <div class="col"><h3>🗣️ 2. Speech - Detalle de consideraciones</h3><div id="consideraciones"></div></div>
-    </div>
-  </div>
-
-  <div class="autofill" id="autofill" style="display:none;">
-    <div class="input-row">
-      <div class="input-group"><label for="nombre">Nombre completo</label><input type="text" id="nombre" readonly></div>
-      <div class="input-group"><label for="fechaNacimiento">Fecha de nacimiento</label><input type="text" id="fechaNacimiento" readonly></div>
-      <div class="input-group"><label for="ubicacion">Departamento - Provincia - Distrito</label><input type="text" id="ubicacion" readonly></div>
     </div>
   </div>
 
@@ -225,10 +284,6 @@ formulario.addEventListener("submit", function(e){
 btnYes.addEventListener("click", function(){
     modal.classList.remove("show");
 
-btnNo.addEventListener("click", function(){
-    modal.classList.remove("show");
-});
-
     // Agregar símbolos al ID
     const idInput = document.getElementById("idEntrante");
     idInput.value = `$$_${idInput.value}_&&`;
@@ -248,36 +303,34 @@ btnNo.addEventListener("click", function(){
     });
 });
 
+btnNo.addEventListener("click", function(){
+    modal.classList.remove("show");
+});
+
 function mostrarMensaje(respuesta){
     const regex = /Código:\s*(MIG\d+)/;
     const match = respuesta.match(regex);
     const codigo = match ? match[1] : "N/A";
 
-    document.getElementById("mensaje").innerHTML = `✅ Datos guardados correctamente.<br><span class="codigo">🔐 Código de solicitud: ${codigo}</span>`;
-    document.getElementById("speech").style.display = "block";
-    document.getElementById("speech").innerHTML = `
-        <h3>🗣️ Speech de confirmación:</h3>
-        <p>“Se ha gestionado la migración de su línea <span class="green">${telefonoSolicitud}</span> al plan <span class="green">${plan}</span>. El cambio se realizará en un máximo de 24 horas. Cuando pierda señal, reinicie su equipo y haga una llamada para activar el servicio.</p>
-        <p>El código de solicitud es <span class="green">${codigo}</span> y lo recibirá por SMS y/o email.</p>
-        <p>“Eso sería todo de mi parte, gracias por comunicarse. En breve recibirá una encuesta por SMS para calificar mi atención. Que tenga un excelente día.”</p>
+    document.getElementById("mensaje").innerHTML = "✅ Datos guardados correctamente. Código: " + codigo;
+
+    let speech = `
+        <h3>📣 Speech de cierre</h3>
+        <p>✅ <span class="green">Gracias por la espera, se generó tu código de atención:</span> <span class="blue">${codigo}</span></p>
+        <p>✅ <span class="green">Se realizó tu migración al plan:</span> <span class="blue">${plan}</span></p>
+        <p>✅ <span class="green">Con el número:</span> <span class="blue">${telefonoSolicitud}</span></p>
     `;
+    document.getElementById("speech").innerHTML = speech;
+    document.getElementById("speech").style.display = "block";
+
+    limpiar();
 }
 
 function limpiar(){
     formulario.reset();
-    document.getElementById("autofill").style.display="none";
     document.getElementById("planDetails").classList.remove("show");
-    document.getElementById("speech").style.display="none";
-    document.getElementById("mensaje").textContent="";
-}
-
-function buscarDNI(){
-  const dni=document.getElementById("dni").value.trim();
-  if(dni.length!==8){ alert("Ingrese un DNI válido de 8 dígitos"); return; }
-  document.getElementById("nombre").value="Juan Perez";
-  document.getElementById("fechaNacimiento").value="15/08/1990";
-  document.getElementById("ubicacion").value="Lima - Lima - San Isidro";
-  document.getElementById("autofill").style.display="block";
+    document.getElementById("speech").style.display = "none";
+    document.getElementById("mensaje").innerHTML = "";
 }
 
 function mostrarPlan(){
@@ -335,12 +388,26 @@ function mostrarPlan(){
   }
 }
 
+
+function buscarDNI(){
+  const dni=document.getElementById("dni").value.trim();
+  if(dni.length!==8){ alert("Ingrese un DNI válido de 8 dígitos"); return; }
+
+  document.getElementById("nombre").value="Juan Perez";
+  document.getElementById("fechaNacimiento").value="15/08/1990";
+  document.getElementById("ubicacion").value="Lima - Lima - San Isidro";
+
+  document.getElementById("autofill").classList.add("show");
+}
+function ocultarDNI(){
+  document.getElementById("autofill").classList.remove("show");
+}
+
 // Switch modo oscuro
-const darkSwitch = document.getElementById("darkSwitch");
-darkSwitch.addEventListener("change", function(){
-  document.body.classList.toggle("dark-mode", this.checked);
+document.getElementById("darkSwitch").addEventListener("change", function(){
+    document.body.classList.toggle("dark-mode", this.checked);
 });
 </script>
-</div>
+
 </body>
 </html>
