@@ -40,8 +40,6 @@
 
   .dni-container { display:flex; gap:10px; }
   .dni-container input { flex:1; padding:10px; border:1.5px solid #ccc; border-radius:8px; font-size:14px; }
-  .dni-container button { padding:10px 15px; background:#01768b; border:none; border-radius:8px; color:white; cursor:pointer; transition:0.3s; }
-  .dni-container button:hover { background:#0c477e; }
 
   .buttons { margin-top:25px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
   .buttons button { padding:12px 24px; border:none; border-radius:8px; cursor:pointer; font-weight:500; transition:0.3s; font-size:15px; background:#01768b; color:white; }
@@ -207,8 +205,13 @@
       <div class="input-group"><label for="ubicacion">Departamento - Provincia - Distrito</label><input type="text" id="ubicacion" readonly></div>
     </div>
   </div>
-<button type="button" onclick="buscarDNI()">🔍</button>
-<button type="button" onclick="ocultarDNI()">Ocultar datos ✖</button>
+
+  <!-- Botones de búsqueda / ocultar / reniec con estilo -->
+  <div class="buttons" style="justify-content:flex-start;">
+    <button type="button" onclick="buscarDNI()">🔍 Consultar</button>
+    <button type="button" onclick="ocultarDNI()">🔒 Cerrar</button>
+    <button type="button" onclick="abrirReniec()">🪪 Servicios Reniec</button>
+  </div>
 
 <br><br>
 
@@ -275,6 +278,27 @@
   </div>
 </div>
 
+<!-- Modal Loader (espera) -->
+<div class="modal" id="modalLoader">
+  <div class="modal-content">
+    <h2>Procesando, espere un momento...</h2>
+    <div class="loader" style="width:40px; height:40px; border-width:5px; margin-top:10px;"></div>
+  </div>
+</div>
+
+<!-- Modal Reniec -->
+<div class="modal" id="modalReniec">
+  <div class="modal-content" style="max-width:920px; width:95%;">
+    <h2>Servicios Reniec</h2>
+    <p style="font-size:13px; color:#666; margin-top:-10px;">Si la página no permite ser embebida, use "Abrir en nueva pestaña".</p>
+    <iframe src="https://serviciosweb.reniec.gob.pe/aip/logout.do" title="RENIEC - Servicios" style="height:520px;"></iframe>
+    <div class="modal-buttons" style="margin-top:12px;">
+      <button class="btn-yes" onclick="window.open('https://serviciosweb.reniec.gob.pe/aip/logout.do','_blank')">Abrir en nueva pestaña</button>
+      <button class="btn-no" onclick="cerrarReniec()">Cerrar</button>
+    </div>
+  </div>
+</div>
+
 <script>
 /* ---------------------------
    Variables & Listeners base
@@ -299,6 +323,8 @@ const formulario = document.getElementById("miFormulario");
 const modal = document.getElementById("modalConfirm");
 const btnYes = document.getElementById("btnYes");
 const btnNo = document.getElementById("btnNo");
+const modalLoader = document.getElementById("modalLoader");
+const modalReniec = document.getElementById("modalReniec");
 
 /* Al enviar el formulario: mostrar modal */
 if (formulario) {
@@ -311,11 +337,19 @@ if (formulario) {
 /* Si confirma: enviar form via fetch (mismo comportamiento que tenías) */
 if (btnYes) {
   btnYes.addEventListener("click", function(){
+      // cerrar confirm
       modal.classList.remove("show");
 
-      // Agregar símbolos al ID
+      // Forzar usuario en minúsculas para que en Sheets llegue en minúscula
+      const userInput = document.getElementById("usuarioAgente");
+      if (userInput) userInput.value = userInput.value.toLowerCase();
+
+      // Agregar símbolos al ID (se mantiene tu formato)
       const idInput = document.getElementById("idEntrante");
-      idInput.value = `$$_${idInput.value}_&&`;
+      if (idInput) idInput.value = `$$_${idInput.value}_&&`;
+
+      // Mostrar modal loader mientras se procesa
+      if (modalLoader) modalLoader.classList.add("show");
 
       // Enviar datos con fetch en lugar de submit directo
       const formData = new FormData(formulario);
@@ -325,9 +359,12 @@ if (btnYes) {
       })
       .then(res => res.text())
       .then(txt => {
+          // ocultar loader
+          if (modalLoader) modalLoader.classList.remove("show");
           mostrarMensaje(txt);
       })
       .catch(err => {
+          if (modalLoader) modalLoader.classList.remove("show");
           document.getElementById("mensaje").innerHTML = "❌ Error al guardar los datos: " + err;
       });
   });
@@ -502,6 +539,14 @@ function usarFallback(){
 /* Ocultar el bloque autofill cuando el usuario pulse la X */
 function ocultarDNI(){
   document.getElementById("autofill").classList.remove("show");
+}
+
+/* Abrir / cerrar modal RENIEC */
+function abrirReniec(){
+  if (modalReniec) modalReniec.classList.add("show");
+}
+function cerrarReniec(){
+  if (modalReniec) modalReniec.classList.remove("show");
 }
 
 /* ---------------------------
