@@ -144,11 +144,12 @@
       <label for="motivo">Motivo de migración</label>
       <select id="motivo">
         <option value="">Seleccione...</option>
-        <option value="Opción 1">Opción 1</option>
-        <option value="Opción 2">Opción 2</option>
-        <option value="Opción 3">Opción 3</option>
+        <option value="Motivo 1">Motivo 1</option>
+        <option value="Motivo 2">Motivo 2</option>
+        <option value="Motivo 3">Motivo 3</option>
       </select>
     </div>
+
     <div class="input-group">
       <label for="plan">Plan deseado a migrar</label>
       <select id="plan" onchange="mostrarPlan()">
@@ -161,8 +162,8 @@
 
   <div class="plan-details" id="planDetails">
     <div class="row">
-      <div class="col"><h3>Detalle</h3><div id="detalle"></div></div>
-      <div class="col"><h3>Consideraciones</h3><div id="consideraciones"></div></div>
+      <div class="col"><h3>🗣️ 1. Speech - Detalle de beneficios</h3><div id="detalle"></div></div>
+      <div class="col"><h3>🗣️ 2. Speech - Detalle de consideraciones</h3><div id="consideraciones"></div></div>
     </div>
   </div>
 
@@ -209,19 +210,58 @@ function buscarDNI(){
 }
 
 function mostrarPlan(){
-  const plan=document.getElementById("plan").value;
-  const detalle=document.getElementById("detalle");
-  const consideraciones=document.getElementById("consideraciones");
-  const planDetails=document.getElementById("planDetails");
-  if(plan==="Bifri5"){
-    detalle.innerHTML="<ul><li>5GB de datos</li><li>Redes sociales libres</li><li>30 minutos a todo operador</li></ul>";
-    consideraciones.innerHTML="<ul><li>Vigencia 30 días</li><li>No acumulable</li><li>Recarga mínima S/5</li></ul>";
+  const plan = document.getElementById("plan").value;
+  const detalle = document.getElementById("detalle");
+  const consideraciones = document.getElementById("consideraciones");
+  const planDetails = document.getElementById("planDetails");
+
+  if (plan === "Bifri5") {
+    detalle.innerHTML = `
+      <p>Estos beneficios se brindan automáticamente por migrar a prepago, el bono se otorga por única vez y no es necesario que realice una recarga:</p>
+      <ul>
+        <li>Llamadas y SMS ilimitados a todo destino nacional</li>
+        <li>650 MB de libre uso + navegación ilimitada a velocidad reducida</li>
+        <li>1.5 GB en alta velocidad para WhatsApp + navegación ilimitada a velocidad reducida</li>
+        <li>1.5 GB en alta velocidad para: Waze, Mobile Legends, Garena Free Fire</li>
+        <li>1 GB en alta velocidad para: YouTube, TikTok, Viki, América TVGO</li>
+        <li>Facebook e Instagram (versión full)</li>
+        <li>Vigencia del bono: 5 días.</li>
+      </ul>
+      <p><strong>¿Estaría de acuerdo en realizar la migración al plan prepago Bifri5?</strong></p>
+    `;
+    consideraciones.innerHTML = `
+<p>“Sr. [Nombre del cliente], la migración es gratuita, mantiene su chip y se ejecuta en un máximo de 24 horas</p>
+<ul>
+        <li>Puede desistir en un plazo de 40 días útiles</li>
+        <li>Debe estar al día en sus pagos, ya que la migración no exime de deudas ni penalidades</li>
+        <li>Este proceso no permite adquirir equipos</li>
+        <li>Su línea debe estar activa y sin bloqueos</li>
+        <li>Conservará sus puntos Bitel no vencidos, pero perderá los beneficios del plan anterior y recibirá los del nuevo</li>
+      <p><strong>¿Está de acuerdo con realizar la migración?</strong></p>
+</ul>
+    `;
     planDetails.classList.add("show");
-  } else if(plan==="Ilimitado 29.90"){
-    detalle.innerHTML="<ul><li>Llamadas ilimitadas a todo operador</li><li>10GB de alta velocidad</li><li>WhatsApp ilimitado</li></ul>";
-    consideraciones.innerHTML="<ul><li>Velocidad reducida después de 10GB</li><li>No incluye roaming</li><li>Costo fijo mensual S/29.90</li></ul>";
+
+  } else if (plan === "Ilimitado 29.90") {
+    detalle.innerHTML = `
+      <ul>
+        <li>Llamadas ilimitadas a todo operador</li>
+        <li>10GB de alta velocidad</li>
+        <li>WhatsApp ilimitado</li>
+      </ul>
+    `;
+    consideraciones.innerHTML = `
+      <ul>
+        <li>Velocidad reducida después de 10GB</li>
+        <li>No incluye roaming</li>
+        <li>Costo fijo mensual S/29.90</li>
+      </ul>
+    `;
     planDetails.classList.add("show");
-  } else { planDetails.classList.remove("show"); }
+
+  } else {
+    planDetails.classList.remove("show");
+  }
 }
 
 function abrirConfirmacion(){ document.getElementById("confirmModal").classList.add("show"); }
@@ -298,6 +338,3 @@ function limpiar(full=true){
 </script>
 </body>
 </html>
-
-
-
