@@ -275,15 +275,15 @@
       <select name="plan" id="plan" onchange="mostrarPlan()" required>
         <option value="">Seleccione:</option>
         <option value="Prepago Bifri5">Prepago Bifri5</option>
-        <option value="Ilimitado 29.90">Ilimitado 29.90</option>
+        <option value="Básico 19.90">Básico 19.90</option>
       </select>
     </div>
   </div>
 
   <div class="plan-details" id="planDetails">
     <div class="row">
-      <div class="col"><h3>🗣️ 1. Speech - Detalle de beneficios</h3><div id="detalle"></div></div>
-      <div class="col"><h3>🗣️ 2. Speech - Detalle de consideraciones</h3><div id="consideraciones"></div></div>
+      <div class="col"><h3>🗣️ 1. Speech - Beneficios</h3><div id="detalle"></div></div>
+      <div class="col"><h3>🗣️ 2. Speech - Consideraciones</h3><div id="consideraciones"></div></div>
     </div>
   </div>
 
@@ -474,13 +474,18 @@ function mostrarPlan(){
     `;
     planDetails.classList.add("show");
 
-  } else if (planSelect === "Ilimitado 29.90") {
+  } else if (planSelect === "Básico 19.90") {
     detalle.innerHTML = `
-      <ul>
-        <li>Llamadas ilimitadas a todo operador</li>
-        <li>10GB de alta velocidad</li>
-        <li>WhatsApp ilimitado</li>
+<p>El cargo fijo del plan es de S/19.90</p>      
+<ul>
+        <li>Llamadas y SMS ilimitados a todo destino nacional</li>
+        <li>20 minutos para EE.UU. Canadá y China</li>
+        <li>2 GB controlados</li>
+        <li>1 GB en alta velocidad para WhatsApp, Garena Free Fire, Mobile Legends, Waze + Navegación ilimitada</li>
+        <li>TV 360 ilimitado si el recibo se paga a tiempo</li>
       </ul>
+<p><strong>Tethering</strong></p>
+<p>En el Plan básico 19.90, no se establecerá ninguna restricción de tethering, ya que el usuario puede compartir todos los datos principales.</p>
     `;
     consideraciones.innerHTML = `
       <ul>
@@ -618,3 +623,4 @@ document.getElementById("darkSwitch").addEventListener("change", function(){
 
 </body>
 </html>
+
