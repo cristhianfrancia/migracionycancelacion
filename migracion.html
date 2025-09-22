@@ -270,14 +270,36 @@
       </select>
     </div>
 
-    <div class="input-group">
-      <label for="plan">Plan deseado a migrar</label>
-      <select name="plan" id="plan" onchange="mostrarPlan()" required>
-        <option value="">Seleccione:</option>
-        <option value="Prepago Bifri5">Prepago Bifri5</option>
-        <option value="Básico 19.90">Básico 19.90</option>
-      </select>
-    </div>
+<div class="input-group">
+  <label for="plan">Plan deseado a migrar</label>
+  <select name="plan" id="plan" onchange="mostrarPlan()" required>
+    <option value="">Seleccione:</option>
+
+    <optgroup label="Prepago">
+      <option value="Prepago Bifri5">Prepago Bifri5</option>
+    </optgroup>
+
+    <optgroup label="Basico">
+      <option value="Basico19_9C">Basico19_9C</option>
+    </optgroup>
+
+    <optgroup label="Ilimitado">
+      <option value="N_ilimitado39C">N_ilimitado39C</option>
+      <option value="N_ilimitado49C">N_ilimitado49C</option>
+      <option value="N_ilimitado55C">N_ilimitado55C</option>
+      <option value="N_ilimitado65C">N_ilimitado65C</option>
+      <option value="N_ilimitado79C">N_ilimitado79C</option>
+      <option value="N_ilimitado105C">N_ilimitado105C</option>
+      <option value="Ilimitado 69_90">Ilimitado 69_90</option>
+    </optgroup>
+
+<optgroup label="Flash">
+      <option value="Flash 29_9">Flash 29_9</option>
+      <option value="Flash 39_9">Flash 39_9</option>
+      <option value="Flash 49_9">Flash 49_9</option>
+      <option value="Flash 109_9">Flash 109_9</option>
+    </optgroup>
+  </select> </div>
   </div>
 
   <div class="plan-details" id="planDetails">
@@ -440,58 +462,249 @@ function limpiar(){
     document.getElementById("ubicacion").value = "";
 }
 
-/* Lógica para mostrar detalles del plan (tu contenido original) */
+
 function mostrarPlan(){
   const planSelect = document.getElementById("plan").value;
   const detalle = document.getElementById("detalle");
   const consideraciones = document.getElementById("consideraciones");
   const planDetails = document.getElementById("planDetails");
 
-    if (planSelect === "Prepago Bifri5") {
+  if (planSelect === "Prepago Bifri5") {
     detalle.innerHTML = `
-      <p>Estos beneficios se brindan automáticamente por migrar a prepago, el bono se otorga por única vez y no es necesario que realice una recarga:</p>
+      <p><strong>Beneficios Prepago Bifri5:</strong></p>
       <ul>
         <li>Llamadas y SMS ilimitados a todo destino nacional</li>
-        <li>650 MB de libre uso + navegación ilimitada a velocidad reducida</li>
-        <li>1.5 GB en alta velocidad para WhatsApp + navegación ilimitada a velocidad reducida</li>
-        <li>1.5 GB en alta velocidad para: Waze, Mobile Legends, Garena Free Fire</li>
-        <li>1 GB en alta velocidad para: YouTube, TikTok, Viki, América TVGO</li>
-        <li>Facebook e Instagram (versión full)</li>
-        <li>Vigencia del bono: 5 días.</li>
+        <li>650 MB libres + navegación ilimitada reducida</li>
+        <li>1.5 GB en WhatsApp, Waze y juegos online</li>
+        <li>1 GB en YouTube, TikTok, América TVGO</li>
+        <li>Vigencia del bono: 5 días</li>
       </ul>
-      <p><strong>¿Estaría de acuerdo en realizar la migración al plan prepago Bifri5?</strong></p>
     `;
     consideraciones.innerHTML = `
-      <p>Sr. [Nombre del cliente], la migración es gratuita, mantiene su chip y se ejecuta en un máximo de 24 horas</p>
+      <p><strong>Consideraciones Prepago Bifri5:</strong></p>
       <ul>
-        <li>Puede desistir en un plazo de 40 días útiles</li>
-        <li>Debe estar al día en sus pagos, ya que la migración no exime de deudas ni penalidades</li>
-        <li>Este proceso no permite adquirir equipos</li>
-        <li>Su línea debe estar activa y sin bloqueos</li>
-        <li>Conservará sus puntos Bitel no vencidos, pero perderá los beneficios del plan anterior y recibirá los del nuevo</li>
+        <li>Migración gratuita y sin cambio de chip</li>
+        <li>Ejecutada en un máximo de 24 horas</li>
+        <li>Puede desistir en 40 días útiles</li>
+        <li>Debe estar al día en sus pagos</li>
+        <li>No incluye adquisición de equipos</li>
       </ul>
-      <p><strong>¿Está de acuerdo con realizar la migración?</strong></p>
     `;
     planDetails.classList.add("show");
 
-  } else if (planSelect === "Básico 19.90") {
+  } else if (planSelect === "Basico19_9C") {
     detalle.innerHTML = `
-<p>El cargo fijo del plan es de S/19.90</p>      
-<ul>
-        <li>Llamadas y SMS ilimitados a todo destino nacional</li>
-        <li>20 minutos para EE.UU. Canadá y China</li>
+      <p><strong>Beneficios Básico 19.90:</strong></p>
+      <ul>
+        <li>Llamadas y SMS ilimitados</li>
+        <li>20 minutos a EE.UU., Canadá y China</li>
         <li>2 GB controlados</li>
-        <li>1 GB en alta velocidad para WhatsApp, Garena Free Fire, Mobile Legends, Waze + Navegación ilimitada</li>
-        <li>TV 360 ilimitado si el recibo se paga a tiempo</li>
+        <li>1 GB para WhatsApp y apps seleccionadas</li>
+        <li>TV360 ilimitado pagando puntualmente</li>
       </ul>
-<p><strong>Tethering</strong></p>
-<p>En el Plan básico 19.90, no se establecerá ninguna restricción de tethering, ya que el usuario puede compartir todos los datos principales.</p>
     `;
     consideraciones.innerHTML = `
+      <p><strong>Consideraciones Básico 19.90:</strong></p>
       <ul>
-        <li>Velocidad reducida después de 10GB</li>
-        <li>No incluye roaming</li>
-        <li>Costo fijo mensual S/29.90</li>
+        <li>Cargo fijo S/19.90</li>
+        <li>No hay restricción de tethering</li>
+        <li>Debe estar al día en pagos</li>
+      </ul>
+    `;
+    planDetails.classList.add("show");
+
+  } else if (planSelect === "N_ilimitado39C") {
+    detalle.innerHTML = `
+      <p><strong>Beneficios N_ilimitado39C:</strong></p>
+      <ul>
+        <li>Llamadas y SMS ilimitados</li>
+        <li>8 GB en alta velocidad</li>
+        <li>WhatsApp y Facebook ilimitados</li>
+        <li>Incluye TV360</li>
+      </ul>
+    `;
+    consideraciones.innerHTML = `
+      <p><strong>Consideraciones:</strong></p>
+      <ul>
+        <li>Cargo fijo S/39.90</li>
+        <li>Se activa en máximo 24 horas</li>
+        <li>Debe estar al día en sus pagos</li>
+      </ul>
+    `;
+    planDetails.classList.add("show");
+
+  } else if (planSelect === "N_ilimitado49C") {
+    detalle.innerHTML = `
+      <p><strong>Beneficios N_ilimitado49C:</strong></p>
+      <ul>
+        <li>Llamadas y SMS ilimitados</li>
+        <li>12 GB de internet</li>
+        <li>Apps ilimitadas: WhatsApp, Facebook, Instagram</li>
+        <li>Incluye TV360</li>
+      </ul>
+    `;
+    consideraciones.innerHTML = `
+      <p><strong>Consideraciones:</strong></p>
+      <ul>
+        <li>Cargo fijo S/49.90</li>
+        <li>Activación en máximo 24 horas</li>
+      </ul>
+    `;
+    planDetails.classList.add("show");
+
+  } else if (planSelect === "N_ilimitado55C") {
+    detalle.innerHTML = `
+      <p><strong>Beneficios N_ilimitado55C:</strong></p>
+      <ul>
+        <li>Llamadas y SMS ilimitados</li>
+        <li>15 GB de internet</li>
+        <li>Redes sociales ilimitadas</li>
+        <li>Incluye TV360</li>
+      </ul>
+    `;
+    consideraciones.innerHTML = `
+      <p><strong>Consideraciones:</strong></p>
+      <ul>
+        <li>Cargo fijo S/55.90</li>
+        <li>Debe estar al día en pagos</li>
+      </ul>
+    `;
+    planDetails.classList.add("show");
+
+  } else if (planSelect === "N_ilimitado65C") {
+    detalle.innerHTML = `
+      <p><strong>Beneficios N_ilimitado65C:</strong></p>
+      <ul>
+        <li>Llamadas y SMS ilimitados</li>
+        <li>20 GB de internet</li>
+        <li>Redes sociales y streaming ilimitados</li>
+      </ul>
+    `;
+    consideraciones.innerHTML = `
+      <p><strong>Consideraciones:</strong></p>
+      <ul>
+        <li>Cargo fijo S/65.90</li>
+        <li>Aplican condiciones de uso justo</li>
+      </ul>
+    `;
+    planDetails.classList.add("show");
+
+  } else if (planSelect === "N_ilimitado79C") {
+    detalle.innerHTML = `
+      <p><strong>Beneficios N_ilimitado79C:</strong></p>
+      <ul>
+        <li>Llamadas y SMS ilimitados</li>
+        <li>25 GB de internet</li>
+        <li>Apps de música y video ilimitadas</li>
+      </ul>
+    `;
+    consideraciones.innerHTML = `
+      <p><strong>Consideraciones:</strong></p>
+      <ul>
+        <li>Cargo fijo S/79.90</li>
+      </ul>
+    `;
+    planDetails.classList.add("show");
+
+  } else if (planSelect === "N_ilimitado105C") {
+    detalle.innerHTML = `
+      <p><strong>Beneficios N_ilimitado105C:</strong></p>
+      <ul>
+        <li>Llamadas y SMS ilimitados</li>
+        <li>40 GB de internet</li>
+        <li>Apps full ilimitadas</li>
+      </ul>
+    `;
+    consideraciones.innerHTML = `
+      <p><strong>Consideraciones:</strong></p>
+      <ul>
+        <li>Cargo fijo S/105.90</li>
+        <li>Debe estar al día en pagos</li>
+      </ul>
+    `;
+    planDetails.classList.add("show");
+
+  } else if (planSelect === "Ilimitado 69_90") {
+    detalle.innerHTML = `
+      <p><strong>Beneficios Ilimitado 69.90:</strong></p>
+      <ul>
+        <li>Llamadas y SMS ilimitados</li>
+        <li>20 GB de internet</li>
+        <li>Apps de streaming ilimitadas</li>
+      </ul>
+    `;
+    consideraciones.innerHTML = `
+      <p><strong>Consideraciones:</strong></p>
+      <ul>
+        <li>Cargo fijo S/69.90</li>
+      </ul>
+    `;
+    planDetails.classList.add("show");
+
+  } else if (planSelect === "Flash 29_9") {
+    detalle.innerHTML = `
+      <p><strong>Beneficios Flash 29.90:</strong></p>
+      <ul>
+        <li>Llamadas y SMS ilimitados</li>
+        <li>5 GB de internet</li>
+        <li>WhatsApp ilimitado</li>
+      </ul>
+    `;
+    consideraciones.innerHTML = `
+      <p><strong>Consideraciones:</strong></p>
+      <ul>
+        <li>Cargo fijo S/29.90</li>
+      </ul>
+    `;
+    planDetails.classList.add("show");
+
+  } else if (planSelect === "Flash 39_9") {
+    detalle.innerHTML = `
+      <p><strong>Beneficios Flash 39.90:</strong></p>
+      <ul>
+        <li>Llamadas y SMS ilimitados</li>
+        <li>10 GB de internet</li>
+        <li>Redes sociales ilimitadas</li>
+      </ul>
+    `;
+    consideraciones.innerHTML = `
+      <p><strong>Consideraciones:</strong></p>
+      <ul>
+        <li>Cargo fijo S/39.90</li>
+      </ul>
+    `;
+    planDetails.classList.add("show");
+
+  } else if (planSelect === "Flash 49_9") {
+    detalle.innerHTML = `
+      <p><strong>Beneficios Flash 49.90:</strong></p>
+      <ul>
+        <li>Llamadas y SMS ilimitados</li>
+        <li>15 GB de internet</li>
+        <li>Redes sociales ilimitadas</li>
+      </ul>
+    `;
+    consideraciones.innerHTML = `
+      <p><strong>Consideraciones:</strong></p>
+      <ul>
+        <li>Cargo fijo S/49.90</li>
+      </ul>
+    `;
+    planDetails.classList.add("show");
+
+  } else if (planSelect === "Flash 109_9") {
+    detalle.innerHTML = `
+      <p><strong>Beneficios Flash 109.90:</strong></p>
+      <ul>
+        <li>Llamadas y SMS ilimitados</li>
+        <li>40 GB de internet</li>
+        <li>Streaming ilimitado</li>
+      </ul>
+    `;
+    consideraciones.innerHTML = `
+      <p><strong>Consideraciones:</strong></p>
+      <ul>
+        <li>Cargo fijo S/109.90</li>
       </ul>
     `;
     planDetails.classList.add("show");
@@ -500,6 +713,8 @@ function mostrarPlan(){
     planDetails.classList.remove("show");
   }
 }
+
+
 
 /* ---------------------------
    BÚSQUEDA DNI -> API PeruDevs
@@ -623,4 +838,3 @@ document.getElementById("darkSwitch").addEventListener("change", function(){
 
 </body>
 </html>
-
