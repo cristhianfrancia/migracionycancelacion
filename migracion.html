@@ -260,15 +260,32 @@
     </div>
 
 
-    <div class="input-group">
-      <label for="motivo">Motivo de migración</label>
-      <select name="motivo" id="motivo" required>
-        <option value="">Seleccione...</option>
-        <option value="Motivo 1">Motivo 1</option>
-        <option value="Motivo 2">Motivo 2</option>
-        <option value="Motivo 3">Motivo 3</option>
-      </select>
-    </div>
+<div class="input-group">
+  <label for="motivo">Motivo de migración</label>
+  <select name="motivo" id="motivo" onchange="mostrarPlan()" required>
+    <option value="">Seleccione:</option>
+
+    <optgroup label="Migración a Prepago">
+      <option value="Centro de pagos no cercanos">Centro de pagos no cercanos</option>
+      <option value="Equipo malogrado">Equipo malogrado</option>
+      <option value="Incumplimiento de promociones ofrecidas">Incumplimiento de promociones ofrecidas</option>
+      <option value="Mala experiencia presentada en Bitel">Mala experiencia presentada en Bitel</option>
+      <option value="Mejor oferta de otro operador">Mejor oferta de otro operador</option>
+      <option value="Motivo de viaje">Motivo de viaje</option>
+      <option value="Motivos Personales">Motivos Personales</option>
+      <option value="Pérdida de SIM Card">Pérdida de SIM Card</option>
+      <option value="Problema no solucionado - Reclamo o incidencia pendiente">Problema no solucionado - Reclamo o incidencia pendiente</option>
+      <option value="Problemas con facturación">Problemas con facturación</option>
+      <option value="Problemas de Servicio - Internet">Problemas de Servicio - Internet</option>
+      <option value="Problemas de Servicio - Llamadas">Problemas de Servicio - Llamadas</option>
+      <option value="Problemas de Servicio - Señal">Problemas de Servicio - Señal</option>
+      <option value="Problemas de Servicio - SMS">Problemas de Servicio - SMS</option>
+      <option value="Problemas económicos">Problemas económicos</option>
+      <option value="Retención de baja de línea">Retención de baja de línea</option>
+      <option value="Tiene otro servicio activo">Tiene otro servicio activo</option>
+    </optgroup>
+  </select>
+  </div>
 
 <div class="input-group">
   <label for="plan">Plan deseado a migrar</label>
