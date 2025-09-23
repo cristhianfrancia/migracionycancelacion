@@ -471,190 +471,325 @@ function mostrarPlan(){
 
   if (planSelect === "Prepago Bifri5") {
     detalle.innerHTML = `
-      <p><strong>Beneficios Prepago Bifri5:</strong></p>
-      <ul>
-        <li>Llamadas y SMS ilimitados a todo destino nacional</li>
-        <li>650 MB libres + navegación ilimitada reducida</li>
-        <li>1.5 GB en WhatsApp, Waze y juegos online</li>
-        <li>1 GB en YouTube, TikTok, América TVGO</li>
-        <li>Vigencia del bono: 5 días</li>
+<p>Los siguientes beneficios se brindan automáticamente por migrar a prepago. El bono se brinda por única vez y no es necesario que realice una recarga.</p>    
+<ul>
+        <li>Llamadas y SMS ilimitados a todo destino nacional.</li>
+        <li>650 MB de libre uso + navegación ilimitada a velocidad reducida.</li>
+        <li>WhatsApp ilimitado.</li>
+        <li>1.5 GB en alta velocidad para: Waze, Mobile Legends, Garena Free Fire.</li>
+        <li>1 GB en alta velocidad para: YouTube, TikTok, Viki, América TVGO.</li>
+        <li>Acceso completo a Facebook e Instagram.</li>
+        <li>Vigencia del bono: 5 días.</li>
       </ul>
+<p>¿Estaría de acuerdo en realizar la migración al plan prepago Bifri5?</p>
+
     `;
     consideraciones.innerHTML = `
-      <p><strong>Consideraciones Prepago Bifri5:</strong></p>
       <ul>
-        <li>Migración gratuita y sin cambio de chip</li>
-        <li>Ejecutada en un máximo de 24 horas</li>
-        <li>Puede desistir en 40 días útiles</li>
-        <li>Debe estar al día en sus pagos</li>
-        <li>No incluye adquisición de equipos</li>
+        <li>La migración es gratuita, mantiene su chip y se ejecuta en un máximo de 24 horas.</li>
+        <li>Puede desistir en un plazo de 40 días útiles.</li>
+        <li>Debe estar al día en sus pagos, ya que la migración no exime de deudas ni penalidades.</li>
+        <li>Este proceso no permite adquirir equipos.</li>
+        <li>Su línea debe estar activa y sin bloqueos.</li>
+        <li>Conservará sus puntos Bitel no vencidos, pero perderá los beneficios del plan anterior y recibirá los del nuevo.</li>
       </ul>
+<p>¿Está de acuerdo con realizar la migración?</p>
     `;
     planDetails.classList.add("show");
 
   } else if (planSelect === "Basico19_9C") {
     detalle.innerHTML = `
-      <p><strong>Beneficios Básico 19.90:</strong></p>
-      <ul>
-        <li>Llamadas y SMS ilimitados</li>
-        <li>20 minutos a EE.UU., Canadá y China</li>
-        <li>2 GB controlados</li>
-        <li>1 GB para WhatsApp y apps seleccionadas</li>
-        <li>TV360 ilimitado pagando puntualmente</li>
-      </ul>
+<p>El cargo fijo del plan es de S/19.90</p>
+<ul>
+<li>Llamadas y SMS ilimitados a todo destino nacional.</li>
+<li>20 minutos para EE.UU. Canadá y China.</li>
+<li>2 GB controlados.</li>
+<li>1 GB en alta velocidad para WhatsApp, Garena Free Fire, Mobile Legends, Waze + navegación ilimitada.</li>
+<li>Navegación ilimitada en TV360 pagando el recibo de forma puntual.</li>
+</ul>
     `;
     consideraciones.innerHTML = `
-      <p><strong>Consideraciones Básico 19.90:</strong></p>
       <ul>
-        <li>Cargo fijo S/19.90</li>
-        <li>No hay restricción de tethering</li>
-        <li>Debe estar al día en pagos</li>
+        <li>Consideración 1</li>
+        <li>Consideración 2</li>
       </ul>
+<p><strong>Tethering</strong></p>
+<ul>
+<li>El plan no se establecerá ninguna restricción de tethering, ya que puede compartir todos los datos principales.</li>
+</ul>
     `;
     planDetails.classList.add("show");
 
   } else if (planSelect === "N_ilimitado39C") {
     detalle.innerHTML = `
-      <p><strong>Beneficios N_ilimitado39C:</strong></p>
-      <ul>
-        <li>Llamadas y SMS ilimitados</li>
-        <li>8 GB en alta velocidad</li>
-        <li>WhatsApp y Facebook ilimitados</li>
-        <li>Incluye TV360</li>
-      </ul>
+<p>El cargo fijo del plan es de S/39.90</p>
+<ul>
+<li>Llamadas y SMS ilimitados a todo destino nacional.</li>
+<li>30 GB en alta velocidad + navegación ilimitada.</li>
+<li>Facebook e Instagram full (ilimitado en baja velocidad).</li>
+<li>WhatsApp ilimitado en baja velocidad.</li>
+<li>1.5 GB (Gigabytes) en alta velocidad para Free Fire, Call of Duty y Waze.</li>
+<li>10 GB (Gigabytes) controlados por 06 meses para Spotify.</li>
+<li>Suscripción premium para TV360 por 6 meses.</li>
+<li>Navegación ilimitada en TV360 pagando el recibo de forma puntual.</li>
+</ul>
+
+<p><Strong><font color=red>Promoción - Plan Mayor (informar solo si el cliente está aumentando su plan, caso contrario, omitir)</font></strong></p>
+<ul>
+<li>En esta oportunidad si usted migra al plan mencionado tendrá 50 GB (Gigabytes) adicionales por 3 meses.</li>
+<li>El beneficio se aplica desde el periodo que se ejecute la migración.</li>
+<li>Para la entrega de la promoción, la línea debe encontrarse activa, en el caso de ingreso a bloqueo (por cualquier motivo), no se hará efectiva la entrega por ese mes, no siendo posible su recuperación.</li>
+<li>Considerar que también perdería automáticamente los beneficios promocionales, si realiza cambios sobre la línea como cambio de titularidad o cambio de número.</li>
+</ul>
     `;
+
     consideraciones.innerHTML = `
-      <p><strong>Consideraciones:</strong></p>
-      <ul>
-        <li>Cargo fijo S/39.90</li>
-        <li>Se activa en máximo 24 horas</li>
-        <li>Debe estar al día en sus pagos</li>
-      </ul>
+<ul>
+<li>Consideración 1</li>
+<li>Consideración 2</li>
+</ul>
+<p><strong>Tethering</strong></p>
+<ul>
+<li>Sobre el TETHERING, según la norma establecida por Osiptel, podrá usar hasta 10 GB (Gigabytes) del total.</li>
+</ul>
     `;
     planDetails.classList.add("show");
+
+
 
   } else if (planSelect === "N_ilimitado49C") {
     detalle.innerHTML = `
-      <p><strong>Beneficios N_ilimitado49C:</strong></p>
-      <ul>
-        <li>Llamadas y SMS ilimitados</li>
-        <li>12 GB de internet</li>
-        <li>Apps ilimitadas: WhatsApp, Facebook, Instagram</li>
-        <li>Incluye TV360</li>
-      </ul>
+<p>El cargo fijo del plan es de S/49.90</p>
+<ul>
+<li>Llamadas y SMS ilimitados a todo destino nacional.</li>
+<li>45 GB en alta velocidad + navegación ilimitada.</li>
+<li>Facebook e Instagram full (ilimitado en baja velocidad).</li>
+<li>WhatsApp ilimitado en baja velocidad.</li>
+<li>1.5 GB (Gigabytes) en alta velocidad para Free Fire, Call of Duty y Waze.</li>
+<li>10 GB (Gigabytes) controlados por 06 meses para Spotify.</li>
+<li>Suscripción premium para TV360 por 6 meses.</li>
+<li>Navegación ilimitada en TV360 pagando el recibo de forma puntual.</li>
+</ul>
+
+<p><Strong><font color=red>Promoción - Plan Mayor (informar solo si el cliente está aumentando su plan, caso contrario, omitir)</font></strong></p>
+<ul>
+<li>En esta oportunidad si usted migra al plan mencionado tendrá 30 GB (Gigabytes) para Tiktok por 3 meses.</li>
+<li>El beneficio se aplica desde el periodo que se ejecute la migración.</li>
+<li>Para la entrega de la promoción, la línea debe encontrarse activa, en el caso de ingreso a bloqueo (por cualquier motivo), no se hará efectiva la entrega por ese mes, no siendo posible su recuperación.</li>
+<li>Considerar que también perdería automáticamente los beneficios promocionales, si realiza cambios sobre la línea como cambio de titularidad o cambio de número.</li>
+</ul>
     `;
+
     consideraciones.innerHTML = `
-      <p><strong>Consideraciones:</strong></p>
-      <ul>
-        <li>Cargo fijo S/49.90</li>
-        <li>Activación en máximo 24 horas</li>
-      </ul>
+<ul>
+<li>Consideración 1</li>
+<li>Consideración 2</li>
+</ul>
+<p><strong>Tethering</strong></p>
+<ul>
+<li>Sobre el TETHERING, según la norma establecida por Osiptel, podrá usar hasta 15 GB (Gigabytes) del total.</li>
+</ul>
     `;
     planDetails.classList.add("show");
 
+
+
   } else if (planSelect === "N_ilimitado55C") {
     detalle.innerHTML = `
-      <p><strong>Beneficios N_ilimitado55C:</strong></p>
-      <ul>
-        <li>Llamadas y SMS ilimitados</li>
-        <li>15 GB de internet</li>
-        <li>Redes sociales ilimitadas</li>
-        <li>Incluye TV360</li>
-      </ul>
+<p>El cargo fijo del plan es de S/55.90</p>
+<ul>
+<li>Llamadas y SMS ilimitados a todo destino nacional.</li>
+<li>75 GB en alta velocidad + navegación ilimitada.</li>
+<li>Facebook e Instagram full (ilimitado en baja velocidad).</li>
+<li>WhatsApp ilimitado en baja velocidad.</li>
+<li>1.5 GB (Gigabytes) en alta velocidad para Free Fire, Call of Duty y Waze.</li>
+<li>10 GB (Gigabytes) controlados por 06 meses para Spotify.</li>
+<li>Suscripción premium para TV360 y Paramount+ por 6 meses.</li>
+<li>Navegación ilimitada en TV360 pagando el recibo de forma puntual.</li>
+</ul>
+
+<p><Strong><font color=red>Promoción - Plan Mayor (informar solo si el cliente está aumentando su plan, caso contrario, omitir)</font></strong></p>
+<ul>
+<li>En esta oportunidad si usted migra al plan mencionado tendrá 30 GB (Gigabytes) para Tiktok por 3 meses.</li>
+<li>El beneficio se aplica desde el periodo que se ejecute la migración.</li>
+<li>Para la entrega de la promoción, la línea debe encontrarse activa, en el caso de ingreso a bloqueo (por cualquier motivo), no se hará efectiva la entrega por ese mes, no siendo posible su recuperación.</li>
+<li>Considerar que también perdería automáticamente los beneficios promocionales, si realiza cambios sobre la línea como cambio de titularidad o cambio de número.</li>
+</ul>
     `;
     consideraciones.innerHTML = `
-      <p><strong>Consideraciones:</strong></p>
-      <ul>
-        <li>Cargo fijo S/55.90</li>
-        <li>Debe estar al día en pagos</li>
-      </ul>
+<ul>
+<li>Consideración 1</li>
+<li>Consideración 2</li>
+</ul>
+<p><strong>Tethering</strong></p>
+<ul>
+<li>Sobre el TETHERING, según la norma establecida por Osiptel, podrá usar hasta 20 GB (Gigabytes) del total.</li>
+</ul>
     `;
     planDetails.classList.add("show");
 
   } else if (planSelect === "N_ilimitado65C") {
     detalle.innerHTML = `
-      <p><strong>Beneficios N_ilimitado65C:</strong></p>
-      <ul>
-        <li>Llamadas y SMS ilimitados</li>
-        <li>20 GB de internet</li>
-        <li>Redes sociales y streaming ilimitados</li>
-      </ul>
+<p>El cargo fijo del plan es de S/65.90</p>
+<ul>
+<li>Llamadas y SMS ilimitados a todo destino nacional.</li>
+<li>100 GB en alta velocidad + navegación ilimitada.</li>
+<li>Facebook e Instagram full (ilimitado en baja velocidad).</li>
+<li>15 GB (Gigabytes) controlados por 06 meses para Spotify.</li>
+<li>Suscripción premium para TV360 y Paramount+ por 6 meses.</li>
+<li>Navegación ilimitada en TV360 pagando el recibo de forma puntual.</li>
+</ul>
+
+<p><Strong><font color=red>Promoción - Plan Mayor (informar solo si el cliente está aumentando su plan, caso contrario, omitir)</font></strong></p>
+<ul>
+<li>En esta oportunidad si usted migra al plan mencionado tendrá 30 GB (Gigabytes) para Tiktok por 3 meses.</li>
+<li>El beneficio se aplica desde el periodo que se ejecute la migración.</li>
+<li>Para la entrega de la promoción, la línea debe encontrarse activa, en el caso de ingreso a bloqueo (por cualquier motivo), no se hará efectiva la entrega por ese mes, no siendo posible su recuperación.</li>
+<li>Considerar que también perdería automáticamente los beneficios promocionales, si realiza cambios sobre la línea como cambio de titularidad o cambio de número.</li>
+</ul>
     `;
+
     consideraciones.innerHTML = `
-      <p><strong>Consideraciones:</strong></p>
-      <ul>
-        <li>Cargo fijo S/65.90</li>
-        <li>Aplican condiciones de uso justo</li>
-      </ul>
+<ul>
+<li>Consideración 1</li>
+<li>Consideración 2</li>
+</ul>
+<p><strong>Tethering</strong></p>
+<ul>
+<li>Sobre el TETHERING, según la norma establecida por Osiptel, podrá usar hasta 25 GB (Gigabytes) del total.</li>
+</ul>
     `;
     planDetails.classList.add("show");
+
+
 
   } else if (planSelect === "N_ilimitado79C") {
     detalle.innerHTML = `
-      <p><strong>Beneficios N_ilimitado79C:</strong></p>
-      <ul>
-        <li>Llamadas y SMS ilimitados</li>
-        <li>25 GB de internet</li>
-        <li>Apps de música y video ilimitadas</li>
-      </ul>
+<p>El cargo fijo del plan es de S/79.90</p>
+<ul>
+<li>Llamadas y SMS ilimitados a todo destino nacional.</li>
+<li>125 GB en alta velocidad + navegación ilimitada.</li>
+<li>Facebook e Instagram full (ilimitado en baja velocidad).</li>
+<li>20 GB (Gigabytes) controlados por 06 meses para Spotify.</li>
+<li>Suscripción premium para TV360 y Paramount+ por 6 meses.</li>
+<li>Navegación ilimitada en TV360 pagando el recibo de forma puntual.</li>
+</ul>
+
+<p><Strong><font color=red>Promoción - Plan Mayor (informar solo si el cliente está aumentando su plan, caso contrario, omitir)</font></strong></p>
+<ul>
+<li>En esta oportunidad si usted migra al plan mencionado tendrá 30 GB (Gigabytes) para Tiktok por 3 meses.</li>
+<li>El beneficio se aplica desde el periodo que se ejecute la migración.</li>
+<li>Para la entrega de la promoción, la línea debe encontrarse activa, en el caso de ingreso a bloqueo (por cualquier motivo), no se hará efectiva la entrega por ese mes, no siendo posible su recuperación.</li>
+<li>Considerar que también perdería automáticamente los beneficios promocionales, si realiza cambios sobre la línea como cambio de titularidad o cambio de número.</li>
+</ul>
     `;
+
     consideraciones.innerHTML = `
-      <p><strong>Consideraciones:</strong></p>
-      <ul>
-        <li>Cargo fijo S/79.90</li>
-      </ul>
+<ul>
+<li>Consideración 1</li>
+<li>Consideración 2</li>
+</ul>
+<p><strong>Tethering</strong></p>
+<ul>
+<li>Sobre el TETHERING, según la norma establecida por Osiptel, podrá usar hasta 30 GB (Gigabytes) del total.</li>
+</ul>
     `;
     planDetails.classList.add("show");
+
+
 
   } else if (planSelect === "N_ilimitado105C") {
     detalle.innerHTML = `
-      <p><strong>Beneficios N_ilimitado105C:</strong></p>
-      <ul>
-        <li>Llamadas y SMS ilimitados</li>
-        <li>40 GB de internet</li>
-        <li>Apps full ilimitadas</li>
-      </ul>
+<p>El cargo fijo del plan es de S/105.90</p>
+<ul>
+<li>Llamadas y SMS ilimitados a todo destino nacional.</li>
+<li>160 GB en alta velocidad + navegación ilimitada.</li>
+<li>Facebook e Instagram full (ilimitado en baja velocidad).</li>
+<li>20 GB (Gigabytes) controlados por 06 meses para Spotify.</li>
+<li>Suscripción premium para TV360 y Paramount+ por 6 meses.</li>
+<li>Navegación ilimitada en TV360 pagando el recibo de forma puntual.</li>
+</ul>
+
+<p><Strong><font color=red>Promoción - Plan Mayor (informar solo si el cliente está aumentando su plan, caso contrario, omitir)</font></strong></p>
+<ul>
+<li>En esta oportunidad si usted migra al plan mencionado tendrá 30 GB (Gigabytes) para Tiktok por 3 meses.</li>
+<li>El beneficio se aplica desde el periodo que se ejecute la migración.</li>
+<li>Para la entrega de la promoción, la línea debe encontrarse activa, en el caso de ingreso a bloqueo (por cualquier motivo), no se hará efectiva la entrega por ese mes, no siendo posible su recuperación.</li>
+<li>Considerar que también perdería automáticamente los beneficios promocionales, si realiza cambios sobre la línea como cambio de titularidad o cambio de número.</li>
+</ul>
     `;
+
     consideraciones.innerHTML = `
-      <p><strong>Consideraciones:</strong></p>
-      <ul>
-        <li>Cargo fijo S/105.90</li>
-        <li>Debe estar al día en pagos</li>
-      </ul>
+<ul>
+<li>Consideración 1</li>
+<li>Consideración 2</li>
+</ul>
+<p><strong>Tethering</strong></p>
+<ul>
+<li>Sobre el TETHERING, según la norma establecida por Osiptel, podrá usar hasta 35 GB (Gigabytes) del total.</li>
+</ul>
     `;
     planDetails.classList.add("show");
+
+
 
   } else if (planSelect === "Ilimitado 69_90") {
     detalle.innerHTML = `
-      <p><strong>Beneficios Ilimitado 69.90:</strong></p>
-      <ul>
-        <li>Llamadas y SMS ilimitados</li>
-        <li>20 GB de internet</li>
-        <li>Apps de streaming ilimitadas</li>
-      </ul>
+<p>El cargo fijo del plan es de S/69.90</p>
+<ul>
+<li>Llamadas y SMS ilimitados a todo destino nacional.</li>
+<li>110 GB en alta velocidad + navegación ilimitada.</li>
+<li>15 GB (Gigabytes) controlados por 06 meses para Spotify.</li>
+<li>Suscripción premium para TV360 y Paramount+ por 6 meses.</li>
+<li>Navegación ilimitada en TV360 pagando el recibo de forma puntual.</li>
+</ul>
     `;
+
     consideraciones.innerHTML = `
-      <p><strong>Consideraciones:</strong></p>
-      <ul>
-        <li>Cargo fijo S/69.90</li>
-      </ul>
+<ul>
+<li>Consideración 1</li>
+<li>Consideración 2</li>
+</ul>
+<p><strong>Tethering</strong></p>
+<ul>
+<li>Sobre el TETHERING, según la norma establecida por Osiptel, podrá usar hasta 25 GB (Gigabytes) del total.</li>
+</ul>
     `;
     planDetails.classList.add("show");
 
+
+
   } else if (planSelect === "Flash 29_9") {
     detalle.innerHTML = `
-      <p><strong>Beneficios Flash 29.90:</strong></p>
-      <ul>
-        <li>Llamadas y SMS ilimitados</li>
-        <li>5 GB de internet</li>
-        <li>WhatsApp ilimitado</li>
-      </ul>
+<p>El cargo fijo del plan es de S/29.90</p>
+<ul>
+<li>Llamadas y SMS ilimitados a todo destino nacional.</li>
+<li>20 GB controlados.</li>
+<li>Facebook e Instagram full.</li>
+<li>WhatsApp ilimitado.</li>
+<li>5 GB (Gigabytes) controlados por 06 meses para Spotify.</li>
+<li>Suscripción premium para TV360 por 6 meses.</li>
+<li>Navegación ilimitada en TV360 pagando el recibo de forma puntual.</li>
+</ul>
+
+<p><Strong><font color=red>Promoción - Plan Mayor (informar solo si el cliente está aumentando su plan, caso contrario, omitir)</font></strong></p>
+<ul>
+<li>En esta oportunidad si usted migra al plan mencionado tendrá 30 GB (Gigabytes) adicionales por 3 meses.</li>
+<li>El beneficio se aplica desde el periodo que se ejecute la migración.</li>
+<li>Para la entrega de la promoción, la línea debe encontrarse activa, en el caso de ingreso a bloqueo (por cualquier motivo), no se hará efectiva la entrega por ese mes, no siendo posible su recuperación.</li>
+<li>En el caso de bloqueo causado por robo o pérdida tendrá un plazo máximo de 14 días para recuperar la promoción, pasado dicho tiempo, se perderá de forma definitiva.</li>
+<li>Considerar que también perdería automáticamente los beneficios promocionales, si realiza cambios sobre la línea como cambio de titularidad o cambio de número.</li>
+</ul>
     `;
     consideraciones.innerHTML = `
-      <p><strong>Consideraciones:</strong></p>
-      <ul>
-        <li>Cargo fijo S/29.90</li>
-      </ul>
+<ul>
+<li>Consideración 1</li>
+<li>Consideración 2</li>
+</ul>
+<p><strong>Tethering</strong></p>
+<ul>
+<li>Sobre el TETHERING, según la norma establecida por Osiptel, podrá usar hasta 5 GB (Gigabytes) del total.</li>
+</ul>
     `;
     planDetails.classList.add("show");
 
@@ -668,10 +803,10 @@ function mostrarPlan(){
       </ul>
     `;
     consideraciones.innerHTML = `
-      <p><strong>Consideraciones:</strong></p>
-      <ul>
-        <li>Cargo fijo S/39.90</li>
-      </ul>
+<ul>
+<li>Consideración 1</li>
+<li>Consideración 2</li>
+</ul>
     `;
     planDetails.classList.add("show");
 
@@ -685,10 +820,10 @@ function mostrarPlan(){
       </ul>
     `;
     consideraciones.innerHTML = `
-      <p><strong>Consideraciones:</strong></p>
-      <ul>
-        <li>Cargo fijo S/49.90</li>
-      </ul>
+<ul>
+<li>Consideración 1</li>
+<li>Consideración 2</li>
+</ul>
     `;
     planDetails.classList.add("show");
 
@@ -702,10 +837,10 @@ function mostrarPlan(){
       </ul>
     `;
     consideraciones.innerHTML = `
-      <p><strong>Consideraciones:</strong></p>
-      <ul>
-        <li>Cargo fijo S/109.90</li>
-      </ul>
+<ul>
+<li>Consideración 1</li>
+<li>Consideración 2</li>
+</ul>
     `;
     planDetails.classList.add("show");
 
@@ -820,7 +955,7 @@ function abrirReniec(){
   if (popup) {
     popup.onload = function(){
       try {
-        popup.document.body.style.zoom = "90%";
+        popup.document.body.style.zoom = "90%";39
       } catch(e){
         console.warn("No se puede aplicar zoom por políticas de la página externa (X-Frame-Options)");
       }
