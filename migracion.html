@@ -503,9 +503,9 @@ function mostrarPlan(){
         <li>Vigencia del bono: 5 días.</li>
       </ul>
 <p>¿Estaría de acuerdo en realizar la migración al plan prepago Bifri5?</p>
-
     `;
-    consideraciones.innerHTML = `
+
+consideraciones.innerHTML = `
       <ul>
         <li>La migración es gratuita, mantiene su chip y se ejecuta en un máximo de 24 horas.</li>
         <li>Puede desistir en un plazo de 40 días útiles.</li>
@@ -527,18 +527,27 @@ function mostrarPlan(){
 <li>2 GB controlados.</li>
 <li>1 GB en alta velocidad para WhatsApp, Garena Free Fire, Mobile Legends, Waze + navegación ilimitada.</li>
 <li>Navegación ilimitada en TV360 pagando el recibo de forma puntual.</li>
-</ul>
-    `;
-    consideraciones.innerHTML = `
-      <ul>
-<li>-</li>
-      </ul>
-<p><strong>Tethering</strong></p>
-<ul>
+<br>
 <li>El plan no se establecerá ninguna restricción de tethering, ya que puede compartir todos los datos principales.</li>
 </ul>
+
+    `;
+
+consideraciones.innerHTML = `
+<ul>
+<li>La migración es gratuita y mantiene su chip.</li>
+<li>Puede desistir en un plazo de 40 días útiles.</li>
+<li>Debe estar al día en sus pagos, ya que la migración no exime de deudas ni penalidades.</li>
+<li>Este proceso no permite adquirir equipos.</li>
+<li>Su línea debe estar activa y sin bloqueos.</li>
+<li>Conservará sus puntos Bitel no vencidos, pero perderá los beneficios del plan anterior y recibirá los del nuevo.</li>
+<li>🧷 Se ejecutará en su primer día de su inicio de ciclo <font color=blue>(indicar ciclo de facturación según corresponda)</font>.</li>
+</ul>
+<p>¿Está de acuerdo con realizar la migración?</p>
     `;
     planDetails.classList.add("show");
+
+
 
   } else if (planSelect === "N_ilimitado39C") {
     detalle.innerHTML = `
@@ -552,6 +561,8 @@ function mostrarPlan(){
 <li>10 GB (Gigabytes) controlados por 06 meses para Spotify.</li>
 <li>Suscripción premium para TV360 por 6 meses.</li>
 <li>Navegación ilimitada en TV360 pagando el recibo de forma puntual.</li>
+<br>
+<li>Sobre el TETHERING, según la norma establecida por Osiptel, podrá usar hasta 10 GB (Gigabytes) del total.</li>
 </ul>
 
 <p><Strong><font color=red>Promoción - Plan Mayor (informar solo si el cliente está aumentando su plan, caso contrario, omitir)</font></strong></p>
@@ -563,14 +574,17 @@ function mostrarPlan(){
 </ul>
     `;
 
-    consideraciones.innerHTML = `
+consideraciones.innerHTML = `
 <ul>
-<li>-</li>
+<li>La migración es gratuita y mantiene su chip.</li>
+<li>Puede desistir en un plazo de 40 días útiles.</li>
+<li>Debe estar al día en sus pagos, ya que la migración no exime de deudas ni penalidades.</li>
+<li>Este proceso no permite adquirir equipos.</li>
+<li>Su línea debe estar activa y sin bloqueos.</li>
+<li>Conservará sus puntos Bitel no vencidos, pero perderá los beneficios del plan anterior y recibirá los del nuevo.</li>
+<li>🧷 Se ejecutará en su primer día de su inicio de ciclo <font color=blue>(indicar ciclo de facturación según corresponda)</font>.</li>
 </ul>
-<p><strong>Tethering</strong></p>
-<ul>
-<li>Sobre el TETHERING, según la norma establecida por Osiptel, podrá usar hasta 10 GB (Gigabytes) del total.</li>
-</ul>
+<p>¿Está de acuerdo con realizar la migración?</p>
     `;
     planDetails.classList.add("show");
 
@@ -588,6 +602,8 @@ function mostrarPlan(){
 <li>10 GB (Gigabytes) controlados por 06 meses para Spotify.</li>
 <li>Suscripción premium para TV360 por 6 meses.</li>
 <li>Navegación ilimitada en TV360 pagando el recibo de forma puntual.</li>
+<br>
+<li>Sobre el TETHERING, según la norma establecida por Osiptel, podrá usar hasta 15 GB (Gigabytes) del total.</li>
 </ul>
 
 <p><Strong><font color=red>Promoción - Plan Mayor (informar solo si el cliente está aumentando su plan, caso contrario, omitir)</font></strong></p>
@@ -599,14 +615,17 @@ function mostrarPlan(){
 </ul>
     `;
 
-    consideraciones.innerHTML = `
+consideraciones.innerHTML = `
 <ul>
-<li>-</li>
+<li>La migración es gratuita y mantiene su chip.</li>
+<li>Puede desistir en un plazo de 40 días útiles.</li>
+<li>Debe estar al día en sus pagos, ya que la migración no exime de deudas ni penalidades.</li>
+<li>Este proceso no permite adquirir equipos.</li>
+<li>Su línea debe estar activa y sin bloqueos.</li>
+<li>Conservará sus puntos Bitel no vencidos, pero perderá los beneficios del plan anterior y recibirá los del nuevo.</li>
+<li>🧷 Se ejecutará en su primer día de su inicio de ciclo <font color=blue>(indicar ciclo de facturación según corresponda)</font>.</li>
 </ul>
-<p><strong>Tethering</strong></p>
-<ul>
-<li>Sobre el TETHERING, según la norma establecida por Osiptel, podrá usar hasta 15 GB (Gigabytes) del total.</li>
-</ul>
+<p>¿Está de acuerdo con realizar la migración?</p>
     `;
     planDetails.classList.add("show");
 
@@ -624,6 +643,8 @@ function mostrarPlan(){
 <li>10 GB (Gigabytes) controlados por 06 meses para Spotify.</li>
 <li>Suscripción premium para TV360 y Paramount+ por 6 meses.</li>
 <li>Navegación ilimitada en TV360 pagando el recibo de forma puntual.</li>
+<br>
+<li>Sobre el TETHERING, según la norma establecida por Osiptel, podrá usar hasta 20 GB (Gigabytes) del total.</li>
 </ul>
 
 <p><Strong><font color=red>Promoción - Plan Mayor (informar solo si el cliente está aumentando su plan, caso contrario, omitir)</font></strong></p>
@@ -634,16 +655,22 @@ function mostrarPlan(){
 <li>Considerar que también perdería automáticamente los beneficios promocionales, si realiza cambios sobre la línea como cambio de titularidad o cambio de número.</li>
 </ul>
     `;
-    consideraciones.innerHTML = `
+
+consideraciones.innerHTML = `
 <ul>
-<li>-</li>
+<li>La migración es gratuita y mantiene su chip.</li>
+<li>Puede desistir en un plazo de 40 días útiles.</li>
+<li>Debe estar al día en sus pagos, ya que la migración no exime de deudas ni penalidades.</li>
+<li>Este proceso no permite adquirir equipos.</li>
+<li>Su línea debe estar activa y sin bloqueos.</li>
+<li>Conservará sus puntos Bitel no vencidos, pero perderá los beneficios del plan anterior y recibirá los del nuevo.</li>
+<li>🧷 Se ejecutará en su primer día de su inicio de ciclo <font color=blue>(indicar ciclo de facturación según corresponda)</font>.</li>
 </ul>
-<p><strong>Tethering</strong></p>
-<ul>
-<li>Sobre el TETHERING, según la norma establecida por Osiptel, podrá usar hasta 20 GB (Gigabytes) del total.</li>
-</ul>
+<p>¿Está de acuerdo con realizar la migración?</p>
     `;
     planDetails.classList.add("show");
+
+
 
   } else if (planSelect === "N_ilimitado65C") {
     detalle.innerHTML = `
@@ -655,6 +682,8 @@ function mostrarPlan(){
 <li>15 GB (Gigabytes) controlados por 06 meses para Spotify.</li>
 <li>Suscripción premium para TV360 y Paramount+ por 6 meses.</li>
 <li>Navegación ilimitada en TV360 pagando el recibo de forma puntual.</li>
+<br>
+<li>Sobre el TETHERING, según la norma establecida por Osiptel, podrá usar hasta 25 GB (Gigabytes) del total.</li>
 </ul>
 
 <p><Strong><font color=red>Promoción - Plan Mayor (informar solo si el cliente está aumentando su plan, caso contrario, omitir)</font></strong></p>
@@ -666,14 +695,17 @@ function mostrarPlan(){
 </ul>
     `;
 
-    consideraciones.innerHTML = `
+consideraciones.innerHTML = `
 <ul>
-<li>-</li>
+<li>La migración es gratuita y mantiene su chip.</li>
+<li>Puede desistir en un plazo de 40 días útiles.</li>
+<li>Debe estar al día en sus pagos, ya que la migración no exime de deudas ni penalidades.</li>
+<li>Este proceso no permite adquirir equipos.</li>
+<li>Su línea debe estar activa y sin bloqueos.</li>
+<li>Conservará sus puntos Bitel no vencidos, pero perderá los beneficios del plan anterior y recibirá los del nuevo.</li>
+<li>🧷 Se ejecutará en su primer día de su inicio de ciclo <font color=blue>(indicar ciclo de facturación según corresponda)</font>.</li>
 </ul>
-<p><strong>Tethering</strong></p>
-<ul>
-<li>Sobre el TETHERING, según la norma establecida por Osiptel, podrá usar hasta 25 GB (Gigabytes) del total.</li>
-</ul>
+<p>¿Está de acuerdo con realizar la migración?</p>
     `;
     planDetails.classList.add("show");
 
@@ -689,6 +721,8 @@ function mostrarPlan(){
 <li>20 GB (Gigabytes) controlados por 06 meses para Spotify.</li>
 <li>Suscripción premium para TV360 y Paramount+ por 6 meses.</li>
 <li>Navegación ilimitada en TV360 pagando el recibo de forma puntual.</li>
+<br>
+<li>Sobre el TETHERING, según la norma establecida por Osiptel, podrá usar hasta 30 GB (Gigabytes) del total.</li>
 </ul>
 
 <p><Strong><font color=red>Promoción - Plan Mayor (informar solo si el cliente está aumentando su plan, caso contrario, omitir)</font></strong></p>
@@ -700,14 +734,17 @@ function mostrarPlan(){
 </ul>
     `;
 
-    consideraciones.innerHTML = `
+consideraciones.innerHTML = `
 <ul>
-<li>-</li>
+<li>La migración es gratuita y mantiene su chip.</li>
+<li>Puede desistir en un plazo de 40 días útiles.</li>
+<li>Debe estar al día en sus pagos, ya que la migración no exime de deudas ni penalidades.</li>
+<li>Este proceso no permite adquirir equipos.</li>
+<li>Su línea debe estar activa y sin bloqueos.</li>
+<li>Conservará sus puntos Bitel no vencidos, pero perderá los beneficios del plan anterior y recibirá los del nuevo.</li>
+<li>🧷 Se ejecutará en su primer día de su inicio de ciclo <font color=blue>(indicar ciclo de facturación según corresponda)</font>.</li>
 </ul>
-<p><strong>Tethering</strong></p>
-<ul>
-<li>Sobre el TETHERING, según la norma establecida por Osiptel, podrá usar hasta 30 GB (Gigabytes) del total.</li>
-</ul>
+<p>¿Está de acuerdo con realizar la migración?</p>
     `;
     planDetails.classList.add("show");
 
@@ -723,6 +760,8 @@ function mostrarPlan(){
 <li>20 GB (Gigabytes) controlados por 06 meses para Spotify.</li>
 <li>Suscripción premium para TV360 y Paramount+ por 6 meses.</li>
 <li>Navegación ilimitada en TV360 pagando el recibo de forma puntual.</li>
+<br>
+<li>Sobre el TETHERING, según la norma establecida por Osiptel, podrá usar hasta 35 GB (Gigabytes) del total.</li>
 </ul>
 
 <p><Strong><font color=red>Promoción - Plan Mayor (informar solo si el cliente está aumentando su plan, caso contrario, omitir)</font></strong></p>
@@ -734,14 +773,17 @@ function mostrarPlan(){
 </ul>
     `;
 
-    consideraciones.innerHTML = `
+consideraciones.innerHTML = `
 <ul>
-<li>-</li>
+<li>La migración es gratuita y mantiene su chip.</li>
+<li>Puede desistir en un plazo de 40 días útiles.</li>
+<li>Debe estar al día en sus pagos, ya que la migración no exime de deudas ni penalidades.</li>
+<li>Este proceso no permite adquirir equipos.</li>
+<li>Su línea debe estar activa y sin bloqueos.</li>
+<li>Conservará sus puntos Bitel no vencidos, pero perderá los beneficios del plan anterior y recibirá los del nuevo.</li>
+<li>🧷 Se ejecutará en su primer día de su inicio de ciclo <font color=blue>(indicar ciclo de facturación según corresponda)</font>.</li>
 </ul>
-<p><strong>Tethering</strong></p>
-<ul>
-<li>Sobre el TETHERING, según la norma establecida por Osiptel, podrá usar hasta 35 GB (Gigabytes) del total.</li>
-</ul>
+<p>¿Está de acuerdo con realizar la migración?</p>
     `;
     planDetails.classList.add("show");
 
@@ -756,17 +798,22 @@ function mostrarPlan(){
 <li>15 GB (Gigabytes) controlados por 06 meses para Spotify.</li>
 <li>Suscripción premium para TV360 y Paramount+ por 6 meses.</li>
 <li>Navegación ilimitada en TV360 pagando el recibo de forma puntual.</li>
-</ul>
-    `;
-
-    consideraciones.innerHTML = `
-<ul>
-<li>-</li>
-</ul>
-<p><strong>Tethering</strong></p>
-<ul>
+<br>
 <li>Sobre el TETHERING, según la norma establecida por Osiptel, podrá usar hasta 25 GB (Gigabytes) del total.</li>
 </ul>
+`;
+
+consideraciones.innerHTML = `
+<ul>
+<li>La migración es gratuita y mantiene su chip.</li>
+<li>Puede desistir en un plazo de 40 días útiles.</li>
+<li>Debe estar al día en sus pagos, ya que la migración no exime de deudas ni penalidades.</li>
+<li>Este proceso no permite adquirir equipos.</li>
+<li>Su línea debe estar activa y sin bloqueos.</li>
+<li>Conservará sus puntos Bitel no vencidos, pero perderá los beneficios del plan anterior y recibirá los del nuevo.</li>
+<li>🧷 Se ejecutará en su primer día de su inicio de ciclo <font color=blue>(indicar ciclo de facturación según corresponda)</font>.</li>
+</ul>
+<p>¿Está de acuerdo con realizar la migración?</p>
     `;
     planDetails.classList.add("show");
 
@@ -783,6 +830,8 @@ function mostrarPlan(){
 <li>5 GB (Gigabytes) controlados por 06 meses para Spotify.</li>
 <li>Suscripción premium para TV360 por 6 meses.</li>
 <li>Navegación ilimitada en TV360 pagando el recibo de forma puntual.</li>
+<br>
+<li>Sobre el TETHERING, según la norma establecida por Osiptel, podrá usar hasta 5 GB (Gigabytes) del total.</li>
 </ul>
 
 <p><Strong><font color=red>Promoción - Plan Mayor (informar solo si el cliente está aumentando su plan, caso contrario, omitir)</font></strong></p>
@@ -794,17 +843,22 @@ function mostrarPlan(){
 <li>Considerar que también perdería automáticamente los beneficios promocionales, si realiza cambios sobre la línea como cambio de titularidad o cambio de número.</li>
 </ul>
     `;
-    consideraciones.innerHTML = `
+
+consideraciones.innerHTML = `
 <ul>
-<li>Consideración 1</li>
-<li>Consideración 2</li>
+<li>La migración es gratuita y mantiene su chip.</li>
+<li>Puede desistir en un plazo de 40 días útiles.</li>
+<li>Debe estar al día en sus pagos, ya que la migración no exime de deudas ni penalidades.</li>
+<li>Este proceso no permite adquirir equipos.</li>
+<li>Su línea debe estar activa y sin bloqueos.</li>
+<li>Conservará sus puntos Bitel no vencidos, pero perderá los beneficios del plan anterior y recibirá los del nuevo.</li>
+<li>🧷 Se ejecutará en su primer día de su inicio de ciclo <font color=blue>(indicar ciclo de facturación según corresponda)</font>.</li>
 </ul>
-<p><strong>Tethering</strong></p>
-<ul>
-<li>Sobre el TETHERING, según la norma establecida por Osiptel, podrá usar hasta 5 GB (Gigabytes) del total.</li>
-</ul>
+<p>¿Está de acuerdo con realizar la migración?</p>
     `;
     planDetails.classList.add("show");
+
+
 
   } else if (planSelect === "Flash 39_9") {
     detalle.innerHTML = `
@@ -818,14 +872,23 @@ function mostrarPlan(){
 <li>Suscripción premium para TV360 por 6 meses.</li>
 <li>Navegación ilimitada en TV360 pagando el recibo de forma puntual.</li>
 </ul>
-
     `;
-    consideraciones.innerHTML = `
+
+consideraciones.innerHTML = `
 <ul>
-<li>-</li>
+<li>La migración es gratuita y mantiene su chip.</li>
+<li>Puede desistir en un plazo de 40 días útiles.</li>
+<li>Debe estar al día en sus pagos, ya que la migración no exime de deudas ni penalidades.</li>
+<li>Este proceso no permite adquirir equipos.</li>
+<li>Su línea debe estar activa y sin bloqueos.</li>
+<li>Conservará sus puntos Bitel no vencidos, pero perderá los beneficios del plan anterior y recibirá los del nuevo.</li>
+<li>🧷 Se ejecutará en su primer día de su inicio de ciclo <font color=blue>(indicar ciclo de facturación según corresponda)</font>.</li>
 </ul>
+<p>¿Está de acuerdo con realizar la migración?</p>
     `;
     planDetails.classList.add("show");
+
+
 
   } else if (planSelect === "Flash 49_9") {
     detalle.innerHTML = `
@@ -840,12 +903,22 @@ function mostrarPlan(){
 <li>Navegación ilimitada en TV360 pagando el recibo de forma puntual.</li>
 </ul>
     `;
-    consideraciones.innerHTML = `
+
+consideraciones.innerHTML = `
 <ul>
-<li>-</li>
+<li>La migración es gratuita y mantiene su chip.</li>
+<li>Puede desistir en un plazo de 40 días útiles.</li>
+<li>Debe estar al día en sus pagos, ya que la migración no exime de deudas ni penalidades.</li>
+<li>Este proceso no permite adquirir equipos.</li>
+<li>Su línea debe estar activa y sin bloqueos.</li>
+<li>Conservará sus puntos Bitel no vencidos, pero perderá los beneficios del plan anterior y recibirá los del nuevo.</li>
+<li>🧷 Se ejecutará en su primer día de su inicio de ciclo <font color=blue>(indicar ciclo de facturación según corresponda)</font>.</li>
 </ul>
+<p>¿Está de acuerdo con realizar la migración?</p>
     `;
     planDetails.classList.add("show");
+
+
 
   } else if (planSelect === "Flash 109_9") {
     detalle.innerHTML = `
@@ -862,8 +935,15 @@ function mostrarPlan(){
     `;
     consideraciones.innerHTML = `
 <ul>
-<li>-</li>
+<li>La migración es gratuita y mantiene su chip.</li>
+<li>Puede desistir en un plazo de 40 días útiles.</li>
+<li>Debe estar al día en sus pagos, ya que la migración no exime de deudas ni penalidades.</li>
+<li>Este proceso no permite adquirir equipos.</li>
+<li>Su línea debe estar activa y sin bloqueos.</li>
+<li>Conservará sus puntos Bitel no vencidos, pero perderá los beneficios del plan anterior y recibirá los del nuevo.</li>
+<li>🧷 Se ejecutará en su primer día de su inicio de ciclo <font color=blue>(indicar ciclo de facturación según corresponda)</font>.</li>
 </ul>
+<p>¿Está de acuerdo con realizar la migración?</p>
     `;
     planDetails.classList.add("show");
 
