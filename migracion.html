@@ -205,10 +205,14 @@
   <input type="hidden" name="token" value="BitelMigracion2025SuperClave">
 
   <div class="input-row">
-    <div class="input-group">
-      <label for="usuarioAgente">Usuario de agente</label>
-      <input type="text" name="usuarioAgente" id="usuarioAgente" placeholder="cpc_xxxxxx_vtp" style="text-transform: lowercase;" required>
-    </div>
+<div class="input-group">
+  <label for="usuarioAgente">Usuario de agente</label>
+  <div class="input-with-mark">
+    <input list="usuarios-sugeridos" name="usuarioAgente" id="usuarioAgente" placeholder="cpc_xxxxxx_vtp" style="text-transform: lowercase;" required>
+    <datalist id="usuarios-sugeridos"></datalist>
+  </div>
+  </div>
+
 
     <div class="input-group">
       <label for="idEntrante">ID de llamada entrante</label>
@@ -217,12 +221,14 @@
       </div>
       </div>
 
+
     <div class="input-group">
       <label for="idsaliente">ID de llamada saliente</label>
       <div class="input-with-mark">
         <input type="text" name="idsaliente" id="idsaliente" placeholder="(ID directo)" >
       </div>
-    </div>
+      </div>
+
 
 
     <div class="input-group">
@@ -419,8 +425,9 @@ if (formulario) {
 
 /* Si confirma: enviar form via fetch */
 if (btnYes) {
-  btnYes.addEventListener("click", function(){
-      // cerrar confirm
+btnYes.addEventListener("click", function(){
+
+// cerrar confirm
       modal.classList.remove("show");
       envioEnProceso = true; // ✅ marcamos que ya está en proceso
 
@@ -440,10 +447,10 @@ if (idSalienteInput && idSalienteInput.value && !idSalienteInput.value.startsWit
   idSalienteInput.value = `$$_${idSalienteInput.value}_&&`;
 }
 
-      // Mostrar loader
+// Mostrar loader
       if (modalLoader) modalLoader.classList.add("show");
 
-      // Enviar datos
+// Enviar datos
       const formData = new FormData(formulario);
       fetch(formulario.action, {
           method: "POST",
@@ -463,6 +470,27 @@ if (idSalienteInput && idSalienteInput.value && !idSalienteInput.value.startsWit
   });
 }
 
+
+// Al cargar la página, traer lista de usuarios desde la hoja "User"
+document.addEventListener("DOMContentLoaded", () => {
+  fetch("https://script.google.com/macros/s/AKfycbzq3MWR3rI5ZkLNlkwOs6PuHNx9ipVRpeesOmS2XbtE7olSWHfO-V757wQ7tLJpsvHlbA/exec?action=getUsers")
+    .then(res => res.json())
+    .then(users => {
+      const dataList = document.getElementById("usuarios-sugeridos");
+      if (dataList) {
+        dataList.innerHTML = ""; // limpiar por si acaso
+        users.forEach(user => {
+          const option = document.createElement("option");
+          option.value = user;
+          dataList.appendChild(option);
+        });
+      }
+    })
+    .catch(err => console.error("Error cargando usuarios:", err));
+});
+
+
+
 // Formato en tiempo real mejorado (soporta borrar y mantiene caret)
 function aplicarFormatoTiempoReal(input) {
   // Guardamos el estado previo antes del cambio para calcular el caret luego
@@ -473,11 +501,12 @@ function aplicarFormatoTiempoReal(input) {
   });
 
   input.addEventListener("input", function (e) {
-    // Valor previo (formateado) y raw previo
+
+// Valor previo (formateado) y raw previo
     const prevVal = this._prevValue !== undefined ? this._prevValue : this.value;
     const prevRaw = prevVal.replace(/^\$\$_/, "").replace(/_&&$/, "");
 
-    // Valor actual (posible que el usuario haya escrito símbolos manualmente)
+// Valor actual (posible que el usuario haya escrito símbolos manualmente)
     let current = this.value;
 
     // Sacamos cualquier prefijo/sufijo que haya quedado para obtener el raw real
@@ -496,39 +525,44 @@ function aplicarFormatoTiempoReal(input) {
       return;
     }
 
-    // Calculamos índice relativo en raw basado en la selección anterior
+// Calculamos índice relativo en raw basado en la selección anterior
     let prevCaret = (this._prevSelStart !== undefined) ? this._prevSelStart : (3 + prevRaw.length);
     let caretRawIndex;
     if (prevCaret <= 3) caretRawIndex = 0;
     else caretRawIndex = Math.max(0, Math.min(prevRaw.length, prevCaret - 3));
 
-    // Intento de ajuste según el tipo de entrada (insert/delete)
+// Intento de ajuste según el tipo de entrada (insert/delete)
     const inputType = e.inputType || "";
     if (inputType.startsWith("insert")) {
-      // Si se insertó texto, colocamos el caret después del nuevo char (si es posible)
-      // Estimamos que el usuario insertó en la posición caretRawIndex
+
+// Si se insertó texto, colocamos el caret después del nuevo char (si es posible)
+
+// Estimamos que el usuario insertó en la posición caretRawIndex
       caretRawIndex = Math.min(raw.length, caretRawIndex + 1);
     } else if (inputType.startsWith("delete")) {
-      // En caso de borrado, caretRawIndex ya apunta bien (no lo incrementamos)
+
+// En caso de borrado, caretRawIndex ya apunta bien (no lo incrementamos)
       caretRawIndex = Math.min(raw.length, caretRawIndex);
     } else {
-      // otros (paste, cut, etc.) → ajustar al final del segmento editado
+
+// otros (paste, cut, etc.) → ajustar al final del segmento editado
       caretRawIndex = Math.min(raw.length, caretRawIndex);
     }
 
-    // Seteamos el valor formateado
+// Seteamos el valor formateado
     const newFormatted = `$$_${raw}_&&`;
     this.value = newFormatted;
 
-    // Colocamos el caret en la posición correspondiente (antes del sufijo)
+// Colocamos el caret en la posición correspondiente (antes del sufijo)
     const newCaretPos = 3 + Math.max(0, Math.min(raw.length, caretRawIndex));
     try {
       this.setSelectionRange(newCaretPos, newCaretPos);
     } catch (err) {
-      // en algunos navegadores/estados puede fallar; no es crítico
+
+// en algunos navegadores/estados puede fallar; no es crítico
     }
 
-    // Actualizamos estado previo para el siguiente evento
+// Actualizamos estado previo para el siguiente evento
     this._prevValue = this.value;
     this._prevSelStart = this.selectionStart;
     this._prevSelEnd = this.selectionEnd;
