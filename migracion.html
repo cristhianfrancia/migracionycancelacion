@@ -262,30 +262,34 @@
 
 <div class="input-group">
   <label for="motivo">Motivo de migración</label>
-  <select name="motivo" id="motivo" onchange="mostrarPlan()" required>
-    <option value="">Seleccione:</option>
+  <input list="motivos-sugeridos" name="motivo" id="motivo" placeholder="Seleccione o ingrese un motivo" required>
+  <datalist id="motivos-sugeridos">
+    <option value="Prepago: Centro de pagos no cercanos"></option>
+    <option value="Prepago: Equipo malogrado"></option>
+    <option value="Prepago: Incumplimiento de promociones ofrecidas"></option>
+    <option value="Prepago: Mala experiencia presentada en Bitel"></option>
+    <option value="Prepago: Mejor oferta de otro operador"></option>
+    <option value="Prepago: Motivo de viaje"></option>
+    <option value="Prepago: Motivos Personales"></option>
+    <option value="Prepago: Pérdida de SIM Card"></option>
+    <option value="Prepago: Problema no solucionado - Reclamo o incidencia pendiente"></option>
+    <option value="Prepago: Problemas con facturación"></option>
+    <option value="Prepago: Problemas de Servicio - Internet"></option>
+    <option value="Prepago: Problemas de Servicio - Llamadas"></option>
+    <option value="Prepago: Problemas de Servicio - Señal"></option>
+    <option value="Prepago: Problemas de Servicio - SMS"></option>
+    <option value="Prepago: Problemas económicos"></option>
+    <option value="Prepago: Retención de baja de línea"></option>
+    <option value="Prepago: Tiene otro servicio activo"></option>
+  </datalist>
+</div>
 
-    <optgroup label="Migración a Prepago">
-      <option value="Centro de pagos no cercanos">Centro de pagos no cercanos</option>
-      <option value="Equipo malogrado">Equipo malogrado</option>
-      <option value="Incumplimiento de promociones ofrecidas">Incumplimiento de promociones ofrecidas</option>
-      <option value="Mala experiencia presentada en Bitel">Mala experiencia presentada en Bitel</option>
-      <option value="Mejor oferta de otro operador">Mejor oferta de otro operador</option>
-      <option value="Motivo de viaje">Motivo de viaje</option>
-      <option value="Motivos Personales">Motivos Personales</option>
-      <option value="Pérdida de SIM Card">Pérdida de SIM Card</option>
-      <option value="Problema no solucionado - Reclamo o incidencia pendiente">Problema no solucionado - Reclamo o incidencia pendiente</option>
-      <option value="Problemas con facturación">Problemas con facturación</option>
-      <option value="Problemas de Servicio - Internet">Problemas de Servicio - Internet</option>
-      <option value="Problemas de Servicio - Llamadas">Problemas de Servicio - Llamadas</option>
-      <option value="Problemas de Servicio - Señal">Problemas de Servicio - Señal</option>
-      <option value="Problemas de Servicio - SMS">Problemas de Servicio - SMS</option>
-      <option value="Problemas económicos">Problemas económicos</option>
-      <option value="Retención de baja de línea">Retención de baja de línea</option>
-      <option value="Tiene otro servicio activo">Tiene otro servicio activo</option>
-    </optgroup>
-  </select>
-  </div>
+<div class="input-group" id="manualMotivoGroup" style="display:none; margin-top: 15px;">
+  <label for="motivoManual">Motivo manual</label>
+  <input type="text" name="motivoManual" id="motivoManual" placeholder="Ingrese el motivo aquí..." disabled>
+</div>
+
+
 
 <div class="input-group">
   <label for="plan">Plan deseado a migrar</label>
@@ -867,6 +871,33 @@ function mostrarPlan(){
     planDetails.classList.remove("show");
   }
 }
+
+
+/* Nueva función para mostrar/ocultar el campo de texto manual */
+function toggleManualInput() {
+    const motivoSelect = document.getElementById("motivo");
+    const manualMotivoGroup = document.getElementById("manualMotivoGroup");
+    const motivoManualInput = document.getElementById("motivoManual");
+
+    if (motivoSelect.value === "manual_input") {
+        manualMotivoGroup.style.display = "flex";
+        motivoManualInput.disabled = false;
+        motivoManualInput.setAttribute("required", "");
+        // Deshabilita la selección de "motivo" para evitar que se envíe con el valor "manual_input"
+        motivoSelect.removeAttribute("required");
+        motivoSelect.name = "";
+    } else {
+        manualMotivoGroup.style.display = "none";
+        motivoManualInput.disabled = true;
+        motivoManualInput.removeAttribute("required");
+        // Habilita la selección de "motivo" para que se envíe el valor correcto
+        motivoSelect.setAttribute("required", "");
+        motivoSelect.name = "motivo";
+    }
+}
+
+
+
 
 
 
