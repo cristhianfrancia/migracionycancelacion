@@ -30,7 +30,7 @@
   h2 { color:#0c477e; font-size:20px; margin-top:20px; border-bottom:3px solid #fbf32f; display:inline-block; padding-bottom:3px; }
   h3 { border-bottom:2px solid #fbf32f; padding-bottom:4px; }
 
-  .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+  .input-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 20px; }
   .input-group { display: flex; flex-direction: column; }
   .input-group label { font-size: 14px; margin-bottom: 5px; font-weight: 500; color: #333; transition: color 0.3s; }
   input, select { width: 100%; padding: 10px; font-size: 14px; border: 1.5px solid #ccc; border-radius: 8px; outline: none; transition: 0.3s; background: #fff; box-sizing:border-box; min-height: 38px; color:#333; }
@@ -206,6 +206,26 @@
 
   <div class="input-row">
     <div class="input-group">
+      <label for="usuarioAgente">Usuario de agente</label>
+      <input type="text" name="usuarioAgente" id="usuarioAgente" placeholder="cpc_xxxxxx_vtp" style="text-transform: lowercase;" required>
+    </div>
+
+    <div class="input-group">
+      <label for="idEntrante">ID de llamada entrante</label>
+      <div class="input-with-mark">
+        <input type="text" name="idEntrante" id="idEntrante" placeholder="$$_(ID directo)_&&" required>
+      </div>
+      </div>
+
+    <div class="input-group">
+      <label for="idsaliente">ID de llamada saliente</label>
+      <div class="input-with-mark">
+        <input type="text" name="idsaliente" id="idsaliente" placeholder="$$_(ID directo)_&&" required>
+      </div>
+    </div>
+
+
+    <div class="input-group">
       <label for="telefonoEntrante">Teléfono entrante</label>
       <input type="number" name="telefonoEntrante" id="telefonoEntrante" placeholder="9 dígitos" required maxlength="9" oninput="this.value=this.value.slice(0,9)">
     </div>
@@ -214,24 +234,20 @@
       <label for="telefonoSolicitud">Teléfono de solicitud</label>
       <input type="number" name="telefonoSolicitud" id="telefonoSolicitud" placeholder="9 dígitos" required maxlength="9" oninput="this.value=this.value.slice(0,9)">
     </div>
-  </div>
-
-
-  <!-- DNI + lupa -->
-  <div class="input-row">
-    <div class="input-group">
-      <label for="dni">Número de documento de identidad</label>
-      <div class="dni-container">
-        <input type="number" name="dni" id="dni" placeholder="8 dígitos" required >
-      </div>
     </div>
-  </div>
+
+
+<div class="input-group">
+<label for="dni">Número de documento de identidad</label>
+<div class="dni-container">
+<input type="number" name="dni" id="dni" placeholder="8 dígitos" required >
+</div>
 
 <!-- Botones secundarios debajo del autofill -->
 <div class="small-buttons">
-  <button type="button" onclick="buscarDNI()">🔍 Consultar</button>
+  <button type="button" onclick="buscarDNI()">🔍 Consulta</button>
   <button type="button" onclick="ocultarDNI()">🔒 Cerrar</button>
-  <button type="button" onclick="abrirReniec()">🪪 Servicios Reniec</button>
+  <button type="button" onclick="abrirReniec()">🪪 Reniec</button>
 </div>
 
   <!-- Autofill (debajo del DNI con animación y fondo bonito) -->
@@ -242,24 +258,11 @@
       <div class="input-group"><label for="fechaNacimiento">Fecha de nacimiento</label><input type="text" id="fechaNacimiento" readonly></div>
       <div class="input-group"><label for="ubicacion">Departamento - Provincia - Distrito</label><input type="text" id="ubicacion" readonly></div>
     </div>
-  </div>
+    </div>
 
 <br>
 
   <div class="input-row">
-    <div class="input-group">
-      <label for="usuarioAgente">Usuario de agente</label>
-      <input type="text" name="usuarioAgente" id="usuarioAgente" placeholder="cpc_xxxxxx_vtp" style="text-transform: lowercase;" required>
-    </div>
-
-    <div class="input-group">
-      <label for="idEntrante">ID de llamada</label>
-      <div class="input-with-mark">
-        <input type="text" name="idEntrante" id="idEntrante" placeholder="$$_(ID directo)_&&" required>
-      </div>
-    </div>
-
-
 <div class="input-group">
   <label for="motivo">Motivo de migración</label>
   <input list="motivos-sugeridos" name="motivo" id="motivo" placeholder="Seleccione o ingrese un motivo" required>
@@ -297,7 +300,7 @@
     <option value="">Seleccione:</option>
 
     <optgroup label="Prepago">
-      <option value="Prepago Bifri5">Prepago Bifri5</option>
+      <option value="Prepago BIFRI5">Prepago BIFRI5</option>
     </optgroup>
 
     <optgroup label="Basico">
@@ -400,32 +403,39 @@ const btnNo = document.getElementById("btnNo");
 const modalLoader = document.getElementById("modalLoader");
 const modalReniec = document.getElementById("modalReniec");
 
+let envioEnProceso = false;
+
 /* Al enviar el formulario: mostrar modal */
 if (formulario) {
   formulario.addEventListener("submit", function(e){
       e.preventDefault();
+
+      // Evitar que se muestre otra vez si ya se está enviando
+      if (envioEnProceso) return;
+
       modal.classList.add("show");
   });
 }
 
-/* Si confirma: enviar form via fetch (mismo comportamiento que tenías) */
+/* Si confirma: enviar form via fetch */
 if (btnYes) {
   btnYes.addEventListener("click", function(){
       // cerrar confirm
       modal.classList.remove("show");
+      envioEnProceso = true; // ✅ marcamos que ya está en proceso
 
-      // Forzar usuario en minúsculas para que en Sheets llegue en minúscula
+      // Forzar usuario en minúsculas
       const userInput = document.getElementById("usuarioAgente");
       if (userInput) userInput.value = userInput.value.toLowerCase();
 
-      // Agregar símbolos al ID (se mantiene tu formato)
+      // Agregar símbolos al ID
       const idInput = document.getElementById("idEntrante");
       if (idInput) idInput.value = `$$_${idInput.value}_&&`;
 
-      // Mostrar modal loader mientras se procesa
+      // Mostrar loader
       if (modalLoader) modalLoader.classList.add("show");
 
-      // Enviar datos con fetch en lugar de submit directo
+      // Enviar datos
       const formData = new FormData(formulario);
       fetch(formulario.action, {
           method: "POST",
@@ -433,16 +443,18 @@ if (btnYes) {
       })
       .then(res => res.text())
       .then(txt => {
-          // ocultar loader
           if (modalLoader) modalLoader.classList.remove("show");
           mostrarMensaje(txt);
+          envioEnProceso = false; // ✅ liberamos otra vez
       })
       .catch(err => {
           if (modalLoader) modalLoader.classList.remove("show");
           document.getElementById("mensaje").innerHTML = "❌ Error al guardar los datos: " + err;
+          envioEnProceso = false; // liberar aunque haya error
       });
   });
 }
+
 
 /* Si cancela guardar */
 if (btnNo) {
@@ -455,19 +467,24 @@ if (btnNo) {
    Mensajes, limpiar, plan
    --------------------------- */
 function mostrarMensaje(respuesta){
-    const regex = /Código:\s*(MIG\d+)/;
+    // Buscar MIGxxxxxx después del "|"
+    const regex = /\|?(MIG\d+)/;
     const match = respuesta.match(regex);
     const codigo = match ? match[1] : "N/A";
 
-    document.getElementById("mensaje").innerHTML = `✅ Datos guardados correctamente.<br><span class="codigo">🔐 Código de solicitud: ${codigo}</span>`;
+    document.getElementById("mensaje").innerHTML = 
+        `✅ Datos guardados correctamente.<br><span class="codigo">🔐 Código de solicitud: ${codigo}</span>`;
     document.getElementById("speech").style.display = "block";
     document.getElementById("speech").innerHTML = `
         <h3>🗣️ Speech de confirmación:</h3>
-        <p>“Se ha gestionado la migración de su línea <span class="green">${telefonoSolicitud}</span> al plan <span class="green">${plan}</span>. El cambio se realizará en un máximo de 24 horas. Cuando pierda señal, reinicie su equipo y haga una llamada para activar el servicio.</p>
+        <p>“Se ha gestionado la migración de su línea <span class="green">${telefonoSolicitud}</span> al plan <span class="green">${plan}</span>. 
+        El cambio se realizará en un máximo de 24 horas. Cuando pierda señal, reinicie su equipo y haga una llamada para activar el servicio.</p>
         <p>El código de solicitud es <span class="green">${codigo}</span> y lo recibirá por SMS y/o email.</p>
         <p>“Eso sería todo de mi parte, gracias por comunicarse. En breve recibirá una encuesta por SMS para calificar mi atención. Que tenga un excelente día.”</p>
     `;
 }
+
+
 
 function limpiar(){
     formulario.reset();
