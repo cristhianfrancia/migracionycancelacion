@@ -177,6 +177,37 @@
 .small-buttons button:nth-child(3):hover { background: #222; }
 
 
+
+/* Contenedor para centrar el nuevo botón de cierre */
+.close-plan-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px; /* Espacio superior */
+}
+
+/* Estilo principal del nuevo botón de cierre con animación */
+.btn-cerrar-plan {
+  background: linear-gradient(45deg, #01768b, #0c477e); /* Fondo con degradado */
+  color: white;
+  border: none;
+  border-radius: 10px; /* Bordes más redondeados */
+  padding: 12px 30px; /* Más ancho */
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  letter-spacing: 0.5px; /* Espaciado entre letras */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease; /* Transición suave para todos los efectos */
+}
+
+/* Animación al pasar el cursor sobre el botón */
+.btn-cerrar-plan:hover {
+  transform: translateY(-3px); /* Efecto de elevación */
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3), 0 0 10px #fbf32f; /* Sombra más pronunciada y un brillo amarillo */
+  background: linear-gradient(45deg, #0c477e, #01768b); /* Invierte el degradado */
+}
+
+
 </style>
 </head>
 <body>
@@ -332,12 +363,22 @@
   </select> </div>
   </div>
 
-  <div class="plan-details" id="planDetails">
-    <div class="row">
-      <div class="col"><h3>🗣️ 1. Speech - Beneficios</h3><div id="detalle"></div></div>
-      <div class="col"><h3>🗣️ 2. Speech - Consideraciones</h3><div id="consideraciones"></div></div>
+<div class="plan-details" id="planDetails">
+  <div class="row">
+    <div class="col">
+      <h3>🗣️ 1. Speech - Beneficios</h3>
+      <div id="detalle"></div>
     </div>
+    <div class="col">
+      <h3>🗣️ 2. Speech - Consideraciones</h3>
+      <div id="consideraciones"></div>
+    </div>
+  </div> <div class="close-plan-container">
+    <button type="button" class="btn-cerrar-plan" onclick="ocultarPlan()">
+      Ocultar Detalles ✨
+    </button>
   </div>
+</div>
 
   <div class="buttons">
     <button type="submit">Guardar</button>
@@ -583,6 +624,17 @@ if (btnNo) {
   btnNo.addEventListener("click", function(){
       modal.classList.remove("show");
   });
+}
+
+
+/* ---------------------------
+   Ocultar Detalles del Plan
+   --------------------------- */
+function ocultarPlan() {
+    const planDetails = document.getElementById("planDetails");
+    if (planDetails) {
+        planDetails.classList.remove("show");
+    }
 }
 
 /* ---------------------------
