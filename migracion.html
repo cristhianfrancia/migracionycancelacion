@@ -213,14 +213,14 @@
     <div class="input-group">
       <label for="idEntrante">ID de llamada entrante</label>
       <div class="input-with-mark">
-        <input type="text" name="idEntrante" id="idEntrante" placeholder="$$_(ID directo)_&&" required>
+        <input type="text" name="idEntrante" id="idEntrante" placeholder="(ID directo)" >
       </div>
       </div>
 
     <div class="input-group">
       <label for="idsaliente">ID de llamada saliente</label>
       <div class="input-with-mark">
-        <input type="text" name="idsaliente" id="idsaliente" placeholder="$$_(ID directo)_&&" required>
+        <input type="text" name="idsaliente" id="idsaliente" placeholder="(ID directo)" >
       </div>
     </div>
 
@@ -424,13 +424,21 @@ if (btnYes) {
       modal.classList.remove("show");
       envioEnProceso = true; // ✅ marcamos que ya está en proceso
 
-      // Forzar usuario en minúsculas
-      const userInput = document.getElementById("usuarioAgente");
-      if (userInput) userInput.value = userInput.value.toLowerCase();
+// Forzar usuario en minúsculas
+const userInput = document.getElementById("usuarioAgente");
+if (userInput) userInput.value = userInput.value.toLowerCase();
 
-      // Agregar símbolos al ID
-      const idInput = document.getElementById("idEntrante");
-      if (idInput) idInput.value = `$$_${idInput.value}_&&`;
+// Reforzar formato en ID Entrante
+const idInput = document.getElementById("idEntrante");
+if (idInput && idInput.value && !idInput.value.startsWith("$$_")) {
+  idInput.value = `$$_${idInput.value}_&&`;
+}
+
+// Reforzar formato en ID Saliente
+const idSalienteInput = document.getElementById("idsaliente");
+if (idSalienteInput && idSalienteInput.value && !idSalienteInput.value.startsWith("$$_")) {
+  idSalienteInput.value = `$$_${idSalienteInput.value}_&&`;
+}
 
       // Mostrar loader
       if (modalLoader) modalLoader.classList.add("show");
@@ -454,6 +462,86 @@ if (btnYes) {
       });
   });
 }
+
+// Formato en tiempo real mejorado (soporta borrar y mantiene caret)
+function aplicarFormatoTiempoReal(input) {
+  // Guardamos el estado previo antes del cambio para calcular el caret luego
+  input.addEventListener("keydown", function (ev) {
+    this._prevValue = this.value;
+    this._prevSelStart = this.selectionStart;
+    this._prevSelEnd = this.selectionEnd;
+  });
+
+  input.addEventListener("input", function (e) {
+    // Valor previo (formateado) y raw previo
+    const prevVal = this._prevValue !== undefined ? this._prevValue : this.value;
+    const prevRaw = prevVal.replace(/^\$\$_/, "").replace(/_&&$/, "");
+
+    // Valor actual (posible que el usuario haya escrito símbolos manualmente)
+    let current = this.value;
+
+    // Sacamos cualquier prefijo/sufijo que haya quedado para obtener el raw real
+    let raw = current.replace(/^\$\$_/, "").replace(/_&&$/, "");
+
+    // Normalizamos raw (por si el usuario pegó caracteres $/_)
+    // Aquí sólo eliminamos las ocurrencias exactas del prefijo/sufijo.
+    // No tocamos otros caracteres para no borrar el texto legítimo.
+    // Si el campo queda vacío, lo dejamos vacío (sin símbolos).
+    if (!raw) {
+      this.value = "";
+      // actualizar estado previo para próximos eventos
+      this._prevValue = this.value;
+      this._prevSelStart = this.selectionStart;
+      this._prevSelEnd = this.selectionEnd;
+      return;
+    }
+
+    // Calculamos índice relativo en raw basado en la selección anterior
+    let prevCaret = (this._prevSelStart !== undefined) ? this._prevSelStart : (3 + prevRaw.length);
+    let caretRawIndex;
+    if (prevCaret <= 3) caretRawIndex = 0;
+    else caretRawIndex = Math.max(0, Math.min(prevRaw.length, prevCaret - 3));
+
+    // Intento de ajuste según el tipo de entrada (insert/delete)
+    const inputType = e.inputType || "";
+    if (inputType.startsWith("insert")) {
+      // Si se insertó texto, colocamos el caret después del nuevo char (si es posible)
+      // Estimamos que el usuario insertó en la posición caretRawIndex
+      caretRawIndex = Math.min(raw.length, caretRawIndex + 1);
+    } else if (inputType.startsWith("delete")) {
+      // En caso de borrado, caretRawIndex ya apunta bien (no lo incrementamos)
+      caretRawIndex = Math.min(raw.length, caretRawIndex);
+    } else {
+      // otros (paste, cut, etc.) → ajustar al final del segmento editado
+      caretRawIndex = Math.min(raw.length, caretRawIndex);
+    }
+
+    // Seteamos el valor formateado
+    const newFormatted = `$$_${raw}_&&`;
+    this.value = newFormatted;
+
+    // Colocamos el caret en la posición correspondiente (antes del sufijo)
+    const newCaretPos = 3 + Math.max(0, Math.min(raw.length, caretRawIndex));
+    try {
+      this.setSelectionRange(newCaretPos, newCaretPos);
+    } catch (err) {
+      // en algunos navegadores/estados puede fallar; no es crítico
+    }
+
+    // Actualizamos estado previo para el siguiente evento
+    this._prevValue = this.value;
+    this._prevSelStart = this.selectionStart;
+    this._prevSelEnd = this.selectionEnd;
+  });
+}
+
+// Conexión a los inputs (déjalas o reemplázalas si ya existen)
+const idEntranteEl = document.getElementById("idEntrante");
+const idSalienteEl = document.getElementById("idsaliente");
+
+if (idEntranteEl) aplicarFormatoTiempoReal(idEntranteEl);
+if (idSalienteEl) aplicarFormatoTiempoReal(idSalienteEl);
+
 
 
 /* Si cancela guardar */
