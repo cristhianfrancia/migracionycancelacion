@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Cancelaciones</title>
+<style>
+  body { 
+    font-family: Arial, sans-serif; 
+    background: #F4F9FB; 
+    margin:0; padding:20px; 
+    display:flex; justify-content:center; align-items:flex-start; 
+    min-height:100vh; 
+    transition: background 0.3s, color 0.3s; 
+  }
+  .container { 
+    background:#fff; 
+    padding:20px 30px; 
+    border-radius:14px; 
+    box-shadow:0px 6px 14px rgba(0,0,0,0.1); 
+    width:90%; max-width:1000px; 
+    box-sizing:border-box; 
+    transition: background 0.3s, color 0.3s; 
+  }
+  h1 { text-align:center; color:#01768b; margin-bottom:10px; font-size:28px; font-weight:bold; }
+  h1 + hr { border:0; height:4px; background:#fbf32f; border-radius:3px; margin-bottom:20px; }
+  details { margin-bottom:25px; border:1px solid #ccc; border-radius:8px; padding:10px 15px; background:#fafafa; transition: background 0.3s; }
+  details summary { font-weight:bold; cursor:pointer; color:#0c477e; font-size:16px; }
+  details p { margin:10px 0; font-size:15px; color:#333; }
+  h2 { color:#0c477e; font-size:20px; margin-top:20px; border-bottom:3px solid #fbf32f; display:inline-block; padding-bottom:3px; }
+  h3 { border-bottom:2px solid #fbf32f; padding-bottom:4px; }
+
+  .input-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+  .input-group { display: flex; flex-direction: column; }
+  .input-group label { font-size: 14px; margin-bottom: 5px; font-weight: 500; color: #333; transition: color 0.3s; }
+  input, select { width: 100%; padding: 10px; font-size: 14px; border: 1.5px solid #ccc; border-radius: 8px; outline: none; transition: 0.3s; background: #fff; box-sizing:border-box; min-height: 38px; color:#333; }
+  input:focus, select:focus { border-color: #01768b; background: #f8ffff; }
+  .input-with-mark { display:flex; align-items:center; gap:4px; }
+  .input-with-mark span { color:#000; transition: color 0.3s; }
+
+  .dni-container { display:flex; gap:10px; }
+  .dni-container input { flex:1; padding:10px; border:1.5px solid #ccc; border-radius:8px; font-size:14px; }
+
+  .buttons { margin-top:25px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+  .buttons button { padding:12px 24px; border:none; border-radius:8px; cursor:pointer; font-weight:500; transition:0.3s; font-size:15px; background:#01768b; color:white; }
+  .buttons button:hover { background:#0c477e; box-shadow:0 0 8px #fbf32f; }
+
+  #mensaje { margin-top:25px; text-align:center; font-size:15px; font-weight:500; color:#01768b; }
+  #speech { margin-top:25px; padding:15px; border:1px dashed #01768b; border-radius:8px; background:#fdfdfd; display:none; color:#333; }
+  #speech h3 { margin-top:0; margin-bottom:10px; color:#0c477e; font-size:20px; font-weight:bold; }
+  #speech .green { color:#01768b; font-weight:bold; }
+  .blue { color:#0c477e; }
+
+  .plan-details { margin-top:15px; padding:15px; border:1px solid #ccc; border-radius:8px; background:#fafafa; display:none; transition: background 0.3s; }
+  .plan-details.show { display:block; }
+  .plan-details .row { display:grid; grid-template-columns:1fr 0fr; gap:20px; }
+  .plan-details .col { padding:10px; background:#fff; border-radius:6px; box-shadow:0 2px 6px rgba(0,0,0,0.05); }
+  .plan-details h3 { margin-top:0; color:#01768b; font-size:16px; }
+
+  /* Bloque autofill con animación y estilo */
+  .autofill { 
+    overflow: hidden; 
+    max-height: 0; 
+    opacity: 0; 
+    transition: max-height 0.5s ease, opacity 0.5s ease; 
+    background: #e7f7f9; 
+    border: 1px solid #01768b; 
+    border-radius: 10px; 
+    padding: 0 15px; 
+    margin-top: 15px;
+    position: relative;
+  }
+  .autofill.show { 
+    max-height: 500px; 
+    opacity: 1; 
+    padding: 15px; 
+  }
+  .autofill .input-row { margin-bottom: 10px; }
+  .autofill button { 
+    background:#c62828; 
+    color:white; 
+    padding:6px 12px; 
+    border:none; 
+    border-radius:6px; 
+    cursor:pointer; 
+    margin-top:10px;
+  }
+  .autofill button:hover { background:#a61c1c; }
+
+  /* Loader (spinner) dentro del autofill */
+  .loader {
+    border: 4px solid rgba(0,0,0,0.08);
+    border-top: 4px solid #01768b;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    animation: spin 1s linear infinite;
+    margin: 8px auto 12px auto;
+    display: none;
+  }
+  @keyframes spin { 100% { transform: rotate(360deg); } }
+
+  /* Modal confirmación */
+  .modal { display:none; position:fixed; z-index:1000; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); justify-content:center; align-items:center; }
+  .modal.show { display:flex; }
+  .modal-content { background:#fff; padding:25px; border-radius:12px; text-align:center; max-width:400px; box-shadow:0 6px 14px rgba(0,0,0,0.2); color:#333; }
+  .modal-content h2 { color:#0c477e; margin-bottom:15px; }
+  .modal-buttons { display:flex; justify-content:center; gap:15px; margin-top:20px; flex-wrap:wrap; }
+  .modal-buttons button { padding:10px 20px; border:none; border-radius:6px; cursor:pointer; font-weight:500; color:#fff; }
+  .btn-yes { background:#01768b; } .btn-yes:hover { background:#0c477e; box-shadow:0 0 6px #fbf32f; }
+  .btn-no { background:#c62828; } .btn-no:hover { background:#a61c1c; }
+
+  /* Switch modo oscuro */
+  .switch { position: relative; display: inline-block; width: 50px; height: 25px; }
+  .switch input { display:none; }
+  .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 25px; }
+  .slider:before { position: absolute; content: ""; height: 19px; width: 19px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+  input:checked + .slider { background-color: #fbf32f; }
+  input:checked + .slider:before { transform: translateX(24px); }
+
+  /* Estilos modo oscuro */
+  body.dark-mode { background-color: #121212; color: #f1f1f1; }
+  body.dark-mode .container { background:#1e1e1e; color:#f1f1f1; }
+  body.dark-mode input, 
+  body.dark-mode select { background-color: #222; color:#f1f1f1; border: 1px solid #666; }
+  body.dark-mode .input-group label,
+  body.dark-mode .input-with-mark span,
+  body.dark-mode details p,
+  body.dark-mode details summary { color:#f1f1f1; }
+  body.dark-mode details { background:#1c1c1c; border-color:#555; }
+  body.dark-mode .plan-details { background:#1c1c1c; border-color:#555; }
+  body.dark-mode .plan-details .col { background:#2a2a2a; }
+  body.dark-mode .autofill { background:#1c2b30; border-color:#fbf32f; }
+  body.dark-mode .modal-content { background:#1e1e1e; color:#f1f1f1; }
+  body.dark-mode h1, 
+  body.dark-mode h2, 
+  body.dark-mode h3 { color:#fbf32f; }
+  body.dark-mode #speech { background:#1c1c1c; border-color:#fbf32f; color:#eee; }
+  body.dark-mode #speech h3 { color:#fbf32f; }
+  body.dark-mode #mensaje { color:#fbf32f; }
+  body.dark-mode .blue { color:#4eaaff; }
+  body.dark-mode .green { color:#a6ff8a; }
+
+  @media (max-width:768px){ 
+    .input-row { grid-template-columns: 1fr; } 
+    .plan-details .row { grid-template-columns:1fr; } 
+    .buttons button, .modal-buttons button { width:100%; } 
+  }
+
+/* Botones secundarios más pequeños */
+.small-buttons {
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.small-buttons button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  background: #e0e0e0;
+  color: #333;
+  transition: 0.3s;
+}
+.small-buttons button:hover {
+  background: #d5d5d5;
+  box-shadow: 0 0 6px rgba(0,0,0,0.15);
+}
+.small-buttons button:nth-child(1) { background: #01768b; color: #fff; }
+.small-buttons button:nth-child(1):hover { background: #0c477e; }
+.small-buttons button:nth-child(2) { background: #c62828; color: #fff; }
+.small-buttons button:nth-child(2):hover { background: #a61c1c; }
+.small-buttons button:nth-child(3) { background: #444; color: #fff; }
+.small-buttons button:nth-child(3):hover { background: #222; }
+
+
+
+/* Contenedor para centrar el nuevo botón de cierre */
+.close-plan-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px; /* Espacio superior */
+}
+
+/* Estilo principal del nuevo botón de cierre con animación */
+.btn-cerrar-plan {
+  background: linear-gradient(45deg, #01768b, #0c477e); /* Fondo con degradado */
+  color: white;
+  border: none;
+  border-radius: 10px; /* Bordes más redondeados */
+  padding: 12px 30px; /* Más ancho */
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  letter-spacing: 0.5px; /* Espaciado entre letras */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease; /* Transición suave para todos los efectos */
+}
+
+/* Animación al pasar el cursor sobre el botón */
+.btn-cerrar-plan:hover {
+  transform: translateY(-3px); /* Efecto de elevación */
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3), 0 0 10px #fbf32f; /* Sombra más pronunciada y un brillo amarillo */
+  background: linear-gradient(45deg, #0c477e, #01768b); /* Invierte el degradado */
+}
+
+
+</style>
+</head>
+<body>
+
+<!-- Switch de modo oscuro -->
+<div style="position: absolute; top: 15px; right: 20px;">
+  <label class="switch">
+    <input type="checkbox" id="darkSwitch">
+    <span class="slider"></span>
+  </label>
+</div>
+
+<div class="container">
+<h1>Cancelaciones</h1>
+
+<details>
+  <summary>Presentación:</summary>
+<p>1. “Hola, te habla <span class="blue">(Nombre del agente)</span> de Bitel. ¿Me brindaría su nombre por favor?"</p>
+<p>2. <span class="blue">(Nombre del cliente)</span>, ¿Qué operación va a realizar?</p>
+<p>3. “La cancelación es la eliminación del número por completo, ¿es lo que desea realizar?</p>
+<p>4. “El número que llama es el que quiere cancelar, el que termina en <span class="blue">XXXX</span>”</p>
+</details>
+
+<h2>Llenado de datos</h2>
+<form id="miFormulario" action="https://script.google.com/macros/s/AKfycbzq3MWR3rI5ZkLNlkwOs6PuHNx9ipVRpeesOmS2XbtE7olSWHfO-V757wQ7tLJpsvHlbA/exec" method="post" target="hidden_iframe">
+  <input type="hidden" name="token" value="BitelMigracion2025SuperClave">
+
+
+  <div class="input-row">
+<div class="input-group">
+  <label for="usuarioAgente">Usuario de agente</label>
+  <div class="input-with-mark">
+    <input list="usuarios-sugeridos" name="usuarioAgente" id="usuarioAgente" placeholder="cpc_xxxxxx_vtp" style="text-transform: lowercase;" required>
+    <datalist id="usuarios-sugeridos"></datalist>
+  </div>
+  </div>
+
+
+    <div class="input-group">
+      <label for="idEntrante">ID de llamada entrante</label>
+      <div class="input-with-mark">
+        <input type="text" name="idEntrante" id="idEntrante" placeholder="(ID directo)" >
+      </div>
+      </div>
+
+
+    <div class="input-group">
+      <label for="idsaliente">ID de llamada saliente</label>
+      <div class="input-with-mark">
+        <input type="text" name="idsaliente" id="idsaliente" placeholder="(ID directo)" >
+      </div>
+      </div>
+
+
+    <div class="input-group">
+      <label for="telefonoEntrante">Número del que llama</label>
+      <input type="number" name="telefonoEntrante" id="telefonoEntrante" placeholder="9 dígitos" required maxlength="9" oninput="this.value=this.value.slice(0,9)">
+    </div>
+
+    <div class="input-group">
+      <label for="telefonoSolicitud">Número de la cancelación:</label>
+      <input type="number" name="telefonoSolicitud" id="telefonoSolicitud" placeholder="9 dígitos" required maxlength="9" oninput="this.value=this.value.slice(0,9)">
+    </div>
+    </div>
+
+  <div class="input-group">
+    <label for="motivo">Motivo de cancelación</label>
+    <select name="motivo" id="motivo" required>
+      <option value="">Seleccione</option>
+      <option value="Bloqueo por robo o pérdida">Bloqueo por robo o pérdida</option>
+      <option value="Centro de pagos no cercanos">Centro de pagos no cercanos</option>
+      <option value="Cuenta con otra línea">Cuenta con otra línea</option>
+      <option value="Desconocimiento de la línea control">Desconocimiento de la línea control</option>
+      <option value="Equipo malogrado">Equipo malogrado</option>
+      <option value="Forma de realizar pagos es complicado">Forma de realizar pagos es complicado</option>
+      <option value="Incumplimiento de promociones ofrecidas">Incumplimiento de promociones ofrecidas</option>
+      <option value="Mala experiencia presentada en Bitel">Mala experiencia presentada en Bitel</option>
+      <option value="Mejor oferta de otro operador">Mejor oferta de otro operador</option>
+      <option value="Motivo de viaje">Motivo de viaje</option>
+      <option value="Motivos Personales">Motivos Personales</option>
+      <option value="No desea el servicio">No desea el servicio</option>
+      <option value="Pérdida de SIM Card">Pérdida de SIM Card</option>
+      <option value="Precios y promociones no son atractivos">Precios y promociones no son atractivos</option>
+      <option value="Problema no solucionado - Reclamo o incidencia pendiente">Problema no solucionado - Reclamo o incidencia pendiente</option>
+      <option value="Problemas con facturación">Problemas con facturación</option>
+      <option value="Problemas de registro con WhatsApp por ser número reciclado">Problemas de registro con WhatsApp por ser número reciclado</option>
+      <option value="Problemas de Servicio - Internet">Problemas de Servicio - Internet</option>
+      <option value="Problemas de Servicio - Llamadas">Problemas de Servicio - Llamadas</option>
+      <option value="Problemas de Servicio - Señal">Problemas de Servicio - Señal</option>
+      <option value="Problemas de Servicio – SMS">Problemas de Servicio – SMS</option>
+      <option value="Problemas económicos">Problemas económicos</option>
+      <option value="Recepción de llamadas de entidades bancarias">Recepción de llamadas de entidades bancarias</option>
+      <option value="Recibe llamadas malintencionadas">Recibe llamadas malintencionadas</option>
+      <option value="Servicio de Atención al cliente presencial no brinda solución">Servicio de Atención al cliente presencial no brinda solución</option>
+      <option value="Servicio de Atención al cliente telefónico no brinda solución">Servicio de Atención al cliente telefónico no brinda solución</option>
+      <option value="Suspendido por deuda en anterior operador">Suspendido por deuda en anterior operador</option>
+    </select>
+  </div>
+
+<br>
+
+<div class="input-group">
+  <label id="labelFechaCancela" for="FechaCancela">
+    Calculando fechas disponibles...
+  </label>
+  <input type="date" name="FechaCancela" id="FechaCancela" required>
+  <p id="estadoFechas" style="font-size:13px;color:#666;margin-top:6px;">Cargando feriados...</p>
+</div>
+
+
+<div class="input-group">
+<label for="dni">Número de documento de identidad</label>
+<div class="dni-container">
+<input type="number" name="dni" id="dni" placeholder="8 dígitos" required >
+</div>
+
+<!-- Botones secundarios debajo del autofill -->
+<div class="small-buttons">
+  <button type="button" onclick="buscarDNI()">🔍 Consulta</button>
+  <button type="button" onclick="ocultarDNI()">🔒 Cerrar</button>
+  <button type="button" onclick="abrirReniec()">🪪 Reniec</button>
+</div>
+
+  <!-- Autofill (debajo del DNI con animación y fondo bonito) -->
+  <div class="autofill" id="autofill">
+    <div class="loader" id="loader"></div>
+    <div class="input-row">
+      <div class="input-group"><label for="nombre">Nombre completo</label><input type="text" id="nombre" readonly></div>
+      <div class="input-group"><label for="fechaNacimiento">Fecha de nacimiento</label><input type="text" id="fechaNacimiento" readonly></div>
+      <div class="input-group"><label for="ubicacion">Departamento - Provincia - Distrito</label><input type="text" id="ubicacion" readonly></div>
+    </div>
+    </div>
+
+
+<div class="input-group">
+  <label for="plan">Consideraciones</label>
+  <select name="plan" id="plan" onchange="mostrarPlan()" required>
+    <option value="">Seleccione:</option>
+
+    <optgroup label="Prepago">
+      <option value="Consideraciones prepago">Consideraciones - Prepago</option>
+    </optgroup>
+
+    <optgroup label="Control">
+      <option value="Consideraciones control">Consideraciones - Control</option>
+    </optgroup>
+
+  </select> </div>
+  </div>
+
+<div class="plan-details" id="planDetails">
+  <div class="row">
+    <div class="col">
+      <h3>🗣️ 1. Speech:</h3>
+      <div id="detalle"></div>
+    </div>
+  </div> <div class="close-plan-container">
+    <button type="button" class="btn-cerrar-plan" onclick="ocultarPlan()">
+      Ocultar Detalles ✨
+    </button>
+  </div>
+</div>
+
+  <div class="buttons">
+    <button type="submit">Guardar</button>
+    <button type="button" onclick="limpiar()">Limpiar</button>
+  </div>
+</form>
+
+<div id="mensaje"></div>
+<div id="speech"></div>
+
+<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+
+<!-- Modal -->
+<div class="modal" id="modalConfirm">
+  <div class="modal-content">
+    <h2>¿Desea guardar la información?</h2>
+    <div class="modal-buttons">
+      <button class="btn-yes" id="btnYes">Sí</button>
+      <button class="btn-no" id="btnNo">No</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Loader (espera) -->
+<div class="modal" id="modalLoader">
+  <div class="modal-content">
+    <h2>Procesando, espere un momento...</h2>
+    <div class="loader" style="width:40px; height:40px; border-width:5px; margin-top:10px;"></div>
+  </div>
+</div>
+
+<!-- Modal Reniec -->
+<div class="modal" id="modalReniec">
+  <div class="modal-content" style="max-width:920px; width:95%;">
+    <h2>Servicios Reniec</h2>
+    <p style="font-size:13px; color:#666; margin-top:-10px;">Si la página no permite ser embebida, use "Abrir en nueva pestaña".</p>
+    <iframe src="https://serviciosweb.reniec.gob.pe/aip/logout.do" title="RENIEC - Servicios" style="height:520px;"></iframe>
+    <div class="modal-buttons" style="margin-top:12px;">
+      <button class="btn-yes" onclick="window.open('https://serviciosweb.reniec.gob.pe/aip/logout.do','_blank')">Abrir en nueva pestaña</button>
+      <button class="btn-no" onclick="cerrarReniec()">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+
+// ======== Funciones utilitarias ========
+function toLocalISO(date) {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
+}
+function formatearDDMMYYYY(date) {
+  const d = String(date.getDate()).padStart(2, "0");
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const y = date.getFullYear();
+  return `${d}/${m}/${y}`;
+}
+
+// ======== Feriados ========
+async function obtenerFeriadosPeru(year) {
+  try {
+    const resp = await fetch(`https://date.nager.at/api/v3/PublicHolidays/${year}/PE`);
+    if (!resp.ok) throw new Error("resp no ok");
+    const data = await resp.json();
+    return data.map(item => item.date);
+  } catch (e) {
+    console.warn("No se pudieron obtener feriados para", year, e);
+    return [];
+  }
+}
+async function obtenerFeriadosRango(year) {
+  const [a, b] = await Promise.all([obtenerFeriadosPeru(year), obtenerFeriadosPeru(year + 1)]);
+  return [...(a || []), ...(b || [])];
+}
+
+// ======== Días hábiles ========
+async function agregarDiasHabiles(fechaInicio, dias, feriadosArray) {
+  const resultado = new Date(fechaInicio);
+  let contador = 0;
+  while (contador < dias) {
+    resultado.setDate(resultado.getDate() + 1);
+    const diaSemana = resultado.getDay();
+    const iso = toLocalISO(resultado);
+    if (diaSemana === 0 || diaSemana === 6) continue;
+    if (feriadosArray.includes(iso)) continue;
+    contador++;
+  }
+  return resultado;
+}
+
+// ======== Inicialización ========
+async function inicializarFechasCancelacion() {
+  const labelEl = document.getElementById("labelFechaCancela");
+  const inputEl = document.getElementById("FechaCancela");
+  const estadoEl = document.getElementById("estadoFechas");
+
+  estadoEl.textContent = "🔄 Obteniendo feriados oficiales…";
+
+  const hoy = new Date();
+  const feriados = await obtenerFeriadosRango(hoy.getFullYear());
+
+  if (!feriados || feriados.length === 0) {
+    estadoEl.textContent = "⚠️ No se cargaron feriados (usando respaldo local 2025).";
+    if (hoy.getFullYear() === 2025) {
+      feriados.push(
+        "2025-01-01","2025-04-17","2025-04-18","2025-05-01","2025-06-07","2025-06-29",
+        "2025-07-23","2025-07-28","2025-07-29","2025-08-06","2025-08-30","2025-10-08",
+        "2025-11-01","2025-12-08","2025-12-09","2025-12-25"
+      );
+    }
+  } else {
+    estadoEl.textContent = "✅ Feriados cargados correctamente.";
+    estadoEl.style.color = "#777";
+  }
+
+  // Calcular fechas con lógica corregida
+  // ➤ Mínimo: 6 días hábiles después de hoy
+  const fechaMin = await agregarDiasHabiles(hoy, 6, feriados);
+
+  // ➤ Máximo: 30 días calendario desde HOY (contando el mismo día)
+  const fechaMax = new Date(hoy);
+  fechaMax.setDate(hoy.getDate() + 29); // ✅ Ajuste: contar el mismo día como día 1
+
+  // Mostrar texto actualizado
+  labelEl.innerHTML = `
+    "(Nombre del abonado), la cancelación del servicio se realiza en un plazo no menor de cinco (5) días hábiles ni mayor de un (1) mes calendario. Si hoy es <b>${formatearDDMMYYYY(hoy)}</b>, puedes programar la baja entre el 
+    <b>${formatearDDMMYYYY(fechaMin)}</b> y el <b>${formatearDDMMYYYY(fechaMax)}</b>.
+    ¿En qué fecha deseas programarla?"
+  `;
+
+  // Configurar límites del input date
+  inputEl.min = toLocalISO(fechaMin);
+  inputEl.max = toLocalISO(fechaMax);
+  inputEl.value = "";
+}
+
+inicializarFechasCancelacion();
+
+
+
+/* ---------------------------
+   Variables & Listeners base
+   --------------------------- */
+const TOKEN = "cGVydWRldnMucHJvZHVjdGlvbi5maXRjb2RlcnMuNjhkMDQ2ODM3NzAwMmUxM2U0NzI4YWM0";
+let telefonoSolicitud, plan, codigo;
+
+const telefonoSolicitudEl = document.getElementById("telefonoSolicitud");
+if (telefonoSolicitudEl) {
+  telefonoSolicitudEl.addEventListener("input", function(){
+    telefonoSolicitud = this.value;
+  });
+}
+const planEl = document.getElementById("plan");
+if (planEl) {
+  planEl.addEventListener("change", function(){
+    plan = this.value;
+  });
+}
+
+const formulario = document.getElementById("miFormulario");
+const modal = document.getElementById("modalConfirm");
+const btnYes = document.getElementById("btnYes");
+const btnNo = document.getElementById("btnNo");
+const modalLoader = document.getElementById("modalLoader");
+const modalReniec = document.getElementById("modalReniec");
+
+let envioEnProceso = false;
+
+/* Al enviar el formulario: mostrar modal */
+if (formulario) {
+  formulario.addEventListener("submit", function(e){
+      e.preventDefault();
+
+      // Evitar que se muestre otra vez si ya se está enviando
+      if (envioEnProceso) return;
+
+      modal.classList.add("show");
+  });
+}
+
+/* Si confirma: enviar form via fetch */
+if (btnYes) {
+btnYes.addEventListener("click", function(){
+
+// cerrar confirm
+      modal.classList.remove("show");
+      envioEnProceso = true; // ✅ marcamos que ya está en proceso
+
+// Forzar usuario en minúsculas
+const userInput = document.getElementById("usuarioAgente");
+if (userInput) userInput.value = userInput.value.toLowerCase();
+
+// Reforzar formato en ID Entrante
+const idInput = document.getElementById("idEntrante");
+if (idInput && idInput.value && !idInput.value.startsWith("$$_")) {
+  idInput.value = `$$_${idInput.value}_&&`;
+}
+
+// Reforzar formato en ID Saliente
+const idSalienteInput = document.getElementById("idsaliente");
+if (idSalienteInput && idSalienteInput.value && !idSalienteInput.value.startsWith("$$_")) {
+  idSalienteInput.value = `$$_${idSalienteInput.value}_&&`;
+}
+
+// Mostrar loader
+      if (modalLoader) modalLoader.classList.add("show");
+
+// Enviar datos
+      const formData = new FormData(formulario);
+      fetch(formulario.action, {
+          method: "POST",
+          body: formData
+      })
+      .then(res => res.text())
+      .then(txt => {
+          if (modalLoader) modalLoader.classList.remove("show");
+          mostrarMensaje(txt);
+          envioEnProceso = false; // ✅ liberamos otra vez
+      })
+      .catch(err => {
+          if (modalLoader) modalLoader.classList.remove("show");
+          document.getElementById("mensaje").innerHTML = "❌ Error al guardar los datos: " + err;
+          envioEnProceso = false; // liberar aunque haya error
+      });
+  });
+}
+
+
+// Al cargar la página, traer lista de usuarios desde la hoja "User"
+document.addEventListener("DOMContentLoaded", () => {
+  fetch("https://script.google.com/macros/s/AKfycbzq3MWR3rI5ZkLNlkwOs6PuHNx9ipVRpeesOmS2XbtE7olSWHfO-V757wQ7tLJpsvHlbA/exec?action=getUsers")
+    .then(res => res.json())
+    .then(users => {
+      const dataList = document.getElementById("usuarios-sugeridos");
+      if (dataList) {
+        dataList.innerHTML = ""; // limpiar por si acaso
+        users.forEach(user => {
+          const option = document.createElement("option");
+          option.value = user;
+          dataList.appendChild(option);
+        });
+      }
+    })
+    .catch(err => console.error("Error cargando usuarios:", err));
+});
+
+
+
+// Formato en tiempo real mejorado (soporta borrar y mantiene caret)
+function aplicarFormatoTiempoReal(input) {
+  // Guardamos el estado previo antes del cambio para calcular el caret luego
+  input.addEventListener("keydown", function (ev) {
+    this._prevValue = this.value;
+    this._prevSelStart = this.selectionStart;
+    this._prevSelEnd = this.selectionEnd;
+  });
+
+  input.addEventListener("input", function (e) {
+
+// Valor previo (formateado) y raw previo
+    const prevVal = this._prevValue !== undefined ? this._prevValue : this.value;
+    const prevRaw = prevVal.replace(/^\$\$_/, "").replace(/_&&$/, "");
+
+// Valor actual (posible que el usuario haya escrito símbolos manualmente)
+    let current = this.value;
+
+    // Sacamos cualquier prefijo/sufijo que haya quedado para obtener el raw real
+    let raw = current.replace(/^\$\$_/, "").replace(/_&&$/, "");
+
+    // Normalizamos raw (por si el usuario pegó caracteres $/_)
+    // Aquí sólo eliminamos las ocurrencias exactas del prefijo/sufijo.
+    // No tocamos otros caracteres para no borrar el texto legítimo.
+    // Si el campo queda vacío, lo dejamos vacío (sin símbolos).
+    if (!raw) {
+      this.value = "";
+      // actualizar estado previo para próximos eventos
+      this._prevValue = this.value;
+      this._prevSelStart = this.selectionStart;
+      this._prevSelEnd = this.selectionEnd;
+      return;
+    }
+
+// Calculamos índice relativo en raw basado en la selección anterior
+    let prevCaret = (this._prevSelStart !== undefined) ? this._prevSelStart : (3 + prevRaw.length);
+    let caretRawIndex;
+    if (prevCaret <= 3) caretRawIndex = 0;
+    else caretRawIndex = Math.max(0, Math.min(prevRaw.length, prevCaret - 3));
+
+// Intento de ajuste según el tipo de entrada (insert/delete)
+    const inputType = e.inputType || "";
+    if (inputType.startsWith("insert")) {
+
+// Si se insertó texto, colocamos el caret después del nuevo char (si es posible)
+
+// Estimamos que el usuario insertó en la posición caretRawIndex
+      caretRawIndex = Math.min(raw.length, caretRawIndex + 1);
+    } else if (inputType.startsWith("delete")) {
+
+// En caso de borrado, caretRawIndex ya apunta bien (no lo incrementamos)
+      caretRawIndex = Math.min(raw.length, caretRawIndex);
+    } else {
+
+// otros (paste, cut, etc.) → ajustar al final del segmento editado
+      caretRawIndex = Math.min(raw.length, caretRawIndex);
+    }
+
+// Seteamos el valor formateado
+    const newFormatted = `$$_${raw}_&&`;
+    this.value = newFormatted;
+
+// Colocamos el caret en la posición correspondiente (antes del sufijo)
+    const newCaretPos = 3 + Math.max(0, Math.min(raw.length, caretRawIndex));
+    try {
+      this.setSelectionRange(newCaretPos, newCaretPos);
+    } catch (err) {
+
+// en algunos navegadores/estados puede fallar; no es crítico
+    }
+
+// Actualizamos estado previo para el siguiente evento
+    this._prevValue = this.value;
+    this._prevSelStart = this.selectionStart;
+    this._prevSelEnd = this.selectionEnd;
+  });
+}
+
+// Conexión a los inputs (déjalas o reemplázalas si ya existen)
+const idEntranteEl = document.getElementById("idEntrante");
+const idSalienteEl = document.getElementById("idsaliente");
+
+if (idEntranteEl) aplicarFormatoTiempoReal(idEntranteEl);
+if (idSalienteEl) aplicarFormatoTiempoReal(idSalienteEl);
+
+
+
+/* Si cancela guardar */
+if (btnNo) {
+  btnNo.addEventListener("click", function(){
+      modal.classList.remove("show");
+  });
+}
+
+
+/* ---------------------------
+   Ocultar Detalles del Plan
+   --------------------------- */
+function ocultarPlan() {
+    const planDetails = document.getElementById("planDetails");
+    if (planDetails) {
+        planDetails.classList.remove("show");
+    }
+}
+
+/* ---------------------------
+   Mensajes, limpiar, plan
+   --------------------------- */
+function mostrarMensaje(respuesta){
+    // Buscar MIGxxxxxx después del "|"
+    const regex = /\|?(MIG\d+)/;
+    const match = respuesta.match(regex);
+    const codigo = match ? match[1] : "N/A";
+
+    document.getElementById("mensaje").innerHTML = 
+        `✅ Datos guardados correctamente.<br><span class="codigo">🔐 Código de solicitud: ${codigo}</span>`;
+    document.getElementById("speech").style.display = "block";
+    document.getElementById("speech").innerHTML = `
+        <h3>🗣️ Speech de confirmación:</h3>
+        <p>“La cancelación del <span class="green">${telefonoSolicitud}</span> se ejecutará el XX/XX/XXXX.</p>
+        <p>El código de solicitud es <span class="green">${codigo}</span> y lo recibirá por SMS y/o email.</p>
+        <p>“Eso sería todo de mi parte, gracias por comunicarse. En breve recibirá una encuesta por SMS para calificar mi atención. Que tenga un excelente día.”</p>
+    `;
+}
+
+
+
+function limpiar(){
+    formulario.reset();
+    document.getElementById("planDetails").classList.remove("show");
+    document.getElementById("speech").style.display = "none";
+    document.getElementById("mensaje").innerHTML = "";
+
+    // Ocultar autofill y limpiar sus campos
+    const autofill = document.getElementById("autofill");
+    autofill.classList.remove("show");
+    document.getElementById("nombre").value = "";
+    document.getElementById("fechaNacimiento").value = "";
+    document.getElementById("ubicacion").value = "";
+}
+
+
+function mostrarPlan(){
+  const planSelect = document.getElementById("plan").value;
+  const detalle = document.getElementById("detalle");
+  const planDetails = document.getElementById("planDetails");
+
+  if (planSelect === "Consideraciones prepago") {
+    detalle.innerHTML = `
+
+<ul>
+        <li>El proceso no tiene costo.</li>
+        <li>La baja se ejecutará el XX/XX/XXXX.</li>
+        <li>Recuerda que perderás tu número y cualquier saldo o promoción vigente.</li>
+      </ul>
+<p>¿Está de acuerdo con realizar la cancelación?</p>
+    `;
+
+    planDetails.classList.add("show");
+
+
+  } else if (planSelect === "Consideraciones control") {
+    detalle.innerHTML = `
+
+<ul>
+<li>El proceso no tiene costo, pero si tiene deudas o penalidades quedarán pendientes de pago.</li>
+<li>La baja se ejecutará el XX/XX/XXXX.</li>
+<li>Recuerda que perderás tu número y cualquier saldo o promoción vigente</li>
+</ul>
+<p>¿Está de acuerdo con realizar la cancelación?</p>
+    `;
+
+    planDetails.classList.add("show");
+
+  } else {
+    planDetails.classList.remove("show");
+  }
+}
+
+
+/* Nueva función para mostrar/ocultar el campo de texto manual */
+function toggleManualInput() {
+    const motivoSelect = document.getElementById("motivo");
+    const manualMotivoGroup = document.getElementById("manualMotivoGroup");
+    const motivoManualInput = document.getElementById("motivoManual");
+
+    if (motivoSelect.value === "manual_input") {
+        manualMotivoGroup.style.display = "flex";
+        motivoManualInput.disabled = false;
+        motivoManualInput.setAttribute("required", "");
+        // Deshabilita la selección de "motivo" para evitar que se envíe con el valor "manual_input"
+        motivoSelect.removeAttribute("required");
+        motivoSelect.name = "";
+    } else {
+        manualMotivoGroup.style.display = "none";
+        motivoManualInput.disabled = true;
+        motivoManualInput.removeAttribute("required");
+        // Habilita la selección de "motivo" para que se envíe el valor correcto
+        motivoSelect.setAttribute("required", "");
+        motivoSelect.name = "motivo";
+    }
+}
+
+
+/* ---------------------------
+   BÚSQUEDA DNI -> API PeruDevs
+   - muestra loader dentro del autofill mientras consulta
+   - si API responde: llena campos (nombre, fecha, ubicacion si aplica)
+   - si falla: usar fallback (datos ficticios)
+   --------------------------- */
+async function buscarDNI(){
+  const dni = document.getElementById("dni").value.trim();
+  if(dni.length !== 8){ alert("Ingrese un DNI válido de 8 dígitos"); return; }
+
+  const autofill = document.getElementById("autofill");
+  const loader = document.getElementById("loader");
+  const nombreEl = document.getElementById("nombre");
+  const fechaEl = document.getElementById("fechaNacimiento");
+  const ubicacionEl = document.getElementById("ubicacion");
+
+  // Mostrar autofill y loader
+  autofill.classList.add("show");
+  loader.style.display = "block";
+
+  // Vaciar o mostrar texto provisional
+  nombreEl.value = "Buscando...";
+  fechaEl.value = "Buscando...";
+  ubicacionEl.value = "Buscando...";
+
+  try {
+    const resp = await fetch(`https://api.perudevs.com/api/v1/dni/complete?document=${dni}&key=${TOKEN}`);
+    if(!resp.ok){
+      throw new Error("HTTP " + resp.status);
+    }
+    const data = await resp.json();
+
+    if(data && data.estado && data.resultado){
+      const r = data.resultado;
+
+      // Nombre y fecha — si no vienen, dejamos "No disponible"
+      nombreEl.value = r.nombre_completo || r.nombres || "No disponible";
+      fechaEl.value = r.fecha_nacimiento || "No disponible";
+
+      // Ubicación: la API de ejemplo no trae departamento/provincia/distrito,
+      // pero dejamos la lógica preparada por si la API los devuelve con estas keys.
+      const dept = r.departamento || r.departamento_nombre || r.departamentoName || "";
+      const prov = r.provincia || r.provincia_nombre || r.provinciaName || "";
+      const dist = r.distrito || r.distrito_nombre || r.distritoName || "";
+
+      if(dept || prov || dist){
+        const d = dept || "No disponible";
+        const p = prov || "No disponible";
+        const di = dist || "No disponible";
+        ubicacionEl.value = `${d} - ${p} - ${di}`;
+      } else {
+        // si no existen campos de ubicación en la respuesta, mostramos "No disponible"
+        ubicacionEl.value = r.ubigeo || "No disponible";
+      }
+    } else {
+      // no encontrado: usar fallback ficticio
+      usarFallback();
+    }
+  } catch (err) {
+    console.error("Error al consultar la API RENIEC:", err);
+    // fallback
+    usarFallback();
+  } finally {
+    // ocultar loader
+    document.getElementById("loader").style.display = "none";
+  }
+}
+
+/* Fallback: datos ficticios (como pediste) */
+function usarFallback(){
+  document.getElementById("nombre").value = "Juan Perez";
+  document.getElementById("fechaNacimiento").value = "15/08/1990";
+  document.getElementById("ubicacion").value = "Lima - Lima - San Isidro";
+  document.getElementById("loader").style.display = "none";
+  document.getElementById("autofill").classList.add("show");
+}
+
+/* Ocultar el bloque autofill cuando el usuario pulse la X */
+function ocultarDNI(){
+  document.getElementById("autofill").classList.remove("show");
+}
+
+/* Abrir Reniec en ventana emergente */
+/* Abrir Reniec en ventana emergente centrada con zoom 90% */
+function abrirReniec(){
+  // Tamaño base de la ventana
+  const w = 1200;
+  const h = 800;
+
+  // Calcular posición centrada en la pantalla
+  const left = (screen.width - w) / 2;
+  const top = (screen.height - h) / 2;
+
+  // Abrir ventana emergente centrada
+  const popup = window.open(
+    "https://serviciosweb.reniec.gob.pe/aip/logout.do",
+    "popupReniec",
+    `width=${w},height=${h},top=${top},left=${left},scrollbars=yes,resizable=yes`
+  );
+
+  // Cuando cargue, aplicamos zoom (scale 90%)
+  if (popup) {
+    popup.onload = function(){
+      try {
+        popup.document.body.style.zoom = "90%";39
+      } catch(e){
+        console.warn("No se puede aplicar zoom por políticas de la página externa (X-Frame-Options)");
+      }
+    };
+  }
+}
+
+/* ---------------------------
+   Switch modo oscuro
+   --------------------------- */
+document.getElementById("darkSwitch").addEventListener("change", function(){
+    document.body.classList.toggle("dark-mode", this.checked);
+});
+</script>
+
+</body>
+</html>
