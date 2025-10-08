@@ -846,7 +846,10 @@ function toggleManualInput() {
 
 async function buscarDNI(){
   const dni = document.getElementById("dni").value.trim();
-  if(dni.length !== 8){ alert("Ingrese un DNI válido de 8 dígitos"); return; }
+  if(dni.length !== 8){ 
+    alert("Ingrese un DNI válido de 8 dígitos"); 
+    return; 
+  }
 
   const autofill = document.getElementById("autofill");
   const loader = document.getElementById("loader");
@@ -861,32 +864,53 @@ async function buscarDNI(){
   ubicacionEl.value = "Buscando...";
 
   try {
-const url = `https://script.google.com/macros/s/AKfycbzq3MWR3rI5ZkLNlkwOs6PuHNx9ipVRpeesOmS2XbtE7olSWHfO-V757wQ7tLJpsvHlbA/exec?action=dniProxy&dni=${dni}`;
+    const url = `https://script.google.com/macros/s/AKfycbzq3MWR3rI5ZkLNlkwOs6PuHNx9ipVRpeesOmS2XbtE7olSWHfO-V757wQ7tLJpsvHlbA/exec?action=dniProxy&dni=${dni}`;
     const resp = await fetch(url);
     if(!resp.ok) throw new Error("HTTP " + resp.status);
-
     const data = await resp.json();
     console.log("Respuesta PeruDevs proxy:", data);
 
-    const r = data.resultado || data.data || data;
-    nombreEl.value = r.nombre_completo || r.nombres || "No disponible";
-    fechaEl.value = r.fecha_nacimiento || "No disponible";
+    // Normalizamos estructura (PeruDevs usa varias claves posibles)
+    const r = data.resultado || data.data || data || {};
+
+    // Extraemos nombre y nacimiento
+    const nombre = 
+      r.nombre_completo || 
+      [r.nombres, r.apellido_paterno, r.apellido_materno].filter(Boolean).join(" ") ||
+      r.nombres || 
+      "No disponible";
+
+    const nacimiento = 
+      r.fecha_nacimiento || 
+      r.nacimiento || 
+      (r.fecha_de_nacimiento ? r.fecha_de_nacimiento : "No disponible");
+
+    // Extraemos ubicación (si está)
     const dept = r.departamento || r.departamento_nombre || "";
     const prov = r.provincia || r.provincia_nombre || "";
     const dist = r.distrito || r.distrito_nombre || "";
+    let ubicacion = "";
     if (dept || prov || dist) {
-      ubicacionEl.value = `${dept||'No disponible'} - ${prov||'No disponible'} - ${dist||'No disponible'}`;
+      ubicacion = `${dept || ''} - ${prov || ''} - ${dist || ''}`.replace(/(^-|-$)/g, '').trim();
     } else {
-      ubicacionEl.value = r.ubigeo || "No disponible";
+      ubicacion = r.ubigeo || "No disponible";
     }
+
+    // Mostrar datos
+    nombreEl.value = nombre || "No disponible";
+    fechaEl.value = nacimiento || "No disponible";
+    ubicacionEl.value = ubicacion || "No disponible";
 
   } catch (err) {
     console.error("Error al consultar PeruDevs:", err);
-    usarFallback();
+    nombreEl.value = "Error de conexión";
+    fechaEl.value = "No disponible";
+    ubicacionEl.value = "No disponible";
   } finally {
     loader.style.display = "none";
   }
 }
+
 
 
 
