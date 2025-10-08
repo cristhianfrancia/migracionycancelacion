@@ -613,14 +613,14 @@ if (btnYes) {
 }
 
 
-// Al cargar la página, traer lista de usuarios desde la hoja "User"
+// Al cargar la página, traer lista de usuarios desde la hoja "User" (columna B)
 document.addEventListener("DOMContentLoaded", () => {
-  fetch("https://script.google.com/macros/s/AKfycbzq3MWR3rI5ZkLNlkwOs6PuHNx9ipVRpeesOmS2XbtE7olSWHfO-V757wQ7tLJpsvHlbA/exec?action=getUsers")
+  fetch("https://script.google.com/macros/s/AKfycbx7YIQehgfBlQ3-uW8hHjBFceLiRyv0_Oh3k2kGqIptt2Q8Axx2/exec?action=getUsers&tipo=cancelacion")
     .then(res => res.json())
     .then(users => {
       const dataList = document.getElementById("usuarios-sugeridos");
       if (dataList) {
-        dataList.innerHTML = ""; // limpiar por si acaso
+        dataList.innerHTML = "";
         users.forEach(user => {
           const option = document.createElement("option");
           option.value = user;
@@ -630,7 +630,6 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .catch(err => console.error("Error cargando usuarios:", err));
 });
-
 
 
 // Formato en tiempo real mejorado (soporta borrar y mantiene caret)
