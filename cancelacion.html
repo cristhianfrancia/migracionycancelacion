@@ -861,7 +861,7 @@ async function buscarDNI(){
   ubicacionEl.value = "Buscando...";
 
   try {
-    const url = `https://script.google.com/macros/s/AKfycbzq3MWR3rI5ZkLNlkwOs6PuHNx9ipVRpeesOmS2XbtE7olSWHfO-V757wQ7tLJpsvHlbA/exec?action=dniProxy&dni=${dni}`;
+const url = `https://script.google.com/macros/s/AKfycbzq3MWR3rI5ZkLNlkwOs6PuHNx9ipVRpeesOmS2XbtE7olSWHfO-V757wQ7tLJpsvHlbA/exec?action=dniProxy&dni=${dni}`;
     const resp = await fetch(url);
     if(!resp.ok) throw new Error("HTTP " + resp.status);
 
