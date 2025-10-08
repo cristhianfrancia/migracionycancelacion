@@ -574,22 +574,31 @@ if (btnYes) {
 
     if (modalLoader) modalLoader.classList.add("show");
 
-    // ✅ Crear objeto de datos manualmente
-    const datos = {
-      token: "BitelMigracion2025SuperClave",
-      tipo: "cancelacion",
-      usuarioAgente: document.getElementById("usuarioAgente").value.trim(),
-      idEntrante: document.getElementById("idEntrante").value.trim(),
-      idsaliente: document.getElementById("idsaliente").value.trim(),
-      telefonoEntrante: document.getElementById("telefonoEntrante").value.trim(),
-      telefonoSolicitud: document.getElementById("telefonoSolicitud").value.trim(),
-      motivo: document.getElementById("motivo").value.trim(),
-      FechaCancela: document.getElementById("FechaCancela").value,
-      dni: document.getElementById("dni").value.trim()
-    };
+
+// Convertir fecha a DD/MM/AAAA
+const fechaRaw = document.getElementById("FechaCancela").value;
+let fechaFormateada = "";
+if (fechaRaw) {
+  const [yyyy, mm, dd] = fechaRaw.split("-");
+  fechaFormateada = `${dd}/${mm}/${yyyy}`;
+}
+
+const datos = {
+  token: "BitelMigracion2025SuperClave",
+  tipo: "cancelacion",
+  usuarioAgente: document.getElementById("usuarioAgente").value.trim(),
+  idEntrante: document.getElementById("idEntrante").value.trim(),
+  idsaliente: document.getElementById("idsaliente").value.trim(),
+  telefonoEntrante: document.getElementById("telefonoEntrante").value.trim(),
+  telefonoSolicitud: document.getElementById("telefonoSolicitud").value.trim(),
+  motivo: document.getElementById("motivo").value.trim(),
+  FechaCancela: fechaFormateada,
+  dni: document.getElementById("dni").value.trim()
+};
+
 
     try {
-      const resp = await fetch("https://script.google.com/macros/s/AKfycbzq3MWR3rI5ZkLNlkwOs6PuHNx9ipVRpeesOmS2XbtE7olSWHfO-V757wQ7tLJpsvHlbA/exec", {
+      const resp = await fetch("https://script.google.com/macros/s/AKfycbx7YIQehgfBlQ3-uW8hHjBFceLiRyv0_Oh3k2kGqIptt2Q8Axx2/exec?action=getUsers&tipo=cancelacion", {
         method: "POST",
         body: new URLSearchParams(datos)
       });
@@ -741,10 +750,9 @@ function ocultarPlan() {
    Mensajes, limpiar, plan
    --------------------------- */
 function mostrarMensaje(respuesta){
-    // Buscar MIGxxxxxx después del "|"
-    const regex = /\|?(MIG\d+)/;
-    const match = respuesta.match(regex);
-    const codigo = match ? match[1] : "N/A";
+const regex = /\|?(MIG\d+|CAN\d+)/;
+const match = respuesta.match(regex);
+const codigo = match ? match[1] : "N/A";
 
     document.getElementById("mensaje").innerHTML = 
         `✅ Datos guardados correctamente.<br><span class="codigo">🔐 Código de solicitud: ${codigo}</span>`;
@@ -958,4 +966,3 @@ document.getElementById("darkSwitch").addEventListener("change", function(){
 
 </body>
 </html>
-
