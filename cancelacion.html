@@ -844,15 +844,9 @@ function toggleManualInput() {
 }
 
 
-/* ---------------------------
-   BÚSQUEDA DNI -> API PeruDevs
-   --------------------------- */
 async function buscarDNI(){
   const dni = document.getElementById("dni").value.trim();
-  if(dni.length !== 8){ 
-    alert("Ingrese un DNI válido de 8 dígitos"); 
-    return; 
-  }
+  if(dni.length !== 8){ alert("Ingrese un DNI válido de 8 dígitos"); return; }
 
   const autofill = document.getElementById("autofill");
   const loader = document.getElementById("loader");
@@ -860,7 +854,6 @@ async function buscarDNI(){
   const fechaEl = document.getElementById("fechaNacimiento");
   const ubicacionEl = document.getElementById("ubicacion");
 
-  // Mostrar animación
   autofill.classList.add("show");
   loader.style.display = "block";
   nombreEl.value = "Buscando...";
@@ -868,50 +861,33 @@ async function buscarDNI(){
   ubicacionEl.value = "Buscando...";
 
   try {
-    // ✅ Decodificamos el token Base64
-    const apiKey = atob(TOKEN);
-
-    const resp = await fetch(`https://api.perudevs.com/api/v1/dni/complete?document=${dni}&key=${apiKey}`);
-    if(!resp.ok){
-      throw new Error("Error HTTP " + resp.status);
-    }
+    const url = `https://script.google.com/macros/s/AKfycbzq3MWR3rI5ZkLNlkwOs6PuHNx9ipVRpeesOmS2XbtE7olSWHfO-V757wQ7tLJpsvHlbA/exec?action=dniProxy&dni=${dni}`;
+    const resp = await fetch(url);
+    if(!resp.ok) throw new Error("HTTP " + resp.status);
 
     const data = await resp.json();
-    console.log("Respuesta PeruDevs:", data);
+    console.log("Respuesta PeruDevs proxy:", data);
 
-    if (data && (data.resultado || data.data)) {
-      const r = data.resultado || data.data;
-
-      nombreEl.value = r.nombre_completo || r.nombres || "No disponible";
-      fechaEl.value = r.fecha_nacimiento || "No disponible";
-
-      const dept = r.departamento || r.departamento_nombre || "";
-      const prov = r.provincia || r.provincia_nombre || "";
-      const dist = r.distrito || r.distrito_nombre || "";
-
-      if (dept || prov || dist) {
-        ubicacionEl.value = `${dept || "No disponible"} - ${prov || "No disponible"} - ${dist || "No disponible"}`;
-      } else {
-        ubicacionEl.value = r.ubigeo || "No disponible";
-      }
+    const r = data.resultado || data.data || data;
+    nombreEl.value = r.nombre_completo || r.nombres || "No disponible";
+    fechaEl.value = r.fecha_nacimiento || "No disponible";
+    const dept = r.departamento || r.departamento_nombre || "";
+    const prov = r.provincia || r.provincia_nombre || "";
+    const dist = r.distrito || r.distrito_nombre || "";
+    if (dept || prov || dist) {
+      ubicacionEl.value = `${dept||'No disponible'} - ${prov||'No disponible'} - ${dist||'No disponible'}`;
     } else {
-      // Si no devuelve info
-      mostrarErrorDNI("No se encontraron datos para este DNI.");
+      ubicacionEl.value = r.ubigeo || "No disponible";
     }
 
   } catch (err) {
     console.error("Error al consultar PeruDevs:", err);
-    mostrarErrorDNI("Error al conectar con el servicio.");
+    usarFallback();
   } finally {
     loader.style.display = "none";
   }
 }
 
-function mostrarErrorDNI(msg){
-  document.getElementById("nombre").value = msg;
-  document.getElementById("fechaNacimiento").value = "—";
-  document.getElementById("ubicacion").value = "—";
-}
 
 
 
