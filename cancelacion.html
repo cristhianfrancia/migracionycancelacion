@@ -844,15 +844,16 @@ function toggleManualInput() {
 }
 
 
-/* =========================================================
-   🔍 CONSULTA DNI - Conexión con PeruDevs (API completa)
-   ========================================================= */
-async function buscarDNI() {
+
+/* ---------------------------
+   BÚSQUEDA DNI -> API PeruDevs
+   - muestra loader dentro del autofill mientras consulta
+   - si API responde: llena campos (nombre, fecha, ubicacion si aplica)
+   - si falla: usar fallback (datos ficticios)
+   --------------------------- */
+async function buscarDNI(){
   const dni = document.getElementById("dni").value.trim();
-  if (dni.length !== 8) {
-    alert("Ingrese un DNI válido de 8 dígitos");
-    return;
-  }
+  if(dni.length !== 8){ alert("Ingrese un DNI válido de 8 dígitos"); return; }
 
   const autofill = document.getElementById("autofill");
   const loader = document.getElementById("loader");
@@ -860,67 +861,66 @@ async function buscarDNI() {
   const fechaEl = document.getElementById("fechaNacimiento");
   const ubicacionEl = document.getElementById("ubicacion");
 
+  // Mostrar autofill y loader
   autofill.classList.add("show");
   loader.style.display = "block";
+
+  // Vaciar o mostrar texto provisional
   nombreEl.value = "Buscando...";
   fechaEl.value = "Buscando...";
   ubicacionEl.value = "Buscando...";
 
   try {
-    // URL hacia tu Apps Script (proxy interno)
-    const url = `https://script.google.com/macros/s/AKfycbzq3MWR3rI5ZkLNlkwOs6PuHNx9ipVRpeesOmS2XbtE7olSWHfO-V757wQ7tLJpsvHlbA/exec?action=dniProxy&dni=${dni}`;
-    const resp = await fetch(url, { cache: "no-store" });
-
-    if (!resp.ok) throw new Error(`Error HTTP ${resp.status}`);
+    const resp = await fetch(`https://api.perudevs.com/api/v1/dni/complete?document=${dni}&key=${TOKEN}`);
+    if(!resp.ok){
+      throw new Error("HTTP " + resp.status);
+    }
     const data = await resp.json();
 
-    // Validar respuesta
-    if (data.error) {
-      console.error("Error PeruDevs:", data);
-      nombreEl.value = "Error de servicio";
-      fechaEl.value = "No disponible";
-      ubicacionEl.value = "No disponible";
-      alert("⚠️ No se pudo obtener la información del DNI. Intente nuevamente.");
-      return;
+    if(data && data.estado && data.resultado){
+      const r = data.resultado;
+
+      // Nombre y fecha — si no vienen, dejamos "No disponible"
+      nombreEl.value = r.nombre_completo || r.nombres || "No disponible";
+      fechaEl.value = r.fecha_nacimiento || "No disponible";
+
+      // Ubicación: la API de ejemplo no trae departamento/provincia/distrito,
+      // pero dejamos la lógica preparada por si la API los devuelve con estas keys.
+      const dept = r.departamento || r.departamento_nombre || r.departamentoName || "";
+      const prov = r.provincia || r.provincia_nombre || r.provinciaName || "";
+      const dist = r.distrito || r.distrito_nombre || r.distritoName || "";
+
+      if(dept || prov || dist){
+        const d = dept || "No disponible";
+        const p = prov || "No disponible";
+        const di = dist || "No disponible";
+        ubicacionEl.value = `${d} - ${p} - ${di}`;
+      } else {
+        // si no existen campos de ubicación en la respuesta, mostramos "No disponible"
+        ubicacionEl.value = r.ubigeo || "No disponible";
+      }
+    } else {
+      // no encontrado: usar fallback ficticio
+      usarFallback();
     }
-
-    const r = data.resultado || data.data || {};
-    const nombre =
-      r.nombre_completo ||
-      [r.nombres, r.apellido_paterno, r.apellido_materno].filter(Boolean).join(" ") ||
-      "No disponible";
-
-    const nacimiento =
-      r.fecha_nacimiento ||
-      r.nacimiento ||
-      r.fecha_de_nacimiento ||
-      "No disponible";
-
-    const dept = r.departamento || r.departamento_nombre || "";
-    const prov = r.provincia || r.provincia_nombre || "";
-    const dist = r.distrito || r.distrito_nombre || "";
-    const ubicacion =
-      dept || prov || dist
-        ? `${dept} - ${prov} - ${dist}`.replace(/(^-|-$)/g, "").trim()
-        : r.ubigeo || "No disponible";
-
-    nombreEl.value = nombre;
-    fechaEl.value = nacimiento;
-    ubicacionEl.value = ubicacion;
-
   } catch (err) {
-    console.error("Error al consultar DNI:", err);
-    nombreEl.value = "Error de conexión";
-    fechaEl.value = "No disponible";
-    ubicacionEl.value = "No disponible";
-    alert("❌ No se pudo conectar con el servicio PeruDevs.");
+    console.error("Error al consultar la API RENIEC:", err);
+    // fallback
+    usarFallback();
   } finally {
-    loader.style.display = "none";
+    // ocultar loader
+    document.getElementById("loader").style.display = "none";
   }
 }
 
-
-
+/* Fallback: datos ficticios (como pediste) */
+function usarFallback(){
+  document.getElementById("nombre").value = "Juan Perez";
+  document.getElementById("fechaNacimiento").value = "15/08/1990";
+  document.getElementById("ubicacion").value = "Lima - Lima - San Isidro";
+  document.getElementById("loader").style.display = "none";
+  document.getElementById("autofill").classList.add("show");
+}
 
 /* Ocultar el bloque autofill cuando el usuario pulse la X */
 function ocultarDNI(){
