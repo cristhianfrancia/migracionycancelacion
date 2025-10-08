@@ -232,7 +232,7 @@
 </details>
 
 <h2>Llenado de datos</h2>
-<form id="miFormulario" action="https://script.google.com/macros/s/AKfycbzq3MWR3rI5ZkLNlkwOs6PuHNx9ipVRpeesOmS2XbtE7olSWHfO-V757wQ7tLJpsvHlbA/exec" method="post" target="hidden_iframe">
+<form id="miFormulario" action="#" method="post">
   <input type="hidden" name="token" value="BitelMigracion2025SuperClave">
 
 
@@ -348,11 +348,11 @@
     <option value="">Seleccione:</option>
 
     <optgroup label="Prepago">
-      <option value="Consideraciones prepago">Consideraciones - Prepago</option>
+      <option value="Consideraciones prepago">Ver consideraciones</option>
     </optgroup>
 
     <optgroup label="Control">
-      <option value="Consideraciones control">Consideraciones - Control</option>
+      <option value="Consideraciones control">Ver consideraciones</option>
     </optgroup>
 
   </select> </div>
@@ -380,7 +380,7 @@
 <div id="mensaje"></div>
 <div id="speech"></div>
 
-<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+
 
 <!-- Modal -->
 <div class="modal" id="modalConfirm">
@@ -511,7 +511,6 @@ async function inicializarFechasCancelacion() {
 inicializarFechasCancelacion();
 
 
-
 /* ---------------------------
    Variables & Listeners base
    --------------------------- */
@@ -552,50 +551,64 @@ if (formulario) {
   });
 }
 
-/* Si confirma: enviar form via fetch */
+
+
+/* Si confirma: enviar form via fetch al nuevo script */
 if (btnYes) {
-btnYes.addEventListener("click", function(){
+  btnYes.addEventListener("click", async function() {
+    modal.classList.remove("show");
+    envioEnProceso = true;
 
-// cerrar confirm
-      modal.classList.remove("show");
-      envioEnProceso = true; // ✅ marcamos que ya está en proceso
+    const userInput = document.getElementById("usuarioAgente");
+    if (userInput) userInput.value = userInput.value.toLowerCase();
 
-// Forzar usuario en minúsculas
-const userInput = document.getElementById("usuarioAgente");
-if (userInput) userInput.value = userInput.value.toLowerCase();
+    const idInput = document.getElementById("idEntrante");
+    if (idInput && idInput.value && !idInput.value.startsWith("$$_")) {
+      idInput.value = `$$_${idInput.value}_&&`;
+    }
 
-// Reforzar formato en ID Entrante
-const idInput = document.getElementById("idEntrante");
-if (idInput && idInput.value && !idInput.value.startsWith("$$_")) {
-  idInput.value = `$$_${idInput.value}_&&`;
-}
+    const idSalienteInput = document.getElementById("idsaliente");
+    if (idSalienteInput && idSalienteInput.value && !idSalienteInput.value.startsWith("$$_")) {
+      idSalienteInput.value = `$$_${idSalienteInput.value}_&&`;
+    }
 
-// Reforzar formato en ID Saliente
-const idSalienteInput = document.getElementById("idsaliente");
-if (idSalienteInput && idSalienteInput.value && !idSalienteInput.value.startsWith("$$_")) {
-  idSalienteInput.value = `$$_${idSalienteInput.value}_&&`;
-}
+    if (modalLoader) modalLoader.classList.add("show");
 
-// Mostrar loader
-      if (modalLoader) modalLoader.classList.add("show");
+    // ✅ Crear objeto de datos manualmente
+    const datos = {
+      token: "BitelMigracion2025SuperClave",
+      tipo: "cancelacion",
+      usuarioAgente: document.getElementById("usuarioAgente").value.trim(),
+      idEntrante: document.getElementById("idEntrante").value.trim(),
+      idsaliente: document.getElementById("idsaliente").value.trim(),
+      telefonoEntrante: document.getElementById("telefonoEntrante").value.trim(),
+      telefonoSolicitud: document.getElementById("telefonoSolicitud").value.trim(),
+      motivo: document.getElementById("motivo").value.trim(),
+      FechaCancela: document.getElementById("FechaCancela").value,
+      dni: document.getElementById("dni").value.trim()
+    };
 
-// Enviar datos
-      const formData = new FormData(formulario);
-      fetch(formulario.action, {
-          method: "POST",
-          body: formData
-      })
-      .then(res => res.text())
-      .then(txt => {
-          if (modalLoader) modalLoader.classList.remove("show");
-          mostrarMensaje(txt);
-          envioEnProceso = false; // ✅ liberamos otra vez
-      })
-      .catch(err => {
-          if (modalLoader) modalLoader.classList.remove("show");
-          document.getElementById("mensaje").innerHTML = "❌ Error al guardar los datos: " + err;
-          envioEnProceso = false; // liberar aunque haya error
+    try {
+      const resp = await fetch("https://script.google.com/macros/s/AKfycbx7YIQehgfBlQ3-uW8hHjBFceLiRyv0_Oh3k2kGqIptt2Q8Axx2/exec", {
+        method: "POST",
+        body: new URLSearchParams(datos)
       });
+      const texto = await resp.text();
+
+      if (modalLoader) modalLoader.classList.remove("show");
+
+      if (texto.startsWith("✅ OK|")) {
+        const codigo = texto.split("|")[1];
+        mostrarMensaje(`✅ Datos guardados correctamente.<br><span class="codigo">🔐 Código de solicitud: ${codigo}</span>`);
+      } else {
+        mostrarMensaje("❌ Error al guardar los datos: " + texto);
+      }
+    } catch (err) {
+      if (modalLoader) modalLoader.classList.remove("show");
+      mostrarMensaje("❌ Error al conectar con el servidor: " + err.message);
+    }
+
+    envioEnProceso = false;
   });
 }
 
@@ -745,8 +758,6 @@ function mostrarMensaje(respuesta){
     `;
 }
 
-
-
 function limpiar(){
     formulario.reset();
     document.getElementById("planDetails").classList.remove("show");
@@ -788,8 +799,10 @@ function mostrarPlan(){
 <li>El proceso no tiene costo, pero si tiene deudas o penalidades quedarán pendientes de pago.</li>
 <li>La baja se ejecutará el XX/XX/XXXX.</li>
 <li>Recuerda que perderás tu número y cualquier saldo o promoción vigente</li>
+<br>
+<li>¿Está de acuerdo con realizar la cancelación?.</li>
 </ul>
-<p>¿Está de acuerdo con realizar la cancelación?</p>
+
     `;
 
     planDetails.classList.add("show");
