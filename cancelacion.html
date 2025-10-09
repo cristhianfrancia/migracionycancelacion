@@ -750,7 +750,7 @@ function ocultarPlan() {
    Mensajes, limpiar, plan
    --------------------------- */
 function mostrarMensaje(respuesta){
-const regex = /\|?(MIG\d+|CAN\d+)/;
+const regex = /\|?(MIG\d+|BA\d+)/;
 const match = respuesta.match(regex);
 const codigo = match ? match[1] : "N/A";
 
@@ -966,3 +966,4 @@ document.getElementById("darkSwitch").addEventListener("change", function(){
 
 </body>
 </html>
+
