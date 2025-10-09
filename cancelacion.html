@@ -749,14 +749,16 @@ function ocultarPlan() {
 /* ---------------------------
    Mensajes, limpiar, plan
    --------------------------- */
-function mostrarMensaje(respuesta){
-const regex = /\|?(MIG\d+|BA\d+)/;
-const match = respuesta.match(regex);
-const codigo = match ? match[1] : "N/A";
+function mostrarMensaje(respuesta) {
+  // Buscar cualquier código que empiece con "BA" y tenga al menos 3 dígitos
+  const match = respuesta.match(/BA\d{3,}/i);
+  const codigo = match ? match[0].toUpperCase() : "N/A";
 
-    document.getElementById("mensaje").innerHTML = 
-        `✅ Datos guardados correctamente.<br><span class="codigo">🔐 Código de solicitud: ${codigo}</span>`;
-    document.getElementById("speech").style.display = "block";
+  document.getElementById("mensaje").innerHTML = `
+    ✅ Datos guardados correctamente.<br>
+    <span class="codigo">🔐 Código de solicitud: ${codigo}</span>
+  `;
+      document.getElementById("speech").style.display = "block";
     document.getElementById("speech").innerHTML = `
         <h3>🗣️ Speech de confirmación:</h3>
         <p>“La cancelación del <span class="green">${telefonoSolicitud}</span> se ejecutará el XX/XX/XXXX.</p>
@@ -966,4 +968,5 @@ document.getElementById("darkSwitch").addEventListener("change", function(){
 
 </body>
 </html>
+
 
