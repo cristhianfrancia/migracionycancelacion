@@ -169,50 +169,40 @@
   background: #d5d5d5;
   box-shadow: 0 0 6px rgba(0,0,0,0.15);
 }
-.small-buttons button:nth-child(1) { background: #01768b; color: #fff; }
-.small-buttons button:nth-child(1):hover { background: #0c477e; }
-.small-buttons button:nth-child(2) { background: #c62828; color: #fff; }
-.small-buttons button:nth-child(2):hover { background: #a61c1c; }
-.small-buttons button:nth-child(3) { background: #444; color: #fff; }
-.small-buttons button:nth-child(3):hover { background: #222; }
-
-
+/* Estilo específico para el botón Reniec que queda solo */
+.small-buttons button:nth-child(1) { background: #444; color: #fff; }
+.small-buttons button:nth-child(1):hover { background: #222; }
 
 /* Contenedor para centrar el nuevo botón de cierre */
 .close-plan-container {
   display: flex;
   justify-content: center;
-  margin-top: 20px; /* Espacio superior */
+  margin-top: 20px; 
 }
 
 /* Estilo principal del nuevo botón de cierre con animación */
 .btn-cerrar-plan {
-  background: linear-gradient(45deg, #01768b, #0c477e); /* Fondo con degradado */
+  background: linear-gradient(45deg, #01768b, #0c477e); 
   color: white;
   border: none;
-  border-radius: 10px; /* Bordes más redondeados */
-  padding: 12px 30px; /* Más ancho */
+  border-radius: 10px; 
+  padding: 12px 30px; 
   font-size: 15px;
   font-weight: 500;
   cursor: pointer;
-  letter-spacing: 0.5px; /* Espaciado entre letras */
+  letter-spacing: 0.5px; 
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  transition: all 0.3s ease; /* Transición suave para todos los efectos */
+  transition: all 0.3s ease; 
 }
-
-/* Animación al pasar el cursor sobre el botón */
 .btn-cerrar-plan:hover {
-  transform: translateY(-3px); /* Efecto de elevación */
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3), 0 0 10px #fbf32f; /* Sombra más pronunciada y un brillo amarillo */
-  background: linear-gradient(45deg, #0c477e, #01768b); /* Invierte el degradado */
+  transform: translateY(-3px); 
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3), 0 0 10px #fbf32f; 
+  background: linear-gradient(45deg, #0c477e, #01768b); 
 }
-
-
 </style>
 </head>
 <body>
 
-<!-- Switch de modo oscuro -->
 <div style="position: absolute; top: 15px; right: 20px;">
   <label class="switch">
     <input type="checkbox" id="darkSwitch">
@@ -235,76 +225,95 @@
 <form id="miFormulario" action="#" method="post">
   <input type="hidden" name="token" value="BitelMigracion2025SuperClave">
 
-
   <div class="input-row">
-<div class="input-group">
-  <label for="usuarioAgente">Usuario de agente</label>
-  <div class="input-with-mark">
-    <input list="usuarios-sugeridos" name="usuarioAgente" id="usuarioAgente" placeholder="cpc_xxxxxx_vtp" style="text-transform: lowercase;" required>
-    <datalist id="usuarios-sugeridos"></datalist>
-  </div>
-  </div>
-
+    <div class="input-group">
+      <label for="usuarioAgente">Usuario de agente</label>
+      <div class="input-with-mark">
+        <input list="usuarios-sugeridos" name="usuarioAgente" id="usuarioAgente" placeholder="cpc_xxxxxx_vtp" style="text-transform: lowercase;" required>
+        <datalist id="usuarios-sugeridos"></datalist>
+      </div>
+    </div>
 
     <div class="input-group">
       <label for="idEntrante">ID de llamada entrante</label>
       <div class="input-with-mark">
         <input type="text" name="idEntrante" id="idEntrante" placeholder="(ID directo)" >
       </div>
-      </div>
-
+    </div>
 
     <div class="input-group">
       <label for="idsaliente">ID de llamada saliente</label>
       <div class="input-with-mark">
         <input type="text" name="idsaliente" id="idsaliente" placeholder="(ID directo)" >
       </div>
-      </div>
+    </div>
+  </div>
 
-
+  <div class="input-row">
     <div class="input-group">
       <label for="telefonoEntrante">Número del que llama</label>
       <input type="number" name="telefonoEntrante" id="telefonoEntrante" placeholder="9 dígitos" required maxlength="9" oninput="this.value=this.value.slice(0,9)">
     </div>
 
     <div class="input-group">
-<label for="telefonoSolicitud" style="color:red;">Número a cancelar:</label>
+      <label for="telefonoSolicitud" style="color:red;">Número a cancelar:</label>
       <input type="number" name="telefonoSolicitud" id="telefonoSolicitud" placeholder="9 dígitos" required maxlength="9" oninput="this.value=this.value.slice(0,9)">
     </div>
+    
+    <div class="input-group">
+      <label for="planActual">Plan actual</label>
+      <input type="text" name="planActual" id="planActual" placeholder="Plan que figura en Customer Care" required>
+    </div>
+  </div>
+
+  <div class="input-row">
+    <div class="input-group">
+      <label for="motivoPrincipal">Motivo principal de cancelación</label>
+      <select name="motivoPrincipal" id="motivoPrincipal" required>
+        <option value="">Seleccione</option>
+        <option value="Precio">Precio</option>
+        <option value="No uso de beneficios">No uso de beneficios</option>
+        <option value="Mala oferta comercial">Mala oferta comercial</option>
+        <option value="Mala señal">Mala señal</option>
+        <option value="Fallas en el servicio">Fallas en el servicio</option>
+        <option value="Mala información">Mala información</option>
+        <option value="Otros">Otros</option>
+      </select>
     </div>
 
-  <div class="input-group">
-    <label for="motivo">Motivo de cancelación</label>
-    <select name="motivo" id="motivo" required>
-      <option value="">Seleccione</option>
-      <option value="Bloqueo por robo o pérdida">Bloqueo por robo o pérdida</option>
-      <option value="Centro de pagos no cercanos">Centro de pagos no cercanos</option>
-      <option value="Cuenta con otra línea">Cuenta con otra línea</option>
-      <option value="Desconocimiento de la línea control">Desconocimiento de la línea control</option>
-      <option value="Equipo malogrado">Equipo malogrado</option>
-      <option value="Forma de realizar pagos es complicado">Forma de realizar pagos es complicado</option>
-      <option value="Incumplimiento de promociones ofrecidas">Incumplimiento de promociones ofrecidas</option>
-      <option value="Mala experiencia presentada en Bitel">Mala experiencia presentada en Bitel</option>
-      <option value="Mejor oferta de otro operador">Mejor oferta de otro operador</option>
-      <option value="Motivo de viaje">Motivo de viaje</option>
-      <option value="Motivos Personales">Motivos Personales</option>
-      <option value="No desea el servicio">No desea el servicio</option>
-      <option value="Pérdida de SIM Card">Pérdida de SIM Card</option>
-      <option value="Precios y promociones no son atractivos">Precios y promociones no son atractivos</option>
-      <option value="Problema no solucionado - Reclamo o incidencia pendiente">Problema no solucionado - Reclamo o incidencia pendiente</option>
-      <option value="Problemas con facturación">Problemas con facturación</option>
-      <option value="Problemas de registro con WhatsApp por ser número reciclado">Problemas de registro con WhatsApp por ser número reciclado</option>
-      <option value="Problemas de Servicio - Internet">Problemas de Servicio - Internet</option>
-      <option value="Problemas de Servicio - Llamadas">Problemas de Servicio - Llamadas</option>
-      <option value="Problemas de Servicio - Señal">Problemas de Servicio - Señal</option>
-      <option value="Problemas de Servicio – SMS">Problemas de Servicio – SMS</option>
-      <option value="Problemas económicos">Problemas económicos</option>
-      <option value="Recepción de llamadas de entidades bancarias">Recepción de llamadas de entidades bancarias</option>
-      <option value="Recibe llamadas malintencionadas">Recibe llamadas malintencionadas</option>
-      <option value="Servicio de Atención al cliente presencial no brinda solución">Servicio de Atención al cliente presencial no brinda solución</option>
-      <option value="Servicio de Atención al cliente telefónico no brinda solución">Servicio de Atención al cliente telefónico no brinda solución</option>
-      <option value="Suspendido por deuda en anterior operador">Suspendido por deuda en anterior operador</option>
-    </select>
+    <div class="input-group">
+      <label for="motivo">Motivo secundario de cancelación</label>
+      <select name="motivo" id="motivo" required>
+        <option value="">Seleccione</option>
+        <option value="Bloqueo por robo o pérdida">Bloqueo por robo o pérdida</option>
+        <option value="Centro de pagos no cercanos">Centro de pagos no cercanos</option>
+        <option value="Cuenta con otra línea">Cuenta con otra línea</option>
+        <option value="Desconocimiento de la línea control">Desconocimiento de la línea control</option>
+        <option value="Equipo malogrado">Equipo malogrado</option>
+        <option value="Forma de realizar pagos es complicado">Forma de realizar pagos es complicado</option>
+        <option value="Incumplimiento de promociones ofrecidas">Incumplimiento de promociones ofrecidas</option>
+        <option value="Mala experiencia presentada en Bitel">Mala experiencia presentada en Bitel</option>
+        <option value="Mejor oferta de otro operador">Mejor oferta de otro operador</option>
+        <option value="Motivo de viaje">Motivo de viaje</option>
+        <option value="Motivos Personales">Motivos Personales</option>
+        <option value="No desea el servicio">No desea el servicio</option>
+        <option value="Pérdida de SIM Card">Pérdida de SIM Card</option>
+        <option value="Precios y promociones no son atractivos">Precios y promociones no son atractivos</option>
+        <option value="Problema no solucionado - Reclamo o incidencia pendiente">Problema no solucionado - Reclamo o incidencia pendiente</option>
+        <option value="Problemas con facturación">Problemas con facturación</option>
+        <option value="Problemas de registro con WhatsApp por ser número reciclado">Problemas de registro con WhatsApp por ser número reciclado</option>
+        <option value="Problemas de Servicio - Internet">Problemas de Servicio - Internet</option>
+        <option value="Problemas de Servicio - Llamadas">Problemas de Servicio - Llamadas</option>
+        <option value="Problemas de Servicio - Señal">Problemas de Servicio - Señal</option>
+        <option value="Problemas de Servicio – SMS">Problemas de Servicio – SMS</option>
+        <option value="Problemas económicos">Problemas económicos</option>
+        <option value="Recepción de llamadas de entidades bancarias">Recepción de llamadas de entidades bancarias</option>
+        <option value="Recibe llamadas malintencionadas">Recibe llamadas malintencionadas</option>
+        <option value="Servicio de Atención al cliente presencial no brinda solución">Servicio de Atención al cliente presencial no brinda solución</option>
+        <option value="Servicio de Atención al cliente telefónico no brinda solución">Servicio de Atención al cliente telefónico no brinda solución</option>
+        <option value="Suspendido por deuda en anterior operador">Suspendido por deuda en anterior operador</option>
+      </select>
+    </div>
   </div>
 
 <br>
@@ -324,14 +333,10 @@
 <input type="number" name="dni" id="dni" placeholder="8 dígitos" required >
 </div>
 
-<!-- Botones secundarios debajo del autofill -->
 <div class="small-buttons">
-  <button type="button" onclick="buscarDNI()">🔍 Consulta</button>
-  <button type="button" onclick="ocultarDNI()">🔒 Cerrar</button>
   <button type="button" onclick="abrirReniec()">🪪 Reniec</button>
 </div>
 
-  <!-- Autofill (debajo del DNI con animación y fondo bonito) -->
   <div class="autofill" id="autofill">
     <div class="loader" id="loader"></div>
     <div class="input-row">
@@ -382,7 +387,6 @@
 
 
 
-<!-- Modal -->
 <div class="modal" id="modalConfirm">
   <div class="modal-content">
     <h2>¿Desea guardar la información?</h2>
@@ -393,7 +397,6 @@
   </div>
 </div>
 
-<!-- Modal Loader (espera) -->
 <div class="modal" id="modalLoader">
   <div class="modal-content">
     <h2>Procesando, espere un momento...</h2>
@@ -401,7 +404,6 @@
   </div>
 </div>
 
-<!-- Modal Reniec -->
 <div class="modal" id="modalReniec">
   <div class="modal-content" style="max-width:920px; width:95%;">
     <h2>Servicios Reniec</h2>
@@ -543,10 +545,8 @@ let envioEnProceso = false;
 if (formulario) {
   formulario.addEventListener("submit", function(e){
       e.preventDefault();
-
       // Evitar que se muestre otra vez si ya se está enviando
       if (envioEnProceso) return;
-
       modal.classList.add("show");
   });
 }
@@ -583,6 +583,7 @@ if (fechaRaw) {
   fechaFormateada = `${dd}/${mm}/${yyyy}`;
 }
 
+// PREPARAR DATOS CON LOS NUEVOS CAMPOS
 const datos = {
   token: "BitelMigracion2025SuperClave",
   tipo: "cancelacion",
@@ -591,7 +592,12 @@ const datos = {
   idsaliente: document.getElementById("idsaliente").value.trim(),
   telefonoEntrante: document.getElementById("telefonoEntrante").value.trim(),
   telefonoSolicitud: document.getElementById("telefonoSolicitud").value.trim(),
-  motivo: document.getElementById("motivo").value.trim(),
+  // Nuevos campos
+  planActual: document.getElementById("planActual").value.trim(),
+  motivoPrincipal: document.getElementById("motivoPrincipal").value.trim(),
+  // El antiguo motivo ahora es el secundario
+  motivoSecundario: document.getElementById("motivo").value.trim(),
+  
   FechaCancela: fechaFormateada,
   dni: document.getElementById("dni").value.trim()
 };
@@ -820,143 +826,48 @@ function mostrarPlan(){
   }
 }
 
-
-/* Nueva función para mostrar/ocultar el campo de texto manual */
-function toggleManualInput() {
-    const motivoSelect = document.getElementById("motivo");
-    const manualMotivoGroup = document.getElementById("manualMotivoGroup");
-    const motivoManualInput = document.getElementById("motivoManual");
-
-    if (motivoSelect.value === "manual_input") {
-        manualMotivoGroup.style.display = "flex";
-        motivoManualInput.disabled = false;
-        motivoManualInput.setAttribute("required", "");
-        // Deshabilita la selección de "motivo" para evitar que se envíe con el valor "manual_input"
-        motivoSelect.removeAttribute("required");
-        motivoSelect.name = "";
-    } else {
-        manualMotivoGroup.style.display = "none";
-        motivoManualInput.disabled = true;
-        motivoManualInput.removeAttribute("required");
-        // Habilita la selección de "motivo" para que se envíe el valor correcto
-        motivoSelect.setAttribute("required", "");
-        motivoSelect.name = "motivo";
-    }
-}
-
-
-
 /* ---------------------------
-   BÚSQUEDA DNI -> API PeruDevs
-   - muestra loader dentro del autofill mientras consulta
-   - si API responde: llena campos (nombre, fecha, ubicacion si aplica)
-   - si falla: usar fallback (datos ficticios)
+   BÚSQUEDA DNI -> SOLO FALLBACK/VACIO SI NO HAY BOTON
+   (Las funciones buscarDNI y ocultarDNI se mantienen por si decides re-activar los botones,
+    pero al no estar los botones en el HTML, no se ejecutarán desde la UI).
    --------------------------- */
 async function buscarDNI(){
-  const dni = document.getElementById("dni").value.trim();
-  if(dni.length !== 8){ alert("Ingrese un DNI válido de 8 dígitos"); return; }
-
-  const autofill = document.getElementById("autofill");
-  const loader = document.getElementById("loader");
-  const nombreEl = document.getElementById("nombre");
-  const fechaEl = document.getElementById("fechaNacimiento");
-  const ubicacionEl = document.getElementById("ubicacion");
-
-  // Mostrar autofill y loader
-  autofill.classList.add("show");
-  loader.style.display = "block";
-
-  // Vaciar o mostrar texto provisional
-  nombreEl.value = "Buscando...";
-  fechaEl.value = "Buscando...";
-  ubicacionEl.value = "Buscando...";
-
-  try {
-    const resp = await fetch(`https://api.perudevs.com/api/v1/dni/complete?document=${dni}&key=${TOKEN}`);
-    if(!resp.ok){
-      throw new Error("HTTP " + resp.status);
-    }
-    const data = await resp.json();
-
-    if(data && data.estado && data.resultado){
-      const r = data.resultado;
-
-      // Nombre y fecha — si no vienen, dejamos "No disponible"
-      nombreEl.value = r.nombre_completo || r.nombres || "No disponible";
-      fechaEl.value = r.fecha_nacimiento || "No disponible";
-
-      // Ubicación: la API de ejemplo no trae departamento/provincia/distrito,
-      // pero dejamos la lógica preparada por si la API los devuelve con estas keys.
-      const dept = r.departamento || r.departamento_nombre || r.departamentoName || "";
-      const prov = r.provincia || r.provincia_nombre || r.provinciaName || "";
-      const dist = r.distrito || r.distrito_nombre || r.distritoName || "";
-
-      if(dept || prov || dist){
-        const d = dept || "No disponible";
-        const p = prov || "No disponible";
-        const di = dist || "No disponible";
-        ubicacionEl.value = `${d} - ${p} - ${di}`;
-      } else {
-        // si no existen campos de ubicación en la respuesta, mostramos "No disponible"
-        ubicacionEl.value = r.ubigeo || "No disponible";
-      }
-    } else {
-      // no encontrado: usar fallback ficticio
-      usarFallback();
-    }
-  } catch (err) {
-    console.error("Error al consultar la API RENIEC:", err);
-    // fallback
-    usarFallback();
-  } finally {
-    // ocultar loader
-    document.getElementById("loader").style.display = "none";
-  }
+  // Función desactivada visualmente
 }
 
-/* Fallback: datos ficticios (como pediste) */
-function usarFallback(){
-  document.getElementById("nombre").value = "Juan Perez";
-  document.getElementById("fechaNacimiento").value = "15/08/1990";
-  document.getElementById("ubicacion").value = "Lima - Lima - San Isidro";
-  document.getElementById("loader").style.display = "none";
-  document.getElementById("autofill").classList.add("show");
-}
-
-/* Ocultar el bloque autofill cuando el usuario pulse la X */
 function ocultarDNI(){
   document.getElementById("autofill").classList.remove("show");
 }
 
 /* Abrir Reniec en ventana emergente */
-/* Abrir Reniec en ventana emergente centrada con zoom 90% */
 function abrirReniec(){
-  // Tamaño base de la ventana
   const w = 1200;
   const h = 800;
-
-  // Calcular posición centrada en la pantalla
   const left = (screen.width - w) / 2;
   const top = (screen.height - h) / 2;
 
-  // Abrir ventana emergente centrada
   const popup = window.open(
     "https://serviciosweb.reniec.gob.pe/aip/logout.do",
     "popupReniec",
     `width=${w},height=${h},top=${top},left=${left},scrollbars=yes,resizable=yes`
   );
 
-  // Cuando cargue, aplicamos zoom (scale 90%)
   if (popup) {
     popup.onload = function(){
       try {
-        popup.document.body.style.zoom = "90%";39
+        popup.document.body.style.zoom = "90%";
       } catch(e){
         console.warn("No se puede aplicar zoom por políticas de la página externa (X-Frame-Options)");
       }
     };
   }
 }
+
+/* Cerrar Reniec (aunque es un popup externo, esta función es para el modal interno si se usara iframe) */
+function cerrarReniec() {
+    document.getElementById("modalReniec").classList.remove("show");
+}
+
 
 /* ---------------------------
    Switch modo oscuro
@@ -968,5 +879,3 @@ document.getElementById("darkSwitch").addEventListener("change", function(){
 
 </body>
 </html>
-
-
