@@ -169,13 +169,9 @@
   background: #d5d5d5;
   box-shadow: 0 0 6px rgba(0,0,0,0.15);
 }
-.small-buttons button:nth-child(1) { background: #01768b; color: #fff; }
-.small-buttons button:nth-child(1):hover { background: #0c477e; }
-.small-buttons button:nth-child(2) { background: #c62828; color: #fff; }
-.small-buttons button:nth-child(2):hover { background: #a61c1c; }
-.small-buttons button:nth-child(3) { background: #444; color: #fff; }
-.small-buttons button:nth-child(3):hover { background: #222; }
-
+/* Estilo específico para el botón Reniec que queda solo */
+.small-buttons button:nth-child(1) { background: #444; color: #fff; }
+.small-buttons button:nth-child(1):hover { background: #222; }
 
 
 /* Contenedor para centrar el nuevo botón de cierre */
@@ -212,7 +208,6 @@
 </head>
 <body>
 
-<!-- Switch de modo oscuro -->
 <div style="position: absolute; top: 15px; right: 20px;">
   <label class="switch">
     <input type="checkbox" id="darkSwitch">
@@ -236,32 +231,30 @@
   <input type="hidden" name="token" value="BitelMigracion2025SuperClave">
 
   <div class="input-row">
-<div class="input-group">
-  <label for="usuarioAgente">Usuario de agente</label>
-  <div class="input-with-mark">
-    <input list="usuarios-sugeridos" name="usuarioAgente" id="usuarioAgente" placeholder="cpc_xxxxxx_vtp" style="text-transform: lowercase;" required>
-    <datalist id="usuarios-sugeridos"></datalist>
-  </div>
-  </div>
-
+    <div class="input-group">
+      <label for="usuarioAgente">Usuario de agente</label>
+      <div class="input-with-mark">
+        <input list="usuarios-sugeridos" name="usuarioAgente" id="usuarioAgente" placeholder="cpc_xxxxxx_vtp" style="text-transform: lowercase;" required>
+        <datalist id="usuarios-sugeridos"></datalist>
+      </div>
+    </div>
 
     <div class="input-group">
       <label for="idEntrante">ID de llamada entrante</label>
       <div class="input-with-mark">
         <input type="text" name="idEntrante" id="idEntrante" placeholder="(ID directo)" >
       </div>
-      </div>
-
+    </div>
 
     <div class="input-group">
       <label for="idsaliente">ID de llamada saliente</label>
       <div class="input-with-mark">
         <input type="text" name="idsaliente" id="idsaliente" placeholder="(ID directo)" >
       </div>
-      </div>
+    </div>
+  </div>
 
-
-
+  <div class="input-row">
     <div class="input-group">
       <label for="telefonoEntrante">Número del que llama</label>
       <input type="number" name="telefonoEntrante" id="telefonoEntrante" placeholder="9 dígitos" required maxlength="9" oninput="this.value=this.value.slice(0,9)">
@@ -271,22 +264,61 @@
       <label for="telefonoSolicitud" style="color:red;">Número a migrar</label>
       <input type="number" name="telefonoSolicitud" id="telefonoSolicitud" placeholder="9 dígitos" required maxlength="9" oninput="this.value=this.value.slice(0,9)">
     </div>
+
+    <div class="input-group">
+      <label for="planActual">Plan actual</label>
+      <input type="text" name="planActual" id="planActual" placeholder="Plan que figura en Customer Care" required>
+    </div>
+  </div>
+
+  <div class="input-row">
+    <div class="input-group">
+      <label for="ciclo">Ciclo</label>
+      <select name="ciclo" id="ciclo" required>
+        <option value="">Seleccione</option>
+        <option value="-">-</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+        <option value="11">11</option>
+        <option value="12">12</option>
+        <option value="13">13</option>
+        <option value="14">14</option>
+        <option value="15">15</option>
+        <option value="16">16</option>
+        <option value="17">17</option>
+        <option value="18">18</option>
+        <option value="22">22</option>
+        <option value="23">23</option>
+        <option value="24">24</option>
+        <option value="25">25</option>
+        <option value="26">26</option>
+        <option value="27">27</option>
+        <option value="28">28</option>
+      </select>
     </div>
 
-<div class="input-group">
+    <div class="input-group">
+      <label for="subscriberCode">Subscriber code</label>
+      <input type="text" name="subscriberCode" id="subscriberCode" placeholder="Código de suscriptor" required>
+    </div>
+  </div>
+  <div class="input-group">
 <label for="dni">Número de documento de identidad</label>
 <div class="dni-container">
 <input type="number" name="dni" id="dni" placeholder="8 dígitos" required >
 </div>
 
-<!-- Botones secundarios debajo del autofill -->
 <div class="small-buttons">
-  <button type="button" onclick="buscarDNI()">🔍 Consulta</button>
-  <button type="button" onclick="ocultarDNI()">🔒 Cerrar</button>
   <button type="button" onclick="abrirReniec()">🪪 Reniec</button>
 </div>
 
-  <!-- Autofill (debajo del DNI con animación y fondo bonito) -->
   <div class="autofill" id="autofill">
     <div class="loader" id="loader"></div>
     <div class="input-row">
@@ -390,7 +422,6 @@
 
 <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
 
-<!-- Modal -->
 <div class="modal" id="modalConfirm">
   <div class="modal-content">
     <h2>¿Desea guardar la información?</h2>
@@ -401,7 +432,6 @@
   </div>
 </div>
 
-<!-- Modal Loader (espera) -->
 <div class="modal" id="modalLoader">
   <div class="modal-content">
     <h2>Procesando, espere un momento...</h2>
@@ -409,7 +439,6 @@
   </div>
 </div>
 
-<!-- Modal Reniec -->
 <div class="modal" id="modalReniec">
   <div class="modal-content" style="max-width:920px; width:95%;">
     <h2>Servicios Reniec</h2>
@@ -1284,9 +1313,3 @@ document.getElementById("darkSwitch").addEventListener("change", function(){
 
 </body>
 </html>
-
-
-
-
-
-
