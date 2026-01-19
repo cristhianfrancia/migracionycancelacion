@@ -331,35 +331,49 @@
 <br>
 
   <div class="input-row">
-<div class="input-group">
-  <label for="motivo">Motivo de migración</label>
-  <input list="motivos-sugeridos" name="motivo" id="motivo" placeholder="Seleccione o ingrese un motivo" required>
-  <datalist id="motivos-sugeridos">
-    <option value="Prepago: Centro de pagos no cercanos"></option>
-    <option value="Prepago: Equipo malogrado"></option>
-    <option value="Prepago: Incumplimiento de promociones ofrecidas"></option>
-    <option value="Prepago: Mala experiencia presentada en Bitel"></option>
-    <option value="Prepago: Mejor oferta de otro operador"></option>
-    <option value="Prepago: Motivo de viaje"></option>
-    <option value="Prepago: Motivos Personales"></option>
-    <option value="Prepago: Pérdida de SIM Card"></option>
-    <option value="Prepago: Problema no solucionado - Reclamo o incidencia pendiente"></option>
-    <option value="Prepago: Problemas con facturación"></option>
-    <option value="Prepago: Problemas de Servicio - Internet"></option>
-    <option value="Prepago: Problemas de Servicio - Llamadas"></option>
-    <option value="Prepago: Problemas de Servicio - Señal"></option>
-    <option value="Prepago: Problemas de Servicio - SMS"></option>
-    <option value="Prepago: Problemas económicos"></option>
-    <option value="Prepago: Retención de baja de línea"></option>
-    <option value="Prepago: Tiene otro servicio activo"></option>
-  </datalist>
-</div>
+    <div class="input-group">
+      <label for="motivoPrincipal">Motivo principal de migración</label>
+      <select name="motivoPrincipal" id="motivoPrincipal" required>
+        <option value="">Seleccione</option>
+        <option value="Precio">Precio</option>
+        <option value="No uso de beneficios">No uso de beneficios</option>
+        <option value="Mala oferta comercial">Mala oferta comercial</option>
+        <option value="Mala señal">Mala señal</option>
+        <option value="Fallas en el servicio">Fallas en el servicio</option>
+        <option value="Mala información">Mala información</option>
+        <option value="Otros">Otros</option>
+      </select>
+    </div>
 
-<div class="input-group" id="manualMotivoGroup" style="display:none; margin-top: 15px;">
-  <label for="motivoManual">Motivo manual</label>
-  <input type="text" name="motivoManual" id="motivoManual" placeholder="Ingrese el motivo aquí..." disabled>
-</div>
-
+    <div class="input-group">
+      <label for="motivoSecundario">Motivo secundario de migración</label>
+      <input list="motivos-sugeridos" name="motivoSecundario" id="motivoSecundario" placeholder="Seleccione o ingrese un motivo" required onchange="toggleManualInput()">
+      <datalist id="motivos-sugeridos">
+        <option value="Prepago: Centro de pagos no cercanos"></option>
+        <option value="Prepago: Equipo malogrado"></option>
+        <option value="Prepago: Incumplimiento de promociones ofrecidas"></option>
+        <option value="Prepago: Mala experiencia presentada en Bitel"></option>
+        <option value="Prepago: Mejor oferta de otro operador"></option>
+        <option value="Prepago: Motivo de viaje"></option>
+        <option value="Prepago: Motivos Personales"></option>
+        <option value="Prepago: Pérdida de SIM Card"></option>
+        <option value="Prepago: Problema no solucionado - Reclamo o incidencia pendiente"></option>
+        <option value="Prepago: Problemas con facturación"></option>
+        <option value="Prepago: Problemas de Servicio - Internet"></option>
+        <option value="Prepago: Problemas de Servicio - Llamadas"></option>
+        <option value="Prepago: Problemas de Servicio - Señal"></option>
+        <option value="Prepago: Problemas de Servicio - SMS"></option>
+        <option value="Prepago: Problemas económicos"></option>
+        <option value="Prepago: Retención de baja de línea"></option>
+        <option value="Prepago: Tiene otro servicio activo"></option>
+      </datalist>
+    </div>
+    
+    <div class="input-group" id="manualMotivoGroup" style="display:none;">
+      <label for="motivoManual">Motivo manual</label>
+      <input type="text" name="motivoManual" id="motivoManual" placeholder="Ingrese el motivo aquí..." disabled>
+    </div>
+  </div>
 
 
 <div class="input-group">
@@ -714,7 +728,7 @@ function mostrarPlan(){
 <p>Los siguientes beneficios se brindan automáticamente por migrar a prepago. El bono se brinda por única vez y no es necesario que realice una recarga.</p>    
 <ul>
         <li>Llamadas y SMS ilimitados a todo destino nacional.</li>
-        <li>650 MB de libre uso + navegación ilimitada a velocidad reducida.</li>
+        <li>650 MB de libre uso controlados.</li>
         <li>WhatsApp ilimitado.</li>
         <li>1.5 GB en alta velocidad para: Waze, Mobile Legends, Garena Free Fire.</li>
         <li>1 GB en alta velocidad para: YouTube, TikTok, Viki, América TVGO.</li>
@@ -1165,7 +1179,8 @@ consideraciones.innerHTML = `
 
 /* Nueva función para mostrar/ocultar el campo de texto manual */
 function toggleManualInput() {
-    const motivoSelect = document.getElementById("motivo");
+    // ⚠️ ACTUALIZADO: Apuntamos al ID 'motivoSecundario'
+    const motivoSelect = document.getElementById("motivoSecundario");
     const manualMotivoGroup = document.getElementById("manualMotivoGroup");
     const motivoManualInput = document.getElementById("motivoManual");
 
@@ -1182,7 +1197,8 @@ function toggleManualInput() {
         motivoManualInput.removeAttribute("required");
         // Habilita la selección de "motivo" para que se envíe el valor correcto
         motivoSelect.setAttribute("required", "");
-        motivoSelect.name = "motivo";
+        // ⚠️ ACTUALIZADO: El name ahora es 'motivoSecundario'
+        motivoSelect.name = "motivoSecundario";
     }
 }
 
