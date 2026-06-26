@@ -2,1378 +2,159 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Migraciones</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Actualización de Enlace de Trabajo</title>
 <style>
-  body { 
-    font-family: Arial, sans-serif; 
-    background: #F4F9FB; 
-    margin:0; padding:20px; 
-    display:flex; justify-content:center; align-items:flex-start; 
-    min-height:100vh; 
-    transition: background 0.3s, color 0.3s; 
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
   }
-  .container { 
-    background:#fff; 
-    padding:20px 30px; 
-    border-radius:14px; 
-    box-shadow:0px 6px 14px rgba(0,0,0,0.1); 
-    width:90%; max-width:1000px; 
-    box-sizing:border-box; 
-    transition: background 0.3s, color 0.3s; 
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f5f5f7;
+    color: #1d1d1f;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    letter-spacing: -0.01em;
   }
-  h1 { text-align:center; color:#01768b; margin-bottom:10px; font-size:28px; font-weight:bold; }
-  h1 + hr { border:0; height:4px; background:#fbf32f; border-radius:3px; margin-bottom:20px; }
-  details { margin-bottom:25px; border:1px solid #ccc; border-radius:8px; padding:10px 15px; background:#fafafa; transition: background 0.3s; }
-  details summary { font-weight:bold; cursor:pointer; color:#0c477e; font-size:16px; }
-  details p { margin:10px 0; font-size:15px; color:#333; }
-  h2 { color:#0c477e; font-size:20px; margin-top:20px; border-bottom:3px solid #fbf32f; display:inline-block; padding-bottom:3px; }
-  h3 { border-bottom:2px solid #fbf32f; padding-bottom:4px; }
 
-  .input-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 20px; }
-  .input-group { display: flex; flex-direction: column; }
-  .input-group label { font-size: 14px; margin-bottom: 5px; font-weight: 500; color: #333; transition: color 0.3s; }
-  input, select { width: 100%; padding: 10px; font-size: 14px; border: 1.5px solid #ccc; border-radius: 8px; outline: none; transition: 0.3s; background: #fff; box-sizing:border-box; min-height: 38px; color:#333; }
-  input:focus, select:focus { border-color: #01768b; background: #f8ffff; }
-  .input-with-mark { display:flex; align-items:center; gap:4px; }
-  .input-with-mark span { color:#000; transition: color 0.3s; }
-
-  .dni-container { display:flex; gap:10px; }
-  .dni-container input { flex:1; padding:10px; border:1.5px solid #ccc; border-radius:8px; font-size:14px; }
-
-  .buttons { margin-top:25px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
-  .buttons button { padding:12px 24px; border:none; border-radius:8px; cursor:pointer; font-weight:500; transition:0.3s; font-size:15px; background:#01768b; color:white; }
-  .buttons button:hover { background:#0c477e; box-shadow:0 0 8px #fbf32f; }
-
-  #mensaje { margin-top:25px; text-align:center; font-size:15px; font-weight:500; color:#01768b; }
-  #speech { margin-top:25px; padding:15px; border:1px dashed #01768b; border-radius:8px; background:#fdfdfd; display:none; color:#333; }
-  #speech h3 { margin-top:0; margin-bottom:10px; color:#0c477e; font-size:20px; font-weight:bold; }
-  #speech .green { color:#01768b; font-weight:bold; }
-  .blue { color:#0c477e; }
-
-  .plan-details { margin-top:15px; padding:15px; border:1px solid #ccc; border-radius:8px; background:#fafafa; display:none; transition: background 0.3s; }
-  .plan-details.show { display:block; }
-  .plan-details .row { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
-  .plan-details .col { padding:10px; background:#fff; border-radius:6px; box-shadow:0 2px 6px rgba(0,0,0,0.05); }
-  .plan-details h3 { margin-top:0; color:#01768b; font-size:16px; }
-
-  /* Bloque autofill con animación y estilo */
-  .autofill { 
-    overflow: hidden; 
-    max-height: 0; 
-    opacity: 0; 
-    transition: max-height 0.5s ease, opacity 0.5s ease; 
-    background: #e7f7f9; 
-    border: 1px solid #01768b; 
-    border-radius: 10px; 
-    padding: 0 15px; 
-    margin-top: 15px;
-    position: relative;
+  .apple-card {
+    background: #ffffff;
+    width: 92%;
+    max-width: 700px;
+    padding: 40px 32px;
+    border-radius: 22px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04), 0 1px 4px rgba(0, 0, 0, 0.01);
+    text-align: center;
+    transition: transform 0.3s ease;
   }
-  .autofill.show { 
-    max-height: 500px; 
-    opacity: 1; 
-    padding: 15px; 
-  }
-  .autofill .input-row { margin-bottom: 10px; }
-  .autofill button { 
-    background:#c62828; 
-    color:white; 
-    padding:6px 12px; 
-    border:none; 
-    border-radius:6px; 
-    cursor:pointer; 
-    margin-top:10px;
-  }
-  .autofill button:hover { background:#a61c1c; }
 
-  /* Loader (spinner) dentro del autofill */
-  .loader {
-    border: 4px solid rgba(0,0,0,0.08);
-    border-top: 4px solid #01768b;
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: rgba(12, 71, 126, 0.07);
+    color: #0c477e;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 24px;
+    letter-spacing: 0.02em;
+  }
+
+  .pulse-dot {
+    width: 7px;
+    height: 7px;
+    background-color: #fde204;
     border-radius: 50%;
-    width: 28px;
-    height: 28px;
-    animation: spin 1s linear infinite;
-    margin: 8px auto 12px auto;
-    display: none;
-  }
-  @keyframes spin { 100% { transform: rotate(360deg); } }
-
-  /* Modal confirmación */
-  .modal { display:none; position:fixed; z-index:1000; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); justify-content:center; align-items:center; }
-  .modal.show { display:flex; }
-  .modal-content { background:#fff; padding:25px; border-radius:12px; text-align:center; max-width:400px; box-shadow:0 6px 14px rgba(0,0,0,0.2); color:#333; }
-  .modal-content h2 { color:#0c477e; margin-bottom:15px; }
-  .modal-buttons { display:flex; justify-content:center; gap:15px; margin-top:20px; flex-wrap:wrap; }
-  .modal-buttons button { padding:10px 20px; border:none; border-radius:6px; cursor:pointer; font-weight:500; color:#fff; }
-  .btn-yes { background:#01768b; } .btn-yes:hover { background:#0c477e; box-shadow:0 0 6px #fbf32f; }
-  .btn-no { background:#c62828; } .btn-no:hover { background:#a61c1c; }
-
-  /* Switch modo oscuro */
-  .switch { position: relative; display: inline-block; width: 50px; height: 25px; }
-  .switch input { display:none; }
-  .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 25px; }
-  .slider:before { position: absolute; content: ""; height: 19px; width: 19px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
-  input:checked + .slider { background-color: #fbf32f; }
-  input:checked + .slider:before { transform: translateX(24px); }
-
-  /* Estilos modo oscuro */
-  body.dark-mode { background-color: #121212; color: #f1f1f1; }
-  body.dark-mode .container { background:#1e1e1e; color:#f1f1f1; }
-  body.dark-mode input, 
-  body.dark-mode select { background-color: #222; color:#f1f1f1; border: 1px solid #666; }
-  body.dark-mode .input-group label,
-  body.dark-mode .input-with-mark span,
-  body.dark-mode details p,
-  body.dark-mode details summary { color:#f1f1f1; }
-  body.dark-mode details { background:#1c1c1c; border-color:#555; }
-  body.dark-mode .plan-details { background:#1c1c1c; border-color:#555; }
-  body.dark-mode .plan-details .col { background:#2a2a2a; }
-  body.dark-mode .autofill { background:#1c2b30; border-color:#fbf32f; }
-  body.dark-mode .modal-content { background:#1e1e1e; color:#f1f1f1; }
-  body.dark-mode h1, 
-  body.dark-mode h2, 
-  body.dark-mode h3 { color:#fbf32f; }
-  body.dark-mode #speech { background:#1c1c1c; border-color:#fbf32f; color:#eee; }
-  body.dark-mode #speech h3 { color:#fbf32f; }
-  body.dark-mode #mensaje { color:#fbf32f; }
-  body.dark-mode .blue { color:#4eaaff; }
-  body.dark-mode .green { color:#a6ff8a; }
-
-  @media (max-width:768px){ 
-    .input-row { grid-template-columns: 1fr; } 
-    .plan-details .row { grid-template-columns:1fr; } 
-    .buttons button, .modal-buttons button { width:100%; } 
+    box-shadow: 0 0 8px #fde204;
   }
 
-/* Botones secundarios más pequeños */
-.small-buttons {
-  margin-top: 10px;
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-.small-buttons button {
-  padding: 6px 12px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 13px;
-  font-weight: 500;
-  background: #e0e0e0;
-  color: #333;
-  transition: 0.3s;
-}
-.small-buttons button:hover {
-  background: #d5d5d5;
-  box-shadow: 0 0 6px rgba(0,0,0,0.15);
-}
-/* Estilo específico para el botón Reniec que queda solo */
-.small-buttons button:nth-child(1) { background: #444; color: #fff; }
-.small-buttons button:nth-child(1):hover { background: #222; }
+  h1 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1d1d1f;
+    margin-bottom: 12px;
+    letter-spacing: -0.02em;
+  }
 
+  p.instruction {
+    font-size: 15px;
+    line-height: 1.5;
+    color: #515154;
+    margin-bottom: 24px;
+  }
 
-/* Contenedor para centrar el nuevo botón de cierre */
-.close-plan-container {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px; /* Espacio superior */
-}
+  .link-container {
+    background-color: #f5f5f7;
+    border-radius: 14px;
+    padding: 18px 16px;
+    margin-bottom: 24px;
+    border: 1px solid #e8e8ed;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+  }
 
-/* Estilo principal del nuevo botón de cierre con animación */
-.btn-cerrar-plan {
-  background: linear-gradient(45deg, #01768b, #0c477e); /* Fondo con degradado */
-  color: white;
-  border: none;
-  border-radius: 10px; /* Bordes más redondeados */
-  padding: 12px 30px; /* Más ancho */
-  font-size: 15px;
-  font-weight: 500;
-  cursor: pointer;
-  letter-spacing: 0.5px; /* Espaciado entre letras */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  transition: all 0.3s ease; /* Transición suave para todos los efectos */
-}
+  .link-container:hover {
+    background-color: #f0f0f3;
+    border-color: #d2d2d7;
+  }
 
-/* Animación al pasar el cursor sobre el botón */
-.btn-cerrar-plan:hover {
-  transform: translateY(-3px); /* Efecto de elevación */
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3), 0 0 10px #fbf32f; /* Sombra más pronunciada y un brillo amarillo */
-  background: linear-gradient(45deg, #0c477e, #01768b); /* Invierte el degradado */
-}
+  .link-url {
+    font-size: 14px;
+    color: #0c477e;
+    font-weight: 600;
+    word-break: break-all;
+    text-decoration: none;
+    display: block;
+  }
 
+  .timeline-banner {
+    background-color: #fff1f1;
+    border: 1px solid #ffe2e2;
+    border-radius: 12px;
+    padding: 14px;
+    font-size: 13.5px;
+    color: #de350b;
+    font-weight: 500;
+    line-height: 1.4;
+    margin-bottom: 28px;
+  }
 
+  .btn-action {
+    display: inline-block;
+    width: 100%;
+    padding: 16px;
+    background-color: #0c477e;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 14px;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+  }
+
+  .btn-action:hover {
+    background-color: #09355e;
+  }
+
+  .btn-action:active {
+    transform: scale(0.99);
+  }
 </style>
 </head>
 <body>
 
-<div style="position: absolute; top: 15px; right: 20px;">
-  <label class="switch">
-    <input type="checkbox" id="darkSwitch">
-    <span class="slider"></span>
-  </label>
-</div>
-
-<div class="container">
-<h1>Migraciones</h1>
-
-<details>
-  <summary>Presentación:</summary>
-  <p>1. “Hola, te habla <span class="blue">(Nombre del agente)</span> de Bitel. ¿Me brindaría su nombre por favor?"</p>
-  <p>2. <span class="blue">(Nombre del cliente)</span>, ¿Qué operación va a realizar?</p>
-  <p>3. “El número que llama es el que quiere migrar el que termina en <span class="blue">XXXX</span>”</p>
-  <p>4. "¿Podrías indicarme el motivo de la migración de este número y a qué plan deseas cambiarte?"</p>
-</details>
-
-<h2>Llenado de datos</h2>
-<form id="miFormulario" action="https://script.google.com/macros/s/AKfycbxcP33-cVM9CjSs_b-BPlD1fRz828bVTzS1yI3AM4CLUJHlXkh0D4S8Oxf30sG50f9YpQ/exec" method="post" target="hidden_iframe">
-  <input type="hidden" name="token" value="BitelMigracion2025SuperClave">
-
-  <div class="input-row">
-    <div class="input-group">
-      <label for="usuarioAgente">Usuario de agente</label>
-      <div class="input-with-mark">
-        <input list="usuarios-sugeridos" name="usuarioAgente" id="usuarioAgente" placeholder="cpc_xxxxxx_vtp" style="text-transform: lowercase;" required>
-        <datalist id="usuarios-sugeridos"></datalist>
-      </div>
-    </div>
-
-    <div class="input-group">
-      <label for="idEntrante">ID de llamada entrante</label>
-      <div class="input-with-mark">
-        <input type="text" name="idEntrante" id="idEntrante" placeholder="(ID directo)" >
-      </div>
-    </div>
-
-    <div class="input-group">
-      <label for="idsaliente">ID de llamada saliente</label>
-      <div class="input-with-mark">
-        <input type="text" name="idsaliente" id="idsaliente" placeholder="(ID directo)" >
-      </div>
-    </div>
-  </div>
-
-  <div class="input-row">
-    <div class="input-group">
-      <label for="telefonoEntrante">Número del que llama</label>
-      <input type="number" name="telefonoEntrante" id="telefonoEntrante" placeholder="9 dígitos" required maxlength="9" oninput="this.value=this.value.slice(0,9)">
-    </div>
-
-    <div class="input-group">
-      <label for="telefonoSolicitud" style="color:red;">Número a migrar</label>
-      <input type="number" name="telefonoSolicitud" id="telefonoSolicitud" placeholder="9 dígitos" required maxlength="9" oninput="this.value=this.value.slice(0,9)">
-    </div>
-
-    <div class="input-group">
-      <label for="planActual">Plan actual</label>
-      <input type="text" name="planActual" id="planActual" placeholder="Plan que figura en Customer Care" required>
-    </div>
-  </div>
-
-  <div class="input-row">
-    <div class="input-group">
-      <label for="ciclo">Ciclo</label>
-      <select name="ciclo" id="ciclo" required>
-        <option value="">Seleccione</option>
-        <option value="-">-</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="6">6</option>
-        <option value="7">7</option>
-        <option value="8">8</option>
-        <option value="9">9</option>
-        <option value="10">10</option>
-        <option value="11">11</option>
-        <option value="12">12</option>
-        <option value="13">13</option>
-        <option value="14">14</option>
-        <option value="15">15</option>
-        <option value="16">16</option>
-        <option value="17">17</option>
-        <option value="18">18</option>
-        <option value="22">22</option>
-        <option value="23">23</option>
-        <option value="24">24</option>
-        <option value="25">25</option>
-        <option value="26">26</option>
-        <option value="27">27</option>
-        <option value="28">28</option>
-      </select>
-    </div>
-
-    <div class="input-group">
-      <label for="subscriberCode">Subscriber code</label>
-      <input type="text" name="subscriberCode" id="subscriberCode" placeholder="Código de suscriptor" required>
-    </div>
-  </div>
-  <div class="input-group">
-<label for="dni">Número de documento de identidad</label>
-<div class="dni-container">
-<input type="number" name="dni" id="dni" placeholder="8 dígitos" required >
-</div>
-
-<div class="small-buttons">
-  <button type="button" onclick="abrirReniec()">🪪 Reniec</button>
-</div>
-
-  <div class="autofill" id="autofill">
-    <div class="loader" id="loader"></div>
-    <div class="input-row">
-      <div class="input-group"><label for="nombre">Nombre completo</label><input type="text" id="nombre" readonly></div>
-      <div class="input-group"><label for="fechaNacimiento">Fecha de nacimiento</label><input type="text" id="fechaNacimiento" readonly></div>
-      <div class="input-group"><label for="ubicacion">Departamento - Provincia - Distrito</label><input type="text" id="ubicacion" readonly></div>
-    </div>
-    </div>
-
-<br>
-
-  <div class="input-row">
-    <div class="input-group">
-      <label for="motivoPrincipal">Motivo principal de migración</label>
-      <select name="motivoPrincipal" id="motivoPrincipal" required>
-        <option value="">Seleccione</option>
-        <option value="Precio">Precio</option>
-        <option value="No uso de beneficios">No uso de beneficios</option>
-        <option value="Mala oferta comercial">Mala oferta comercial</option>
-        <option value="Mala señal">Mala señal</option>
-        <option value="Fallas en el servicio">Fallas en el servicio</option>
-        <option value="Mala información">Mala información</option>
-        <option value="Otros">Otros</option>
-      </select>
-    </div>
-
-    <div class="input-group">
-      <label for="motivoSecundario">Motivo secundario de migración</label>
-      <input list="motivos-sugeridos" name="motivoSecundario" id="motivoSecundario" placeholder="Seleccione o ingrese un motivo" required onchange="toggleManualInput()">
-      <datalist id="motivos-sugeridos">
-        <option value="Prepago: Centro de pagos no cercanos"></option>
-        <option value="Prepago: Equipo malogrado"></option>
-        <option value="Prepago: Incumplimiento de promociones ofrecidas"></option>
-        <option value="Prepago: Mala experiencia presentada en Bitel"></option>
-        <option value="Prepago: Mejor oferta de otro operador"></option>
-        <option value="Prepago: Motivo de viaje"></option>
-        <option value="Prepago: Motivos Personales"></option>
-        <option value="Prepago: Pérdida de SIM Card"></option>
-        <option value="Prepago: Problema no solucionado - Reclamo o incidencia pendiente"></option>
-        <option value="Prepago: Problemas con facturación"></option>
-        <option value="Prepago: Problemas de Servicio - Internet"></option>
-        <option value="Prepago: Problemas de Servicio - Llamadas"></option>
-        <option value="Prepago: Problemas de Servicio - Señal"></option>
-        <option value="Prepago: Problemas de Servicio - SMS"></option>
-        <option value="Prepago: Problemas económicos"></option>
-        <option value="Prepago: Retención de baja de línea"></option>
-        <option value="Prepago: Tiene otro servicio activo"></option>
-      </datalist>
+  <div class="apple-card">
+    <div class="status-badge">
+      <span class="pulse-dot"></span>
+      Aviso de Actualización
     </div>
     
-    <div class="input-group" id="manualMotivoGroup" style="display:none;">
-      <label for="motivoManual">Motivo manual</label>
-      <input type="text" name="motivoManual" id="motivoManual" placeholder="Ingrese el motivo aquí..." disabled>
+    <h1>Acceso a Migraciones</h1>
+    
+    <p class="instruction">
+      A partir de la fecha deberás usar el siguiente enlace para la gestión de migración:
+    </p>
+    
+    <div class="link-container">
+      <a href="https://cpctelco-ops.github.io/migracionycancelacion/migracion.html" target="_blank" class="link-url">
+        https://cpctelco-ops.github.io/migracionycancelacion/migracion.html
+      </a>
     </div>
-  </div>
-
-
-<div class="input-group">
-  <label for="plan">Plan deseado a migrar</label>
-  <select name="plan" id="plan" onchange="mostrarPlan()" required>
-    <option value="">Seleccione:</option>
-
-    <optgroup label="Prepago">
-      <option value="Prepago BIFRI5">Prepago BIFRI5</option>
-    </optgroup>
-
-    <optgroup label="Basico">
-      <option value="Basico19_9C">Basico19_9C</option>
-    </optgroup>
-
-    <optgroup label="Ilimitado">
-      <option value="N_ilimitado39C">N_ilimitado39C</option>
-      <option value="N_ilimitado49C">N_ilimitado49C</option>
-      <option value="N_ilimitado55C">N_ilimitado55C</option>
-      <option value="N_ilimitado65C">N_ilimitado65C</option>
-      <option value="N_ilimitado79C">N_ilimitado79C</option>
-      <option value="N_ilimitado105C">N_ilimitado105C</option>
-      <option value="Ilimitado_49_5G">Ilimitado_49_5G</option>
-      <option value="Ilimitado69_90">Ilimitado69_90</option>
-    </optgroup>
-
-<optgroup label="Flash">
-      <option value="Flash29_9C">Flash29_9C</option>
-      <option value="N_Flash39">N_Flash39</option>
-      <option value="N_Flash49">N_Flash49</option>
-      <option value="N_Flash109">N_Flash109</option>
-    </optgroup>
-  </select> </div>
-  </div>
-
-<div class="plan-details" id="planDetails">
-  <div class="row">
-    <div class="col">
-      <h3>🗣️ 1. Speech - Beneficios</h3>
-      <div id="detalle"></div>
+    
+    <div class="timeline-banner">
+      Guarda el nuevo enlace y elimina el actual que se borrará dentro de 1 hora.
     </div>
-    <div class="col">
-      <h3>🗣️ 2. Speech - Consideraciones</h3>
-      <div id="consideraciones"></div>
-    </div>
-  </div> <div class="close-plan-container">
-    <button type="button" class="btn-cerrar-plan" onclick="ocultarPlan()">
-      Ocultar Detalles ✨
-    </button>
+
+    <a href="https://cpctelco-ops.github.io/migracionycancelacion/migracion.html" target="_blank" class="btn-action">
+      Abrir nueva plataforma
+    </a>
   </div>
-</div>
-
-  <div class="buttons">
-    <button type="submit">Guardar</button>
-    <button type="button" onclick="limpiar()">Limpiar</button>
-  </div>
-</form>
-
-<div id="mensaje"></div>
-<div id="speech"></div>
-
-<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
-
-<div class="modal" id="modalConfirm">
-  <div class="modal-content">
-    <h2>¿Desea guardar la información?</h2>
-    <div class="modal-buttons">
-      <button class="btn-yes" id="btnYes">Sí</button>
-      <button class="btn-no" id="btnNo">No</button>
-    </div>
-  </div>
-</div>
-
-<div class="modal" id="modalLoader">
-  <div class="modal-content">
-    <h2>Procesando, espere un momento...</h2>
-    <div class="loader" style="width:40px; height:40px; border-width:5px; margin-top:10px;"></div>
-  </div>
-</div>
-
-<div class="modal" id="modalReniec">
-  <div class="modal-content" style="max-width:920px; width:95%;">
-    <h2>Servicios Reniec</h2>
-    <p style="font-size:13px; color:#666; margin-top:-10px;">Si la página no permite ser embebida, use "Abrir en nueva pestaña".</p>
-    <iframe src="https://serviciosweb.reniec.gob.pe/aip/logout.do" title="RENIEC - Servicios" style="height:520px;"></iframe>
-    <div class="modal-buttons" style="margin-top:12px;">
-      <button class="btn-yes" onclick="window.open('https://serviciosweb.reniec.gob.pe/aip/logout.do','_blank')">Abrir en nueva pestaña</button>
-      <button class="btn-no" onclick="cerrarReniec()">Cerrar</button>
-    </div>
-  </div>
-</div>
-
-<script>
-/* ---------------------------
-   Variables & Listeners base
-   --------------------------- */
-const TOKEN = "cGVydWRldnMucHJvZHVjdGlvbi5maXRjb2RlcnMuNjhkMDQ2ODM3NzAwMmUxM2U0NzI4YWM0";
-let telefonoSolicitud, plan, codigo;
-
-const telefonoSolicitudEl = document.getElementById("telefonoSolicitud");
-if (telefonoSolicitudEl) {
-  telefonoSolicitudEl.addEventListener("input", function(){
-    telefonoSolicitud = this.value;
-  });
-}
-const planEl = document.getElementById("plan");
-if (planEl) {
-  planEl.addEventListener("change", function(){
-    plan = this.value;
-  });
-}
-
-const formulario = document.getElementById("miFormulario");
-const modal = document.getElementById("modalConfirm");
-const btnYes = document.getElementById("btnYes");
-const btnNo = document.getElementById("btnNo");
-const modalLoader = document.getElementById("modalLoader");
-const modalReniec = document.getElementById("modalReniec");
-
-let envioEnProceso = false;
-
-/* Al enviar el formulario: mostrar modal */
-if (formulario) {
-  formulario.addEventListener("submit", function(e){
-      e.preventDefault();
-
-      // Evitar que se muestre otra vez si ya se está enviando
-      if (envioEnProceso) return;
-
-      modal.classList.add("show");
-  });
-}
-
-/* Si confirma: enviar form via fetch */
-if (btnYes) {
-btnYes.addEventListener("click", function(){
-
-// cerrar confirm
-      modal.classList.remove("show");
-      envioEnProceso = true; // ✅ marcamos que ya está en proceso
-
-// Forzar usuario en minúsculas
-const userInput = document.getElementById("usuarioAgente");
-if (userInput) userInput.value = userInput.value.toLowerCase();
-
-// Reforzar formato en ID Entrante
-const idInput = document.getElementById("idEntrante");
-if (idInput && idInput.value && !idInput.value.startsWith("$$_")) {
-  idInput.value = `$$_${idInput.value}_&&`;
-}
-
-// Reforzar formato en ID Saliente
-const idSalienteInput = document.getElementById("idsaliente");
-if (idSalienteInput && idSalienteInput.value && !idSalienteInput.value.startsWith("$$_")) {
-  idSalienteInput.value = `$$_${idSalienteInput.value}_&&`;
-}
-
-// Mostrar loader
-      if (modalLoader) modalLoader.classList.add("show");
-
-// Enviar datos
-      const formData = new FormData(formulario);
-      fetch(formulario.action, {
-          method: "POST",
-          body: formData
-      })
-      .then(res => res.text())
-      .then(txt => {
-          if (modalLoader) modalLoader.classList.remove("show");
-          mostrarMensaje(txt);
-          envioEnProceso = false; // ✅ liberamos otra vez
-      })
-      .catch(err => {
-          if (modalLoader) modalLoader.classList.remove("show");
-          document.getElementById("mensaje").innerHTML = "❌ Error al guardar los datos: " + err;
-          envioEnProceso = false; // liberar aunque haya error
-      });
-  });
-}
-
-
-// Al cargar la página, traer lista de usuarios desde la hoja "User"
-document.addEventListener("DOMContentLoaded", () => {
-fetch("https://script.google.com/macros/s/AKfycbxcP33-cVM9CjSs_b-BPlD1fRz828bVTzS1yI3AM4CLUJHlXkh0D4S8Oxf30sG50f9YpQ/exec?action=getUsers")
-    .then(res => res.json())
-    .then(users => {
-      const dataList = document.getElementById("usuarios-sugeridos");
-      if (dataList) {
-        dataList.innerHTML = ""; // limpiar por si acaso
-        users.forEach(user => {
-          const option = document.createElement("option");
-          option.value = user;
-          dataList.appendChild(option);
-        });
-      }
-    })
-    .catch(err => console.error("Error cargando usuarios:", err));
-});
-
-
-
-// Formato en tiempo real mejorado (soporta borrar y mantiene caret)
-function aplicarFormatoTiempoReal(input) {
-  // Guardamos el estado previo antes del cambio para calcular el caret luego
-  input.addEventListener("keydown", function (ev) {
-    this._prevValue = this.value;
-    this._prevSelStart = this.selectionStart;
-    this._prevSelEnd = this.selectionEnd;
-  });
-
-  input.addEventListener("input", function (e) {
-
-// Valor previo (formateado) y raw previo
-    const prevVal = this._prevValue !== undefined ? this._prevValue : this.value;
-    const prevRaw = prevVal.replace(/^\$\$_/, "").replace(/_&&$/, "");
-
-// Valor actual (posible que el usuario haya escrito símbolos manualmente)
-    let current = this.value;
-
-    // Sacamos cualquier prefijo/sufijo que haya quedado para obtener el raw real
-    let raw = current.replace(/^\$\$_/, "").replace(/_&&$/, "");
-
-    // Normalizamos raw (por si el usuario pegó caracteres $/_)
-    // Aquí sólo eliminamos las ocurrencias exactas del prefijo/sufijo.
-    // No tocamos otros caracteres para no borrar el texto legítimo.
-    // Si el campo queda vacío, lo dejamos vacío (sin símbolos).
-    if (!raw) {
-      this.value = "";
-      // actualizar estado previo para próximos eventos
-      this._prevValue = this.value;
-      this._prevSelStart = this.selectionStart;
-      this._prevSelEnd = this.selectionEnd;
-      return;
-    }
-
-// Calculamos índice relativo en raw basado en la selección anterior
-    let prevCaret = (this._prevSelStart !== undefined) ? this._prevSelStart : (3 + prevRaw.length);
-    let caretRawIndex;
-    if (prevCaret <= 3) caretRawIndex = 0;
-    else caretRawIndex = Math.max(0, Math.min(prevRaw.length, prevCaret - 3));
-
-// Intento de ajuste según el tipo de entrada (insert/delete)
-    const inputType = e.inputType || "";
-    if (inputType.startsWith("insert")) {
-
-// Si se insertó texto, colocamos el caret después del nuevo char (si es posible)
-
-// Estimamos que el usuario insertó en la posición caretRawIndex
-      caretRawIndex = Math.min(raw.length, caretRawIndex + 1);
-    } else if (inputType.startsWith("delete")) {
-
-// En caso de borrado, caretRawIndex ya apunta bien (no lo incrementamos)
-      caretRawIndex = Math.min(raw.length, caretRawIndex);
-    } else {
-
-// otros (paste, cut, etc.) → ajustar al final del segmento editado
-      caretRawIndex = Math.min(raw.length, caretRawIndex);
-    }
-
-// Seteamos el valor formateado
-    const newFormatted = `$$_${raw}_&&`;
-    this.value = newFormatted;
-
-// Colocamos el caret en la posición correspondiente (antes del sufijo)
-    const newCaretPos = 3 + Math.max(0, Math.min(raw.length, caretRawIndex));
-    try {
-      this.setSelectionRange(newCaretPos, newCaretPos);
-    } catch (err) {
-
-// en algunos navegadores/estados puede fallar; no es crítico
-    }
-
-// Actualizamos estado previo para el siguiente evento
-    this._prevValue = this.value;
-    this._prevSelStart = this.selectionStart;
-    this._prevSelEnd = this.selectionEnd;
-  });
-}
-
-// Conexión a los inputs (déjalas o reemplázalas si ya existen)
-const idEntranteEl = document.getElementById("idEntrante");
-const idSalienteEl = document.getElementById("idsaliente");
-
-if (idEntranteEl) aplicarFormatoTiempoReal(idEntranteEl);
-if (idSalienteEl) aplicarFormatoTiempoReal(idSalienteEl);
-
-
-
-/* Si cancela guardar */
-if (btnNo) {
-  btnNo.addEventListener("click", function(){
-      modal.classList.remove("show");
-  });
-}
-
-
-/* ---------------------------
-   Ocultar Detalles del Plan
-   --------------------------- */
-function ocultarPlan() {
-    const planDetails = document.getElementById("planDetails");
-    if (planDetails) {
-        planDetails.classList.remove("show");
-    }
-}
-
-/* ---------------------------
-   Mensajes, limpiar, plan
-   --------------------------- */
-function mostrarMensaje(respuesta){
-    // Buscar MIGxxxxxx después del "|"
-    const regex = /\|?(MIG\d+)/;
-    const match = respuesta.match(regex);
-    const codigo = match ? match[1] : "N/A";
-
-    document.getElementById("mensaje").innerHTML = 
-        `✅ Datos guardados correctamente.<br><span class="codigo">🔐 Código de solicitud: ${codigo}</span>`;
-    document.getElementById("speech").style.display = "block";
-    document.getElementById("speech").innerHTML = `
-        <h3>🗣️ Speech de confirmación:</h3>
-        <p>“Se ha gestionado la migración de su línea <span class="green">${telefonoSolicitud}</span> al plan <span class="green">${plan}</span>. 
-        El cambio se realizará en un máximo de 24 horas. Cuando pierda señal, reinicie su equipo y haga una llamada para activar el servicio.</p>
-        <p>El código de solicitud es <span class="green">${codigo}</span> y lo recibirá por SMS y/o email.</p>
-        <p>“Eso sería todo de mi parte, gracias por comunicarse. En breve recibirá una encuesta por SMS para calificar mi atención. Que tenga un excelente día.”</p>
-    `;
-}
-
-
-
-function limpiar(){
-    formulario.reset();
-    document.getElementById("planDetails").classList.remove("show");
-    document.getElementById("speech").style.display = "none";
-    document.getElementById("mensaje").innerHTML = "";
-
-    // Ocultar autofill y limpiar sus campos
-    const autofill = document.getElementById("autofill");
-    autofill.classList.remove("show");
-    document.getElementById("nombre").value = "";
-    document.getElementById("fechaNacimiento").value = "";
-    document.getElementById("ubicacion").value = "";
-}
-
-
-function mostrarPlan(){
-  const planSelect = document.getElementById("plan").value;
-  const detalle = document.getElementById("detalle");
-  const consideraciones = document.getElementById("consideraciones");
-  const planDetails = document.getElementById("planDetails");
-
-  if (planSelect === "Prepago BIFRI5") {
-    detalle.innerHTML = `
-<p>Los siguientes beneficios se brindan automáticamente por migrar a prepago. El bono se brinda por única vez y no es necesario que realice una recarga.</p>    
-<ul>
-        <li>Llamadas ilimitadas a cualquier destino nacional.</li>
-        <li>500 SMS a todo destino nacional.</li>
-        <li>650 MB de libre uso controlados.</li>
-        <li>WhatsApp ilimitado.</li>
-        <li>1.5 GB en alta velocidad para: Waze, Mobile Legends, Garena Free Fire.</li>
-        <li>1 GB en alta velocidad para: YouTube, TikTok, Viki, América TVGO.</li>
-        <li>Acceso completo a Facebook e Instagram.</li>
-        <li>Vigencia del bono: 5 días.</li>
-      </ul>
-<p>¿Estaría de acuerdo en realizar la migración al plan prepago Bifri5?</p>
-    `;
-
-consideraciones.innerHTML = `
-      <ul>
-        <li>La migración es gratuita, mantiene su chip y se ejecuta en un máximo de 24 horas.</li>
-        <li>Puede desistir en un plazo de 40 días útiles.</li>
-        <li>Debe estar al día en sus pagos, ya que la migración no exime de deudas ni penalidades.</li>
-        <li>Este proceso no permite adquirir equipos.</li>
-        <li>Su línea debe estar activa y sin bloqueos.</li>
-        <li>Conservará sus puntos Bitel no vencidos, pero perderá los beneficios del plan anterior y recibirá los del nuevo.</li>
-      </ul>
-<p>¿Está de acuerdo con realizar la migración?</p>
-    `;
-    planDetails.classList.add("show");
-
-  } else if (planSelect === "Basico19_9C") {
-    detalle.innerHTML = `
-<p>El cargo fijo del plan es de S/19.90</p>
-<ul>
-<li>Llamadas ilimitadas y hasta 500 SMS a todo destino nacional.</li>
-<li>20 minutos para EE.UU. Canadá y China.</li>
-<li>2 GB controlados.</li>
-<li>1 GB en alta velocidad para WhatsApp, Garena Free Fire, Mobile Legends, Waze + navegación ilimitada.</li>
-<li>Navegación ilimitada en TV360 pagando el recibo de forma puntual.</li>
-<br>
-<li>El plan no se establecerá ninguna restricción de tethering, ya que puede compartir todos los datos principales.</li>
-</ul>
-
-    `;
-
-consideraciones.innerHTML = `
-<ul>
-<li>La migración es gratuita y mantiene su chip.</li>
-<li>Puede desistir en un plazo de 40 días útiles.</li>
-<li>Debe estar al día en sus pagos, ya que la migración no exime de deudas ni penalidades.</li>
-<li>Este proceso no permite adquirir equipos.</li>
-<li>Su línea debe estar activa y sin bloqueos.</li>
-<li>Conservará sus puntos Bitel no vencidos, pero perderá los beneficios del plan anterior y recibirá los del nuevo.</li>
-<li>🧷 Se ejecutará en su primer día de su inicio de ciclo <font color=blue>(indicar ciclo de facturación según corresponda)</font>.</li>
-</ul>
-<p>¿Está de acuerdo con realizar la migración?</p>
-    `;
-    planDetails.classList.add("show");
-
-
-
-  } else if (planSelect === "N_ilimitado39C") {
-    detalle.innerHTML = `
-<p>El cargo fijo del plan es de S/39.90</p>
-<ul>
-<li>Llamadas ilimitadas y hasta 500 SMS a todo destino nacional.</li>
-<li>45 GB en alta velocidad + navegación ilimitada.</li>
-<li>Facebook e Instagram full (ilimitado en baja velocidad).</li>
-<li>WhatsApp ilimitado en baja velocidad.</li>
-<li>1.5 GB (Gigabytes) en alta velocidad para Free Fire, Call of Duty y Waze.</li>
-<li>10 GB (Gigabytes) controlados por 06 meses para Spotify.</li>
-<li>Suscripción premium para TV360 por 6 meses y navegación ilimitada pagando el recibo de forma puntual.</li>
-<br>
-<li>El plan no se establecerá ninguna restricción de tethering, ya que puede compartir todos los datos principales.</li>
-</ul>
-
-<p><Strong><font color=red>Promoción - Plan Mayor (informar solo si el cliente está aumentando su plan, caso contrario, omitir)</font></strong></p>
-<ul>
-<li>En esta oportunidad si usted migra al plan mencionado tendrá 50 GB (Gigabytes) adicionales por 3 meses.</li>
-<li>El beneficio se aplica desde el periodo que se ejecute la migración.</li>
-<li>Para la entrega de la promoción, la línea debe encontrarse activa, en el caso de ingreso a bloqueo (por cualquier motivo), no se hará efectiva la entrega por ese mes, no siendo posible su recuperación.</li>
-<li>Considerar que también perdería automáticamente los beneficios promocionales, si realiza cambios sobre la línea como cambio de titularidad o cambio de número.</li>
-</ul>
-    `;
-
-consideraciones.innerHTML = `
-<ul>
-<li>La migración es gratuita y mantiene su chip.</li>
-<li>Puede desistir en un plazo de 40 días útiles.</li>
-<li>Debe estar al día en sus pagos, ya que la migración no exime de deudas ni penalidades.</li>
-<li>Este proceso no permite adquirir equipos.</li>
-<li>Su línea debe estar activa y sin bloqueos.</li>
-<li>Conservará sus puntos Bitel no vencidos, pero perderá los beneficios del plan anterior y recibirá los del nuevo.</li>
-<li>🧷 Se ejecutará en su primer día de su inicio de ciclo <font color=blue>(indicar ciclo de facturación según corresponda)</font>.</li>
-</ul>
-<p>¿Está de acuerdo con realizar la migración?</p>
-    `;
-    planDetails.classList.add("show");
-
-
-
-
-  } else if (planSelect === "N_ilimitado49C") {
-    detalle.innerHTML = `
-<p>El cargo fijo del plan es de S/49.90</p>
-<ul>
-<li>Llamadas ilimitadas y hasta 500 SMS a todo destino nacional.</li>
-<li>80 GB en alta velocidad de libre uso.</li>
-<li>Facebook e Instagram FULL (data ilimitada velocidad reducida).</li>
-<li>WhatsApp ilimitado en baja velocidad.</li>
-<li>1.5 GB en alta velocidad para Free Fire, Call of Duty y Waze.</li>
-<li>10 GB (Gigabytes) controlados por 06 meses para Spotify.</li>
-<li>Suscripción premium para TV360 por 6 meses y pagando a tiempo recibirá GB ilimitados.</li>
-<br>
-<li>El plan no se establecerá ninguna restricción de tethering, ya que puede compartir todos los datos principales.</li>
-</ul>
-
-<p><Strong><font color=red>Promoción - Plan Mayor (informar solo si el cliente está aumentando su plan, caso contrario, omitir)</font></strong></p>
-<ul>
-<li>Si migra al plan indicado, contará con 30 GB para TIKTOK por 3 meses. El beneficio se aplica desde el periodo en que se ejecute la migración y por un máximo de 3 periodos.</li>
-<li>Para la entrega de la promoción, la línea debe mantenerse activa. En caso de bloqueo por suspensión, portabilidad o deuda, el beneficio no se otorgará en ese periodo y no será recuperable.</li>
-<li>Si el bloqueo es por robo o pérdida, el cliente podrá continuar con el beneficio, siempre que reactive la línea dentro de un plazo máximo de 14 días; de lo contrario, perderá la promoción.</li>
-<li>Asimismo, el beneficio se perderá automáticamente si se realiza un cambio de titularidad o de número.</li>
-</ul>
-    `;
-
-consideraciones.innerHTML = `
-<ul>
-<li>La migración es gratuita y mantiene su chip.</li>
-<li>Puede desistir en un plazo de 40 días útiles.</li>
-<li>Debe estar al día en sus pagos, ya que la migración no exime de deudas ni penalidades.</li>
-<li>Este proceso no permite adquirir equipos.</li>
-<li>Su línea debe estar activa y sin bloqueos.</li>
-<li>Conservará sus puntos Bitel no vencidos, pero perderá los beneficios del plan anterior y recibirá los del nuevo.</li>
-<li>🧷 Se ejecutará en su primer día de su inicio de ciclo <font color=blue>(indicar ciclo de facturación según corresponda)</font>.</li>
-</ul>
-<p>¿Está de acuerdo con realizar la migración?</p>
-    `;
-    planDetails.classList.add("show");
-
-
-
-
-
-
-  } else if (planSelect === "Ilimitado_49_5G") {
-    detalle.innerHTML = `
-<p>El cargo fijo del plan es de S/49.90</p>
-<ul>
-<li>Llamadas y SMS ilimitados a todo destino nacional.</li>
-<li>120 GB en alta velocidad de libre uso.</li>
-<li>Facebook e Instagram FULL (data ilimitada velocidad reducida).</li>
-<li>1.5 GB en alta velocidad para Whatsapp + internet ilimitado en baja.</li>
-<li>1.5 GB en alta velocidad Waze, Garena Free Fire y Mobile Legends.</li>
-<li>10 GB en alta velocidad por 6 meses para Spotify.</li>
-<li>Suscripción premium para TV360 por 6 meses y pagando a tiempo recibirá GB ilimitados.</li>
-<br>
-<li>El plan no se establecerá ninguna restricción de tethering, ya que puede compartir todos los datos principales.</li>
-<li>Para navegar en la red 5G, el cliente debe contar con un equipo compatible con 5G y encontrarse en zona de cobertura.</li>
-<br>
-</ul>
-
-<p><Strong><font color=red>Promoción - Plan Mayor (informar solo si el cliente está aumentando su plan, caso contrario, omitir)</font></strong></p>
-<ul>
-<li>Si migra al plan indicado, contará con 30 GB para TIKTOK por 3 meses. El beneficio se aplica desde el periodo en que se ejecute la migración y por un máximo de 3 periodos.</li>
-<li>Para la entrega de la promoción, la línea debe mantenerse activa. En caso de bloqueo por suspensión, portabilidad o deuda, el beneficio no se otorgará en ese periodo y no será recuperable.</li>
-<li>Si el bloqueo es por robo o pérdida, el cliente podrá continuar con el beneficio, siempre que reactive la línea dentro de un plazo máximo de 14 días; de lo contrario, perderá la promoción.</li>
-<li>Asimismo, el beneficio se perderá automáticamente si se realiza un cambio de titularidad o de número.</li>
-</ul>
-    `;
-
-consideraciones.innerHTML = `
-<ul>
-<li>La migración es gratuita y mantiene su chip.</li>
-<li>Puede desistir en un plazo de 40 días útiles.</li>
-<li>Debe estar al día en sus pagos, ya que la migración no exime de deudas ni penalidades.</li>
-<li>Este proceso no permite adquirir equipos.</li>
-<li>Su línea debe estar activa y sin bloqueos.</li>
-<li>Conservará sus puntos Bitel no vencidos, pero perderá los beneficios del plan anterior y recibirá los del nuevo.</li>
-<li>🧷 Se ejecutará en su primer día de su inicio de ciclo <font color=blue>(indicar ciclo de facturación según corresponda)</font>.</li>
-</ul>
-<p>¿Está de acuerdo con realizar la migración?</p>
-    `;
-    planDetails.classList.add("show");
-
-
-
-  } else if (planSelect === "N_ilimitado55C") {
-    detalle.innerHTML = `
-<p>El cargo fijo del plan es de S/55.90</p>
-<ul>
-<li>Llamadas ilimitadas y hasta 500 SMS a todo destino nacional.</li>
-<li>125 GB en alta velocidad + navegación ilimitada.</li>
-<li>Facebook e Instagram full (ilimitado en baja velocidad).</li>
-<li>WhatsApp ilimitado en baja velocidad.</li>
-<li>1.5 GB (Gigabytes) en alta velocidad para Free Fire, Call of Duty y Waze.</li>
-<li>15 GB (Gigabytes) controlados por 06 meses para Spotify.</li>
-<li>Suscripción premium para TV360 por 6 meses y navegación ilimitada pagando el recibo de forma puntual.</li>
-<br>
-<li>El plan no se establecerá ninguna restricción de tethering, ya que puede compartir todos los datos principales.</li>
-</ul>
-
-<p><Strong><font color=red>Promoción - Plan Mayor (informar solo si el cliente está aumentando su plan, caso contrario, omitir)</font></strong></p>
-<ul>
-<li>En esta oportunidad si usted migra al plan mencionado tendrá 30 GB (Gigabytes) para Tiktok por 3 meses.</li>
-<li>El beneficio se aplica desde el periodo que se ejecute la migración.</li>
-<li>Para la entrega de la promoción, la línea debe encontrarse activa, en el caso de ingreso a bloqueo (por cualquier motivo), no se hará efectiva la entrega por ese mes, no siendo posible su recuperación.</li>
-<li>Considerar que también perdería automáticamente los beneficios promocionales, si realiza cambios sobre la línea como cambio de titularidad o cambio de número.</li>
-</ul>
-    `;
-
-consideraciones.innerHTML = `
-<ul>
-<li>La migración es gratuita y mantiene su chip.</li>
-<li>Puede desistir en un plazo de 40 días útiles.</li>
-<li>Debe estar al día en sus pagos, ya que la migración no exime de deudas ni penalidades.</li>
-<li>Este proceso no permite adquirir equipos.</li>
-<li>Su línea debe estar activa y sin bloqueos.</li>
-<li>Conservará sus puntos Bitel no vencidos, pero perderá los beneficios del plan anterior y recibirá los del nuevo.</li>
-<li>🧷 Se ejecutará en su primer día de su inicio de ciclo <font color=blue>(indicar ciclo de facturación según corresponda)</font>.</li>
-</ul>
-<p>¿Está de acuerdo con realizar la migración?</p>
-    `;
-    planDetails.classList.add("show");
-
-
-
-  } else if (planSelect === "N_ilimitado65C") {
-    detalle.innerHTML = `
-<p>El cargo fijo del plan es de S/65.90</p>
-<ul>
-<li>Llamadas ilimitadas y hasta 500 SMS a todo destino nacional.</li>
-<li>100 GB en alta velocidad + navegación ilimitada.</li>
-<li>Facebook e Instagram full (ilimitado en baja velocidad).</li>
-<li>15 GB (Gigabytes) controlados por 06 meses para Spotify.</li>
-<li>Suscripción premium para TV360 por 6 meses y navegación ilimitada pagando el recibo de forma puntual.</li>
-<br>
-<li>El plan no se establecerá ninguna restricción de tethering, ya que puede compartir todos los datos principales.</li>
-</ul>
-
-<p><Strong><font color=red>Promoción - Plan Mayor (informar solo si el cliente está aumentando su plan, caso contrario, omitir)</font></strong></p>
-<ul>
-<li>En esta oportunidad si usted migra al plan mencionado tendrá 30 GB (Gigabytes) para Tiktok por 3 meses.</li>
-<li>El beneficio se aplica desde el periodo que se ejecute la migración.</li>
-<li>Para la entrega de la promoción, la línea debe encontrarse activa, en el caso de ingreso a bloqueo (por cualquier motivo), no se hará efectiva la entrega por ese mes, no siendo posible su recuperación.</li>
-<li>Considerar que también perdería automáticamente los beneficios promocionales, si realiza cambios sobre la línea como cambio de titularidad o cambio de número.</li>
-</ul>
-    `;
-
-consideraciones.innerHTML = `
-<ul>
-<li>La migración es gratuita y mantiene su chip.</li>
-<li>Puede desistir en un plazo de 40 días útiles.</li>
-<li>Debe estar al día en sus pagos, ya que la migración no exime de deudas ni penalidades.</li>
-<li>Este proceso no permite adquirir equipos.</li>
-<li>Su línea debe estar activa y sin bloqueos.</li>
-<li>Conservará sus puntos Bitel no vencidos, pero perderá los beneficios del plan anterior y recibirá los del nuevo.</li>
-<li>🧷 Se ejecutará en su primer día de su inicio de ciclo <font color=blue>(indicar ciclo de facturación según corresponda)</font>.</li>
-</ul>
-<p>¿Está de acuerdo con realizar la migración?</p>
-    `;
-    planDetails.classList.add("show");
-
-
-
-  } else if (planSelect === "N_ilimitado79C") {
-    detalle.innerHTML = `
-<p>El cargo fijo del plan es de S/79.90</p>
-<ul>
-<li>Llamadas y SMS ilimitados a todo destino nacional.</li>
-<li>250 GB en alta velocidad + navegación ilimitada.</li>
-<li>Facebook e Instagram full (ilimitado en baja velocidad).</li>
-<li>20 GB (Gigabytes) controlados por 06 meses para Spotify.</li>
-<li>Suscripción premium para TV360 por 6 meses y navegación ilimitada pagando el recibo de forma puntual.</li>
-<br>
-<li>El plan no se establecerá ninguna restricción de tethering, ya que puede compartir todos los datos principales.</li>
-</ul>
-
-<p><Strong><font color=red>Promoción - Plan Mayor (informar solo si el cliente está aumentando su plan, caso contrario, omitir)</font></strong></p>
-<ul>
-<li>En esta oportunidad si usted migra al plan mencionado tendrá 30 GB (Gigabytes) para Tiktok por 3 meses.</li>
-<li>El beneficio se aplica desde el periodo que se ejecute la migración.</li>
-<li>Para la entrega de la promoción, la línea debe encontrarse activa, en el caso de ingreso a bloqueo (por cualquier motivo), no se hará efectiva la entrega por ese mes, no siendo posible su recuperación.</li>
-<li>Considerar que también perdería automáticamente los beneficios promocionales, si realiza cambios sobre la línea como cambio de titularidad o cambio de número.</li>
-</ul>
-    `;
-
-consideraciones.innerHTML = `
-<ul>
-<li>La migración es gratuita y mantiene su chip.</li>
-<li>Puede desistir en un plazo de 40 días útiles.</li>
-<li>Debe estar al día en sus pagos, ya que la migración no exime de deudas ni penalidades.</li>
-<li>Este proceso no permite adquirir equipos.</li>
-<li>Su línea debe estar activa y sin bloqueos.</li>
-<li>Conservará sus puntos Bitel no vencidos, pero perderá los beneficios del plan anterior y recibirá los del nuevo.</li>
-<li>🧷 Se ejecutará en su primer día de su inicio de ciclo <font color=blue>(indicar ciclo de facturación según corresponda)</font>.</li>
-</ul>
-<p>¿Está de acuerdo con realizar la migración?</p>
-    `;
-    planDetails.classList.add("show");
-
-
-
-  } else if (planSelect === "N_ilimitado105C") {
-    detalle.innerHTML = `
-<p>El cargo fijo del plan es de S/105.90</p>
-<ul>
-<li>Llamadas y SMS ilimitados a todo destino nacional.</li>
-<li>160 GB en alta velocidad + navegación ilimitada.</li>
-<li>Facebook e Instagram full (ilimitado en baja velocidad).</li>
-<li>20 GB (Gigabytes) controlados por 06 meses para Spotify.</li>
-<li>Suscripción premium para TV360 por 6 meses y navegación ilimitada pagando el recibo de forma puntual.</li>
-<br>
-<li>El plan no se establecerá ninguna restricción de tethering, ya que puede compartir todos los datos principales.</li>
-</ul>
-
-<p><Strong><font color=red>Promoción - Plan Mayor (informar solo si el cliente está aumentando su plan, caso contrario, omitir)</font></strong></p>
-<ul>
-<li>En esta oportunidad si usted migra al plan mencionado tendrá 30 GB (Gigabytes) para Tiktok por 3 meses.</li>
-<li>El beneficio se aplica desde el periodo que se ejecute la migración.</li>
-<li>Para la entrega de la promoción, la línea debe encontrarse activa, en el caso de ingreso a bloqueo (por cualquier motivo), no se hará efectiva la entrega por ese mes, no siendo posible su recuperación.</li>
-<li>Considerar que también perdería automáticamente los beneficios promocionales, si realiza cambios sobre la línea como cambio de titularidad o cambio de número.</li>
-</ul>
-    `;
-
-consideraciones.innerHTML = `
-<ul>
-<li>La migración es gratuita y mantiene su chip.</li>
-<li>Puede desistir en un plazo de 40 días útiles.</li>
-<li>Debe estar al día en sus pagos, ya que la migración no exime de deudas ni penalidades.</li>
-<li>Este proceso no permite adquirir equipos.</li>
-<li>Su línea debe estar activa y sin bloqueos.</li>
-<li>Conservará sus puntos Bitel no vencidos, pero perderá los beneficios del plan anterior y recibirá los del nuevo.</li>
-<li>🧷 Se ejecutará en su primer día de su inicio de ciclo <font color=blue>(indicar ciclo de facturación según corresponda)</font>.</li>
-</ul>
-<p>¿Está de acuerdo con realizar la migración?</p>
-    `;
-    planDetails.classList.add("show");
-
-
-
-  } else if (planSelect === "Ilimitado69_90") {
-    detalle.innerHTML = `
-<p>El cargo fijo del plan es de S/69.90</p>
-<ul>
-<li>Llamadas y SMS ilimitados a todo destino nacional.</li>
-<li>220 GB en alta velocidad + navegación ilimitada.</li>
-<li>Facebook e Instagram full (ilimitado en baja velocidad).</li>
-<li>15 GB (Gigabytes) controlados por 06 meses para Spotify.</li>
-<li>Suscripción premium para TV360 por 6 meses y navegación ilimitada pagando el recibo de forma puntual.</li>
-<br>
-<li>El plan no se establecerá ninguna restricción de tethering, ya que puede compartir todos los datos principales.</li>
-</ul>
-`;
-
-consideraciones.innerHTML = `
-<ul>
-<li>La migración es gratuita y mantiene su chip.</li>
-<li>Puede desistir en un plazo de 40 días útiles.</li>
-<li>Debe estar al día en sus pagos, ya que la migración no exime de deudas ni penalidades.</li>
-<li>Este proceso no permite adquirir equipos.</li>
-<li>Su línea debe estar activa y sin bloqueos.</li>
-<li>Conservará sus puntos Bitel no vencidos, pero perderá los beneficios del plan anterior y recibirá los del nuevo.</li>
-<li>🧷 Se ejecutará en su primer día de su inicio de ciclo <font color=blue>(indicar ciclo de facturación según corresponda)</font>.</li>
-</ul>
-<p>¿Está de acuerdo con realizar la migración?</p>
-    `;
-    planDetails.classList.add("show");
-
-
-
-  } else if (planSelect === "Flash29_9C") {
-    detalle.innerHTML = `
-<p>El cargo fijo del plan es de S/29.90</p>
-<ul>
-<li>Llamadas ilimitadas y hasta 500 SMS a todo destino nacional.</li>
-<li>25 GB controlados.</li>
-<li>Facebook e Instagram full.</li>
-<li>WhatsApp ilimitado.</li>
-<li>5 GB (Gigabytes) controlados por 06 meses para Spotify.</li>
-<li>Suscripción premium para TV360 por 6 meses y navegación ilimitada pagando el recibo de forma puntual.</li>
-<br>
-<li>El plan no se establecerá ninguna restricción de tethering, ya que puede compartir todos los datos principales.</li>
-</ul>
-
-<p><Strong><font color=red>Promoción - Plan Mayor (informar solo si el cliente está aumentando su plan, caso contrario, omitir)</font></strong></p>
-<ul>
-<li>En esta oportunidad si usted migra al plan mencionado tendrá 30 GB (Gigabytes) adicionales por 3 meses.</li>
-<li>El beneficio se aplica desde el periodo que se ejecute la migración.</li>
-<li>Para la entrega de la promoción, la línea debe encontrarse activa, en el caso de ingreso a bloqueo (por cualquier motivo), no se hará efectiva la entrega por ese mes, no siendo posible su recuperación.</li>
-<li>En el caso de bloqueo causado por robo o pérdida tendrá un plazo máximo de 14 días para recuperar la promoción, pasado dicho tiempo, se perderá de forma definitiva.</li>
-<li>Considerar que también perdería automáticamente los beneficios promocionales, si realiza cambios sobre la línea como cambio de titularidad o cambio de número.</li>
-</ul>
-    `;
-
-consideraciones.innerHTML = `
-<ul>
-<li>La migración es gratuita y mantiene su chip.</li>
-<li>Puede desistir en un plazo de 40 días útiles.</li>
-<li>Debe estar al día en sus pagos, ya que la migración no exime de deudas ni penalidades.</li>
-<li>Este proceso no permite adquirir equipos.</li>
-<li>Su línea debe estar activa y sin bloqueos.</li>
-<li>Conservará sus puntos Bitel no vencidos, pero perderá los beneficios del plan anterior y recibirá los del nuevo.</li>
-<li>🧷 Se ejecutará en su primer día de su inicio de ciclo <font color=blue>(indicar ciclo de facturación según corresponda)</font>.</li>
-</ul>
-<p>¿Está de acuerdo con realizar la migración?</p>
-    `;
-    planDetails.classList.add("show");
-
-
-
-  } else if (planSelect === "N_Flash39") {
-    detalle.innerHTML = `
-<p>El cargo fijo del plan es de S/39.90</p>
-<ul>
-<li>Llamadas ilimitadas y hasta 500 SMS a todo destino nacional.</li>
-<li>50 GB controlados.</li>
-<li>Facebook e Instagram full.</li>
-<li>WhatsApp ilimitado.</li>
-<li>10 GB (Gigabytes) controlados por 06 meses para Spotify.</li>
-<li>Suscripción premium para TV360 por 6 meses y navegación ilimitada pagando el recibo de forma puntual.</li>
-</ul>
-    `;
-
-consideraciones.innerHTML = `
-<ul>
-<li>La migración es gratuita y mantiene su chip.</li>
-<li>Puede desistir en un plazo de 40 días útiles.</li>
-<li>Debe estar al día en sus pagos, ya que la migración no exime de deudas ni penalidades.</li>
-<li>Este proceso no permite adquirir equipos.</li>
-<li>Su línea debe estar activa y sin bloqueos.</li>
-<li>Conservará sus puntos Bitel no vencidos, pero perderá los beneficios del plan anterior y recibirá los del nuevo.</li>
-<li>🧷 Se ejecutará en su primer día de su inicio de ciclo <font color=blue>(indicar ciclo de facturación según corresponda)</font>.</li>
-</ul>
-<p>¿Está de acuerdo con realizar la migración?</p>
-    `;
-    planDetails.classList.add("show");
-
-
-
-  } else if (planSelect === "N_Flash49") {
-    detalle.innerHTML = `
-<p>El cargo fijo del plan es de S/49.90</p>
-<ul>
-<li>Llamadas ilimitadas y hasta 500 SMS a todo destino nacional.</li>
-<li>85 GB controlados (Más 40 GB de bono pagando con Bipay).</li>
-<li>Facebook e Instagram full (ilimitado en baja velocidad).</li>
-<li>WhatsApp ilimitado en baja velocidad.</li>
-<li>10 GB (Gigabytes) controlados por 06 meses para Spotify.</li>
-<li>Suscripción premium para TV360 por 6 meses y navegación ilimitada pagando el recibo de forma puntual.</li>
-</ul>
-    `;
-
-consideraciones.innerHTML = `
-<ul>
-<li>La migración es gratuita y mantiene su chip.</li>
-<li>Puede desistir en un plazo de 40 días útiles.</li>
-<li>Debe estar al día en sus pagos, ya que la migración no exime de deudas ni penalidades.</li>
-<li>Este proceso no permite adquirir equipos.</li>
-<li>Su línea debe estar activa y sin bloqueos.</li>
-<li>Conservará sus puntos Bitel no vencidos, pero perderá los beneficios del plan anterior y recibirá los del nuevo.</li>
-<li>🧷 Se ejecutará en su primer día de su inicio de ciclo <font color=blue>(indicar ciclo de facturación según corresponda)</font>.</li>
-</ul>
-<p>¿Está de acuerdo con realizar la migración?</p>
-    `;
-    planDetails.classList.add("show");
-
-
-
-  } else if (planSelect === "N_Flash109") {
-    detalle.innerHTML = `
-<p>El cargo fijo del plan es de S/109.90</p>
-<ul>
-<li>Llamadas y SMS ilimitados a todo destino nacional.</li>
-<li>200 GB controlados.</li>
-<li>Facebook e Instagram full (ilimitado en baja velocidad).</li>
-<li>WhatsApp y TikTok ilimitado en baja velocidad.</li>
-<li>10 GB (Gigabytes) + navegación ilimitada para Spotify.</li>
-<li>20 GB (Gigabytes) controlados por 06 meses para Spotify.</li>
-<li>Suscripción premium para TV360 por 6 meses y navegación ilimitada pagando el recibo de forma puntual.</li>
-</ul>
-    `;
-    consideraciones.innerHTML = `
-<ul>
-<li>La migración es gratuita y mantiene su chip.</li>
-<li>Puede desistir en un plazo de 40 días útiles.</li>
-<li>Debe estar al día en sus pagos, ya que la migración no exime de deudas ni penalidades.</li>
-<li>Este proceso no permite adquirir equipos.</li>
-<li>Su línea debe estar activa y sin bloqueos.</li>
-<li>Conservará sus puntos Bitel no vencidos, pero perderá los beneficios del plan anterior y recibirá los del nuevo.</li>
-<li>🧷 Se ejecutará en su primer día de su inicio de ciclo <font color=blue>(indicar ciclo de facturación según corresponda)</font>.</li>
-</ul>
-<p>¿Está de acuerdo con realizar la migración?</p>
-    `;
-    planDetails.classList.add("show");
-
-  } else {
-    planDetails.classList.remove("show");
-  }
-}
-
-
-/* Nueva función para mostrar/ocultar el campo de texto manual */
-function toggleManualInput() {
-    // ⚠️ ACTUALIZADO: Apuntamos al ID 'motivoSecundario'
-    const motivoSelect = document.getElementById("motivoSecundario");
-    const manualMotivoGroup = document.getElementById("manualMotivoGroup");
-    const motivoManualInput = document.getElementById("motivoManual");
-
-    if (motivoSelect.value === "manual_input") {
-        manualMotivoGroup.style.display = "flex";
-        motivoManualInput.disabled = false;
-        motivoManualInput.setAttribute("required", "");
-        // Deshabilita la selección de "motivo" para evitar que se envíe con el valor "manual_input"
-        motivoSelect.removeAttribute("required");
-        motivoSelect.name = "";
-    } else {
-        manualMotivoGroup.style.display = "none";
-        motivoManualInput.disabled = true;
-        motivoManualInput.removeAttribute("required");
-        // Habilita la selección de "motivo" para que se envíe el valor correcto
-        motivoSelect.setAttribute("required", "");
-        // ⚠️ ACTUALIZADO: El name ahora es 'motivoSecundario'
-        motivoSelect.name = "motivoSecundario";
-    }
-}
-
-
-
-
-
-
-/* ---------------------------
-   BÚSQUEDA DNI -> API PeruDevs
-   - muestra loader dentro del autofill mientras consulta
-   - si API responde: llena campos (nombre, fecha, ubicacion si aplica)
-   - si falla: usar fallback (datos ficticios)
-   --------------------------- */
-async function buscarDNI(){
-  const dni = document.getElementById("dni").value.trim();
-  if(dni.length !== 8){ alert("Ingrese un DNI válido de 8 dígitos"); return; }
-
-  const autofill = document.getElementById("autofill");
-  const loader = document.getElementById("loader");
-  const nombreEl = document.getElementById("nombre");
-  const fechaEl = document.getElementById("fechaNacimiento");
-  const ubicacionEl = document.getElementById("ubicacion");
-
-  // Mostrar autofill y loader
-  autofill.classList.add("show");
-  loader.style.display = "block";
-
-  // Vaciar o mostrar texto provisional
-  nombreEl.value = "Buscando...";
-  fechaEl.value = "Buscando...";
-  ubicacionEl.value = "Buscando...";
-
-  try {
-    const resp = await fetch(`https://api.perudevs.com/api/v1/dni/complete?document=${dni}&key=${TOKEN}`);
-    if(!resp.ok){
-      throw new Error("HTTP " + resp.status);
-    }
-    const data = await resp.json();
-
-    if(data && data.estado && data.resultado){
-      const r = data.resultado;
-
-      // Nombre y fecha — si no vienen, dejamos "No disponible"
-      nombreEl.value = r.nombre_completo || r.nombres || "No disponible";
-      fechaEl.value = r.fecha_nacimiento || "No disponible";
-
-      // Ubicación: la API de ejemplo no trae departamento/provincia/distrito,
-      // pero dejamos la lógica preparada por si la API los devuelve con estas keys.
-      const dept = r.departamento || r.departamento_nombre || r.departamentoName || "";
-      const prov = r.provincia || r.provincia_nombre || r.provinciaName || "";
-      const dist = r.distrito || r.distrito_nombre || r.distritoName || "";
-
-      if(dept || prov || dist){
-        const d = dept || "No disponible";
-        const p = prov || "No disponible";
-        const di = dist || "No disponible";
-        ubicacionEl.value = `${d} - ${p} - ${di}`;
-      } else {
-        // si no existen campos de ubicación en la respuesta, mostramos "No disponible"
-        ubicacionEl.value = r.ubigeo || "No disponible";
-      }
-    } else {
-      // no encontrado: usar fallback ficticio
-      usarFallback();
-    }
-  } catch (err) {
-    console.error("Error al consultar la API RENIEC:", err);
-    // fallback
-    usarFallback();
-  } finally {
-    // ocultar loader
-    document.getElementById("loader").style.display = "none";
-  }
-}
-
-/* Fallback: datos ficticios (como pediste) */
-function usarFallback(){
-  document.getElementById("nombre").value = "Juan Perez";
-  document.getElementById("fechaNacimiento").value = "15/08/1990";
-  document.getElementById("ubicacion").value = "Lima - Lima - San Isidro";
-  document.getElementById("loader").style.display = "none";
-  document.getElementById("autofill").classList.add("show");
-}
-
-/* Ocultar el bloque autofill cuando el usuario pulse la X */
-function ocultarDNI(){
-  document.getElementById("autofill").classList.remove("show");
-}
-
-/* Abrir Reniec en ventana emergente */
-/* Abrir Reniec en ventana emergente centrada con zoom 90% */
-function abrirReniec(){
-  // Tamaño base de la ventana
-  const w = 1200;
-  const h = 800;
-
-  // Calcular posición centrada en la pantalla
-  const left = (screen.width - w) / 2;
-  const top = (screen.height - h) / 2;
-
-  // Abrir ventana emergente centrada
-  const popup = window.open(
-    "https://serviciosweb.reniec.gob.pe/aip/logout.do",
-    "popupReniec",
-    `width=${w},height=${h},top=${top},left=${left},scrollbars=yes,resizable=yes`
-  );
-
-  // Cuando cargue, aplicamos zoom (scale 90%)
-  if (popup) {
-    popup.onload = function(){
-      try {
-        popup.document.body.style.zoom = "90%";39
-      } catch(e){
-        console.warn("No se puede aplicar zoom por políticas de la página externa (X-Frame-Options)");
-      }
-    };
-  }
-}
-
-/* ---------------------------
-   Switch modo oscuro
-   --------------------------- */
-document.getElementById("darkSwitch").addEventListener("change", function(){
-    document.body.classList.toggle("dark-mode", this.checked);
-});
-</script>
 
 </body>
 </html>
